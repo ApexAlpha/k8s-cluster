@@ -19,7 +19,7 @@ spec:
     # Use a specific, stable version tag. Avoid 'HEAD' or 'master' for infrastructure.
     targetRevision: v3.1.0 # <-- CHANGE to the version you want to run
     # The path within the repo where the install manifests are located
-    path: manifests/install
+    path: manifests
 
   # Destination where the manifests will be deployed
   destination:
