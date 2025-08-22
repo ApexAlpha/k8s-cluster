@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # This application's name
+  name: argocd
+  # This application should be managed in the 'argocd' namespace
+  namespace: argocd
+  # Add a finalizer to ensure that the app is deleted cleanly.
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # This app belongs to the 'platform' project
+  project: default
+
+  # Source of the Argo CD manifests
+  source:
+    # The official Argo CD manifests repository
+    repoURL: https://github.com/argoproj/argo-cd.git
+    # Use a specific, stable version tag. Avoid 'HEAD' or 'master' for infrastructure.
+    targetRevision: v2.11.1 # <-- CHANGE to the version you want to run
+    # The path within the repo where the install manifests are located
+    path: manifests/install
+
+  # Destination where the manifests will be deployed
+  destination:
+    # Deploy to the same cluster where Argo CD is running
+    server: https://kubernetes.default.svc
+    # Deploy to the 'argocd' namespace
+    namespace: argocd
+
+  # Sync policy
+  syncPolicy:
+    automated:
+      # Prune resources that are no longer in Git
+      prune: true
+      # Allow Argo CD to delete its own resources
+      selfHeal: true
+    # Use 'replace=true' to handle CRD updates and other potential conflicts
+    syncOptions:
+      - Replace=true
