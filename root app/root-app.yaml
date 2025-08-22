@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  # This is the root application
+  name: root
+  # This must be created in the argocd namespace
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    # IMPORTANT: This must point to YOUR Git repository
+    repoURL: https://github.com/ApexAlpha/k8s-cluster.git # <-- CHANGE THIS
+    targetRevision: HEAD
+    # The path where the 'app-of-apps' definition is located
+    path: app-of-apps
+
+  destination:
+    # Deploy to the same cluster where Argo CD is running
+    server: https://kubernetes.default.svc
+    # The application resources will be created in the 'argocd' namespace
+    namespace: argocd
+
+  syncPolicy:
+    automated:
+      # Prune resources when they are removed from Git
+      prune: true
+      # Automatically sync the app when it is out of sync
+      selfHeal: true
