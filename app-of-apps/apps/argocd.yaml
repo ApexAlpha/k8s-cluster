@@ -17,7 +17,7 @@ spec:
     # The official Argo CD manifests repository
     repoURL: https://github.com/argoproj/argo-cd.git
     # Use a specific, stable version tag. Avoid 'HEAD' or 'master' for infrastructure.
-    targetRevision: v2.11.1 # <-- CHANGE to the version you want to run
+    targetRevision: v3.1.0 # <-- CHANGE to the version you want to run
     # The path within the repo where the install manifests are located
     path: manifests/install
 
