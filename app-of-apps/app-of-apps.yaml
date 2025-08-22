@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    # IMPORTANT: This is YOUR Git repository
+    repoURL: https://github.com/ApexAlpha/k8s-cluster.git # <-- CHANGE THIS
+    targetRevision: HEAD
+    # The path where our component applications are defined
+    path: app-of-apps/apps
+    # This tells Argo CD to look for YAML files in subdirectories
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
