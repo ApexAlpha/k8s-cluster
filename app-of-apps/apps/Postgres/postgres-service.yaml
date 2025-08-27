@@ -3,11 +3,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres-service
-  namespace: postgres-simple
+  namespace: postgres
   annotations:
     netbird.io/expose: "true"
     netbird.io/groups: "app-access"
-
 spec:
   type: ClusterIP
   clusterIP: None
