@@ -10,7 +10,7 @@ spec:
     repoURL: https://github.com/netbirdio/kubernetes-operator/
     targetRevision: 0.1.4
     helm:
-      releaseName: netbird
+      releaseName: kubernetes-operator
   destination:
     server: "https://kubernetes.default.svc"
     namespace: netbird
