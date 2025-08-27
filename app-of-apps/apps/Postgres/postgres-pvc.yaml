@@ -4,8 +4,8 @@ metadata:
   name: postgres-pvc
 spec:
   accessModes:
-	- ReadWriteOnce
+    - ReadWriteOnce 
   resources:
-	requests:
-  	storage: 10Gi
+    requests:
+      storage: 10Gi
   storageClassName: mayastor-3
