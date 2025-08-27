@@ -8,4 +8,5 @@ ingress:
     enabled: true
 
 netbirdAPI:
+  namespace: netbird
   keyFromSecret: "netbird-mgmt-api-key"
