@@ -1,2 +1,4 @@
 *secret.yaml
-*env.yaml
+*secrets.yaml
+*-secret.yaml
+*-secrets.yaml
