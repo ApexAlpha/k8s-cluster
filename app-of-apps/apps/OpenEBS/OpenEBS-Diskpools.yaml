@@ -1,0 +1,39 @@
+apiVersion: "openebs.io/v1beta3"
+kind: DiskPool
+metadata:
+  name: pool-on-node-1
+  namespace: openebs
+spec:
+  node: k8s-node-1
+  disks: ["aio:///dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_S7U7NJ0XB00426W"]
+  topology:
+    labelled:
+      pool: "1"
+
+---
+
+apiVersion: "openebs.io/v1beta3"
+kind: DiskPool
+metadata:
+  name: pool-on-node-nuc
+  namespace: openebs
+spec:
+  node: k8s-node-nuc
+  disks: ["aio:///dev/disk/by-id/nvme-Samsung_SSD_990_EVO_Plus_2TB_S7U7NU0Y604853L"]
+  topology:
+    labelled:
+      pool: "nuc"
+
+---
+
+apiVersion: "openebs.io/v1beta3"
+kind: DiskPool
+metadata:
+  name: pool-on-node-hel
+  namespace: openebs
+spec:
+  node: ubuntu-2404-noble-amd64-base
+  disks: ["aio:///dev/disk/by-id/nvme-eui.002538b421b4f65b"]
+  topology:
+    labelled:
+      pool: "hel"

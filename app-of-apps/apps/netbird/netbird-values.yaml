@@ -1,0 +1,11 @@
+# by default the managementURL points to the NetBird cloud service: https://api.netbird.io:443
+# managementURL: "https://netbird.example.io:443"
+ingress:
+  enabled: true
+  kubernetesAPI:
+    enabled: true
+  router:
+    enabled: true
+
+netbirdAPI:
+  keyFromSecret: "netbird-mgmt-api-key"
