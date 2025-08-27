@@ -5,9 +5,6 @@ metadata:
   name: argocd
   # This application should be managed in the 'argocd' namespace
   namespace: argocd
-  annotations:
-    netbird.io/expose: "true"
-    netbird.io/groups: "app-access"
 
   # Add a finalizer to ensure that the app is deleted cleanly.
   finalizers:

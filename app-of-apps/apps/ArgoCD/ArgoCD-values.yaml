@@ -1,0 +1,5 @@
+server:
+  podAnnotations:
+  annotations:
+    netbird.io/expose: "true"
+    netbird.io/groups: "app-access"
