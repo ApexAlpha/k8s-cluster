@@ -1,0 +1,4 @@
+kind: Application
+metadata:
+  name: OpenEBS
+  namespace: argocd
