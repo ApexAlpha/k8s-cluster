@@ -5,7 +5,10 @@ ingress:
   kubernetesAPI:
     enabled: true
 
-netbirdAPI:
-  keyFromSecret:
-    - name: "netbird-mgmt-api-key"
-    - key: "NB_API_KEY"
+management:
+  envRaw:
+    - name: NB_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: netbird-mgmt-api-key
+          key: NB_API_KEY
