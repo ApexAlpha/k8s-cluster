@@ -1,16 +1,11 @@
-# by default the managementURL points to the NetBird cloud service: https://api.netbird.io:443
-# managementURL: "https://netbird.example.io:443"
 ingress:
   enabled: true
-  kubernetesAPI:
-    enabled: true
   router:
     enabled: true
+  kubernetesAPI:
+    enabled: true
 
-management:
-  envRaw:
-  - name: NB_API_KEY # The environment variable the container expects
-    valueFrom:
-      secretKeyRef:
-        name: netbird-mgmt-api-key # The name of YOUR secret
-        key: NB_API_KEY             # The key within your secret
+netbirdAPI:
+  keyFromSecret:
+    - name: "netbird-mgmt-api-key"
+    - key: "NB_API_KEY"
