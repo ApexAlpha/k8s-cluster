@@ -13,6 +13,12 @@ spec:
   selector:
     matchLabels:
       app: postgres
+  ignoreDifferences:
+    - group: "apps"
+      kind: "StatefulSet"
+      name: "postgres"
+      jsonPointers:
+      - /spec/template/metadata/creationTimestamp
   template:
     metadata:
       labels:
