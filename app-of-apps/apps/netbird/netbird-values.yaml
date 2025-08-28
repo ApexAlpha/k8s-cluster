@@ -7,8 +7,10 @@ ingress:
   router:
     enabled: true
 
-netbirdAPI:
-  namespace: netbird
-  keyFromSecret: 
-    name: "netbird-mgmt-api-key"
-    key: "NB_API_KEY"
+management:
+  envRaw:
+  - name: NB_API_KEY # The environment variable the container expects
+    valueFrom:
+      secretKeyRef:
+        name: netbird-mgmt-api-key # The name of YOUR secret
+        key: NB_API_KEY             # The key within your secret
