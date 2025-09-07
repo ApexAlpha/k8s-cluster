@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: netbird
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: kubernetes-operator
+    repoURL: https://netbirdio.github.io/helms
+    targetRevision: 0.1.13
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |
+        ingress:
+          enabled: true
+          router:
+            enabled: true
+          kubernetesAPI:
+            enabled: true
+        operator:
+          replicaCount: 3
+        netbirdAPI:
+          keyFromSecret:
+            name: "netbird-mgmt-api-key"
+            key: "NB_API_KEY"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: netbird
+      # Sync policy
+  syncPolicy:
+    automated:
+      # Prune resources that are no longer in Git
+      prune: true
+      # Allow Argo CD to delete its own resources
+      selfHeal: true
+    # Use 'replace=true' to handle CRD updates and other potential conflicts
+    syncOptions:
+      - Replace=true
