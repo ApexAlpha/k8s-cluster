@@ -63,7 +63,7 @@ spec:
           grpcPort: 18080
           
           # Only run on nodes with storage label
-          nodeSelector:
+          nodeSelector: |
             seaweedfs.io/volume: "true"
           
           # Spread across zones
