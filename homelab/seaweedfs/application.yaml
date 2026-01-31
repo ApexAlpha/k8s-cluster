@@ -20,8 +20,8 @@ spec:
           replicationPlacment: "010"
           enableReplication: true
         image:
-          repository: chrislusf
-          name: seaweedfs
+          repository: "chrislusf"
+          name: "seaweedfs"
           tag: "4.07"
         admin:
           enabled: true
