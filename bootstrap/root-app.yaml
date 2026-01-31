@@ -1,24 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cnpg-cluster
+  name: root-homelab
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/ApexAlpha/k8s-cluster.git
     targetRevision: main
-    path: apps/cnpg-cluster/manifests
+    path: homelab
   destination:
     server: https://kubernetes.default.svc
-    namespace: databases
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
