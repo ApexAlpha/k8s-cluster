@@ -85,6 +85,35 @@ spec:
           port: 8888
           grpcPort: 18888
           
+          # Disable default leveldb - we use PostgreSQL
+          filerGroup: ""
+          defaultStoreDir: ""
+          
+          # Override chart's default extraEnvironmentVars completely
+          # The chart defaults to WEED_LEVELDB2_ENABLED=true, we must override
+          extraEnvironmentVars:
+            WEED_MYSQL_ENABLED: "false"
+            WEED_LEVELDB2_ENABLED: "false"
+            WEED_POSTGRES2_ENABLED: "true"
+            WEED_POSTGRES2_HOSTNAME: "postgres-shared-rw.database.svc"
+            WEED_POSTGRES2_PORT: "5432"
+            WEED_POSTGRES2_DATABASE: "seaweedfs_filer"
+            WEED_POSTGRES2_USERNAME: "app"
+            WEED_POSTGRES2_SSLMODE: "disable"
+            WEED_POSTGRES2_CONNECTION_MAX_IDLE: "5"
+            WEED_POSTGRES2_CONNECTION_MAX_OPEN: "75"
+            WEED_POSTGRES2_CONNECTION_MAX_LIFETIME_SECONDS: "600"
+            WEED_POSTGRES2_CREATETABLE: "true"
+          
+          # Password from manually-created secret (not in git)
+          # Create with: kubectl create secret generic seaweedfs-db-credentials -n seaweedfs --from-literal=password=<your-pg-password>
+          extraEnv: |
+            - name: WEED_POSTGRES2_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seaweedfs-db-credentials
+                  key: password
+          
           # Spread across zones - must be string format
           affinity: |
             podAntiAffinity:
@@ -94,17 +123,8 @@ spec:
                       app.kubernetes.io/component: filer
                   topologyKey: topology.kubernetes.io/zone
           
-          # Mount the PostgreSQL config - must be string format
-          extraVolumes: |
-            - name: filer-config
-              secret:
-                secretName: seaweedfs-filer-config
-          
-          extraVolumeMounts: |
-            - name: filer-config
-              mountPath: /etc/seaweedfs/filer.toml
-              subPath: filer.toml
-              readOnly: true
+          # Disable the default leveldb2 store - we're using postgres
+          defaultLocalBucketVolumeCount: 0
           
           # Enable S3 API
           s3:
@@ -112,7 +132,7 @@ spec:
             port: 8333
             enableAuth: false  # Enable later with IAM
           
-          # Small PVC for filer cache/temp
+          # No PVC needed - postgres is our store
           data:
             type: "emptyDir"
         
