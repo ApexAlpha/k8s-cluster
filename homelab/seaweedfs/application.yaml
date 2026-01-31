@@ -112,21 +112,21 @@ spec:
           extraEnvironmentVars:
             WEED_MYSQL_ENABLED: "false"
             WEED_LEVELDB2_ENABLED: "false"
-            WEED_POSTGRES2_ENABLED: "true"
-            WEED_POSTGRES2_HOSTNAME: "postgres-shared-rw.database.svc"
-            WEED_POSTGRES2_PORT: "5432"
-            WEED_POSTGRES2_DATABASE: "seaweedfs_filer"
-            WEED_POSTGRES2_USERNAME: "app"
-            WEED_POSTGRES2_SSLMODE: "disable"
-            WEED_POSTGRES2_CONNECTION_MAX_IDLE: "5"
-            WEED_POSTGRES2_CONNECTION_MAX_OPEN: "75"
-            WEED_POSTGRES2_CONNECTION_MAX_LIFETIME_SECONDS: "600"
-            WEED_POSTGRES2_CREATETABLE: "true"
+            WEED_POSTGRES_ENABLED: "true"
+            WEED_POSTGRES_HOSTNAME: "postgres-shared-rw.database.svc"
+            WEED_POSTGRES_PORT: "5432"
+            WEED_POSTGRES_DATABASE: "seaweedfs_filer"
+            WEED_POSTGRES_USERNAME: "app"
+            WEED_POSTGRES_SSLMODE: "disable"
+            WEED_POSTGRES_CONNECTION_MAX_IDLE: "5"
+            WEED_POSTGRES_CONNECTION_MAX_OPEN: "75"
+            WEED_POSTGRES_CONNECTION_MAX_LIFETIME_SECONDS: "600"
+            WEED_POSTGRES_CREATETABLE: "true"
           
           # Password from manually-created secret (not in git)
           # Create with: kubectl create secret generic seaweedfs-db-credentials -n seaweedfs --from-literal=password=<your-pg-password>
           env:
-            - name: WEED_POSTGRES2_PASSWORD
+            - name: WEED_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: seaweedfs-db-credentials
