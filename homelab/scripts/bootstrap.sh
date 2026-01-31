@@ -42,18 +42,6 @@ else
     echo -e "${GREEN}✓ cert-manager installed${NC}"
 fi
 
-# Check Netbird secret
-echo -e "\n${YELLOW}Checking Netbird secret...${NC}"
-if kubectl get secret netbird-mgmt-api-key -n netbird &> /dev/null 2>&1; then
-    echo -e "${GREEN}✓ Netbird API key secret exists${NC}"
-else
-    echo -e "${RED}Netbird API key secret not found.${NC}"
-    echo "Please create it with:"
-    echo "  kubectl create namespace netbird"
-    echo "  kubectl -n netbird create secret generic netbird-mgmt-api-key --from-literal=NB_API_KEY='your-token'"
-    exit 1
-fi
-
 # Install ArgoCD
 echo -e "\n${YELLOW}Checking ArgoCD...${NC}"
 if kubectl get namespace argocd &> /dev/null; then
@@ -83,6 +71,14 @@ echo -e "${GREEN}  Bootstrap complete!${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 echo "ArgoCD will now sync all applications."
+echo ""
+echo -e "${YELLOW}IMPORTANT: Sealed Secrets Setup${NC}"
+echo ""
+echo "Once Sealed Secrets controller is running, create your secrets:"
+echo ""
+echo "  ./scripts/seal-secret.sh"
+echo ""
+echo "This will encrypt your secrets so they're safe to commit to Git."
 echo ""
 echo "To access ArgoCD UI:"
 echo "  kubectl port-forward svc/argocd-server -n argocd 8080:443"

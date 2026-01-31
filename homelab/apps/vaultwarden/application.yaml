@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: seaweedfs
+  name: vaultwarden
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "3"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/ApexAlpha/homelab.git
+    repoURL: https://github.com/YOUR_USERNAME/homelab.git
     targetRevision: main
-    path: apps/seaweedfs/manifests
+    path: apps/vaultwarden/manifests
   destination:
     server: https://kubernetes.default.svc
-    namespace: seaweedfs
+    namespace: apps
   syncPolicy:
     automated:
       prune: true

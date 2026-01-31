@@ -1,30 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: netbird-operator
+  name: sealed-secrets
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "-2"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://netbirdio.github.io/helms
-    chart: kubernetes-operator
+    repoURL: https://bitnami-labs.github.io/sealed-secrets
+    chart: sealed-secrets
     targetRevision: "*"
     helm:
       valuesObject:
-        # Uncomment and set if using self-hosted Netbird
-        # managementURL: "https://vpn.hu.ls:443"
-
-        ingress:
-          enabled: true
-
-        netbirdAPI:
-          keyFromSecret:
-            name: "netbird-mgmt-api-key"
-            key: "NB_API_KEY"
+        # Run in kube-system for cluster-wide access
+        fullnameOverride: sealed-secrets-controller
 
         resources:
           requests:
@@ -35,10 +27,8 @@ spec:
             memory: 256Mi
   destination:
     server: https://kubernetes.default.svc
-    namespace: netbird
+    namespace: kube-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true

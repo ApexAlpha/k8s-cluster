@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps
+  name: cnpg-cluster
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/ApexAlpha/homelab.git
+    repoURL: https://github.com/YOUR_USERNAME/homelab.git
     targetRevision: main
-    path: apps
-    directory:
-      recurse: true
-      include: 'application.yaml'
+    path: apps/cnpg-cluster/manifests
   destination:
     server: https://kubernetes.default.svc
+    namespace: databases
   syncPolicy:
     automated:
       prune: true
