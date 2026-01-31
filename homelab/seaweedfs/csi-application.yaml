@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seaweedfs-csi
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "16"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://seaweedfs.github.io/seaweedfs-csi-driver/helm
+    chart: seaweedfs-csi-driver
+    targetRevision: 0.2.2
+    helm:
+      valuesObject:
+        # Connect to filer service
+        seaweedfsFiler: "seaweedfs-filer.seaweedfs.svc:8888"
+        
+        # Controller runs on one node
+        controller:
+          replicas: 1
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+        
+        # Node plugin runs on all nodes via DaemonSet
+        node:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+          
+          # Tolerations to run on all nodes including control plane
+          tolerations:
+            - operator: Exists
+        
+        # Storage class will be created separately for more control
+        storageClass:
+          enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: seaweedfs
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true

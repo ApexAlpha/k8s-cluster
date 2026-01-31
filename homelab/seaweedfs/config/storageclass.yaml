@@ -1,0 +1,29 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: seaweedfs
+  annotations:
+    argocd.argoproj.io/sync-wave: "17"
+provisioner: seaweedfs-csi-driver
+allowVolumeExpansion: true
+reclaimPolicy: Retain  # Safety: keep data on PVC deletion
+volumeBindingMode: Immediate
+parameters:
+  # Use default replication from cluster (010 = cross-datacenter)
+  replication: "010"
+  # collection: ""  # Optional: group volumes
+  # diskType: ""    # Optional: ssd, hdd
+---
+# Alternative class for single-replica (faster, no replication)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: seaweedfs-single
+  annotations:
+    argocd.argoproj.io/sync-wave: "17"
+provisioner: seaweedfs-csi-driver
+allowVolumeExpansion: true
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+parameters:
+  replication: "000"  # No replication - use for temp/cache data

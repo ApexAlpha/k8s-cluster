@@ -1,0 +1,145 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seaweedfs
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://seaweedfs.github.io/seaweedfs/helm
+    chart: seaweedfs
+    targetRevision: 4.0.0
+    helm:
+      valuesObject:
+        global:
+          # Async replication across datacenters
+          replicationPlacment: "010"
+          enableReplication: true
+          # For high-latency geo-distributed setup
+          extraEnvironmentVars:
+            WEED_CLUSTER_DEFAULT_TIMEOUT: "30s"
+        
+        master:
+          enabled: true
+          replicas: 3
+          port: 9333
+          grpcPort: 19333
+          
+          # Longer timeouts for geo-distributed Raft
+          config: |
+            [master.maintenance]
+            scripts = """
+            """
+            sleep_minutes = 17
+            
+            [master.raft]
+            grpc_timeout_seconds = 30
+            election_timeout_ms = 10000
+            heartbeat_interval_ms = 2000
+          
+          # Spread masters across zones
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: master
+                  topologyKey: topology.kubernetes.io/zone
+          
+          # Small persistent storage for master metadata
+          data:
+            type: "persistentVolumeClaim"
+            size: "1Gi"
+            storageClass: "local-path"
+        
+        volume:
+          enabled: true
+          replicas: 3
+          port: 8080
+          grpcPort: 18080
+          
+          # Only run on nodes with storage label
+          nodeSelector:
+            seaweedfs.io/volume: "true"
+          
+          # Spread across zones
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: volume
+                  topologyKey: topology.kubernetes.io/zone
+          
+          # Use hostPath for volume data
+          dataDirs:
+            - name: data
+              type: "hostPath"
+              hostPathPrefix: /var/lib/seaweedfs
+              maxVolumes: 0  # Auto-detect based on disk
+          
+          # Larger read/write timeouts for high latency
+          extraEnvironmentVars:
+            WEED_VOLUME_READ_TIMEOUT: "60s"
+            WEED_VOLUME_WRITE_TIMEOUT: "120s"
+        
+        filer:
+          enabled: true
+          replicas: 3
+          port: 8888
+          grpcPort: 18888
+          
+          # Spread across zones
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: filer
+                  topologyKey: topology.kubernetes.io/zone
+          
+          # Mount the PostgreSQL config
+          extraVolumes:
+            - name: filer-config
+              secret:
+                secretName: seaweedfs-filer-config
+          
+          extraVolumeMounts:
+            - name: filer-config
+              mountPath: /etc/seaweedfs/filer.toml
+              subPath: filer.toml
+              readOnly: true
+          
+          # Enable S3 API
+          s3:
+            enabled: true
+            port: 8333
+            enableAuth: false  # Enable later with IAM
+            # Internal service only for now
+            # auditLogConfig: ""
+          
+          # Small PVC for filer cache/temp
+          data:
+            type: "persistentVolumeClaim"
+            size: "5Gi"
+            storageClass: "local-path"
+        
+        # We'll deploy CSI driver separately for more control
+        csi:
+          enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: seaweedfs
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
