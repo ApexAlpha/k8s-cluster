@@ -19,10 +19,6 @@ spec:
           # Async replication across datacenters
           replicationPlacment: "010"
           enableReplication: true
-        image:
-          repository: "chrislusf"
-          name: "seaweedfs"
-          tag: "4.07"
         admin:
           enabled: true
           port: 23646
