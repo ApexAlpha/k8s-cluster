@@ -36,7 +36,7 @@ spec:
               memory: 256Mi
 
     # Source 2: Sealed secrets from Git
-    - repoURL: https://github.com/YOUR_USERNAME/homelab.git
+    - repoURL: https://github.com/ApexAlpha/homelab.git
       targetRevision: main
       path: apps/netbird-operator/manifests
   destination:
