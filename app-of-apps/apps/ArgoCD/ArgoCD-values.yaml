@@ -1,6 +1,0 @@
-server:
-  podAnnotations:
-    netbird.io/expose: "true"
-    netbird.io/groups: app-access
-    netbird.io/resource-name: argocd
-    netbird.io/policy: default

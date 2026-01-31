@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: netbird-operator-config
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://netbirdio.github.io/helms
+    chart: netbird-operator-config
+    targetRevision: "*"
+    helm:
+      valuesObject:
+        # Enable routing peer for service exposure
+        router:
+          enabled: true
+
+        # Expose K8s API via Netbird (optional)
+        kubernetesAPI:
+          enabled: true
+          groups:
+            - k8s-admins
+          policies:
+            - homelab-admins
+
+        # Policy bases for services
+        policies:
+          homelab-admins:
+            name: "Homelab Admins"
+            description: "Full access to homelab infrastructure"
+            sourceGroups:
+              - admins
+            protocols:
+              - tcp
+              - udp
+
+          homelab-users:
+            name: "Homelab Users"
+            description: "Access to homelab services"
+            sourceGroups:
+              - users
+            protocols:
+              - tcp
+
+          public-services:
+            name: "Public Services"
+            description: "Publicly accessible services"
+            sourceGroups:
+              - All
+            protocols:
+              - tcp
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: netbird
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

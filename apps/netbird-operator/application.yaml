@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: netbird-operator
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://netbirdio.github.io/helms
+    chart: kubernetes-operator
+    targetRevision: "*"
+    helm:
+      valuesObject:
+        # Uncomment and set if using self-hosted Netbird
+        # managementURL: "https://vpn.hu.ls:443"
+
+        ingress:
+          enabled: true
+
+        netbirdAPI:
+          keyFromSecret:
+            name: "netbird-mgmt-api-key"
+            key: "NB_API_KEY"
+
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: netbird
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
