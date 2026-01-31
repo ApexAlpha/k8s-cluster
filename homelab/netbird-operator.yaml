@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://netbirdio.github.io/helms
-    chart: netbird-operator
+    chart: kubernetes-operator
     targetRevision: HEAD 
     helm:
       values: |
