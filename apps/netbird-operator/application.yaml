@@ -36,7 +36,7 @@ spec:
               memory: 256Mi
 
     # Source 2: Sealed secrets from Git
-    - repoURL: https://github.com/ApexAlpha/homelab.git
+    - repoURL: https://github.com/ApexAlpha/k8s-cluster.git
       targetRevision: main
       path: apps/netbird-operator/manifests
   destination:
