@@ -21,7 +21,7 @@ spec:
           enableReplication: true
         image:
           repository: chrislusf/seaweedfs
-          tag: "4.07"
+          tag: "3.80"
         admin:
           enabled: true
           port: 23646
