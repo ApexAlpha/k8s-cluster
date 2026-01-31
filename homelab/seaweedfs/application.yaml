@@ -19,9 +19,6 @@ spec:
           # Async replication across datacenters
           replicationPlacment: "010"
           enableReplication: true
-          # For high-latency geo-distributed setup
-          extraEnvironmentVars:
-            WEED_CLUSTER_DEFAULT_TIMEOUT: "30s"
         
         master:
           enabled: true
@@ -41,20 +38,20 @@ spec:
             election_timeout_ms = 10000
             heartbeat_interval_ms = 2000
           
-          # Spread masters across zones
-          affinity:
+          # Small persistent storage for master metadata
+          data:
+            type: "persistentVolumeClaim"
+            size: "1Gi"
+            storageClass: "local-path"
+          
+          # Spread across zones - must be string format
+          affinity: |
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
                     matchLabels:
                       app.kubernetes.io/component: master
                   topologyKey: topology.kubernetes.io/zone
-          
-          # Small persistent storage for master metadata
-          data:
-            type: "persistentVolumeClaim"
-            size: "1Gi"
-            storageClass: "local-path"
         
         volume:
           enabled: true
@@ -62,12 +59,12 @@ spec:
           port: 8080
           grpcPort: 18080
           
-          # Only run on nodes with storage label
+          # Only run on nodes with storage label - must be string format
           nodeSelector: |
             seaweedfs.io/volume: "true"
           
-          # Spread across zones
-          affinity:
+          # Spread across zones - must be string format
+          affinity: |
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
@@ -81,11 +78,6 @@ spec:
               type: "hostPath"
               hostPathPrefix: /var/lib/seaweedfs
               maxVolumes: 0  # Auto-detect based on disk
-          
-          # Larger read/write timeouts for high latency
-          extraEnvironmentVars:
-            WEED_VOLUME_READ_TIMEOUT: "60s"
-            WEED_VOLUME_WRITE_TIMEOUT: "120s"
         
         filer:
           enabled: true
@@ -93,8 +85,8 @@ spec:
           port: 8888
           grpcPort: 18888
           
-          # Spread across zones
-          affinity:
+          # Spread across zones - must be string format
+          affinity: |
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
@@ -119,8 +111,6 @@ spec:
             enabled: true
             port: 8333
             enableAuth: false  # Enable later with IAM
-            # Internal service only for now
-            # auditLogConfig: ""
           
           # Small PVC for filer cache/temp
           data:
