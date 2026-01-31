@@ -94,13 +94,13 @@ spec:
                       app.kubernetes.io/component: filer
                   topologyKey: topology.kubernetes.io/zone
           
-          # Mount the PostgreSQL config
-          extraVolumes:
+          # Mount the PostgreSQL config - must be string format
+          extraVolumes: |
             - name: filer-config
               secret:
                 secretName: seaweedfs-filer-config
           
-          extraVolumeMounts:
+          extraVolumeMounts: |
             - name: filer-config
               mountPath: /etc/seaweedfs/filer.toml
               subPath: filer.toml
