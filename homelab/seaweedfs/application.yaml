@@ -125,12 +125,11 @@ spec:
           
           # Password from manually-created secret (not in git)
           # Create with: kubectl create secret generic seaweedfs-db-credentials -n seaweedfs --from-literal=password=<your-pg-password>
-          env:
-            - name: WEED_POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: seaweedfs-db-credentials
-                  key: password
+          secretExtraEnvironmentVars:
+            name: WEED_POSTGRES_PASSWORD
+              secretKeyRef:
+                name: seaweedfs-db-credentials
+                key: password
           
           # Spread across zones - must be string format
           affinity: |
