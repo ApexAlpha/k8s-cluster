@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
   # Infrastructure - Wave 0
-  - local-path-provisioner/application.yaml
   
   # Operators - Wave 5
   - cnpg/operator.yaml
