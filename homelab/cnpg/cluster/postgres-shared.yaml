@@ -1,0 +1,91 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-shared
+  namespace: database
+spec:
+  description: "Shared PostgreSQL cluster for homelab services"
+  
+  # 3 instances: 1 primary + 2 replicas for HA across your geo-distributed nodes
+  instances: 3
+  
+  # PostgreSQL 16 is current stable
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  
+  primaryUpdateStrategy: unsupervised
+  
+  storage:
+    storageClass: local-path
+    size: 20Gi
+  
+  # Spread across availability zones (your geo-distributed nodes)
+  affinity:
+    podAntiAffinityType: required
+    topologyKey: topology.kubernetes.io/zone
+  
+  postgresql:
+    parameters:
+      # Connection settings
+      max_connections: "200"
+      
+      # Memory (tune based on your nodes' RAM)
+      shared_buffers: "256MB"
+      effective_cache_size: "512MB"
+      work_mem: "16MB"
+      maintenance_work_mem: "128MB"
+      
+      # WAL settings for replication
+      wal_level: replica
+      max_wal_senders: "10"
+      max_replication_slots: "10"
+      
+      # Sync replication for strong consistency across geo-distributed nodes
+      # Change to 'remote_write' if latency is too high
+      synchronous_commit: "remote_apply"
+      
+      # Logging
+      log_statement: "ddl"
+      log_min_duration_statement: "1000"  # Log queries > 1s
+    
+    # Enable pg_stat_statements for query analysis
+    pg_hba:
+      - host all all 10.0.0.0/8 scram-sha-256      # Cluster pod network
+      - host all all 100.64.0.0/10 scram-sha-256  # Netbird VPN range (adjust if different)
+  
+  # Bootstrap: create initial databases
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+      postInitSQL:
+        - CREATE DATABASE seaweedfs_filer OWNER app;
+        - CREATE DATABASE vaultwarden OWNER app;
+        # Add more databases as needed:
+        # - CREATE DATABASE sonarr OWNER app;
+        # - CREATE DATABASE radarr OWNER app;
+  
+  # Backup configuration (we'll configure S3 backup via SeaweedFS later)
+  # For now, keep WAL on local storage
+  # backup:
+  #   barmanObjectStore:
+  #     destinationPath: s3://cnpg-backups/
+  #     endpointURL: http://seaweedfs-s3.seaweedfs.svc:8333
+  #     s3Credentials:
+  #       accessKeyId:
+  #         name: cnpg-s3-creds
+  #         key: ACCESS_KEY_ID
+  #       secretAccessKey:
+  #         name: cnpg-s3-creds
+  #         key: SECRET_ACCESS_KEY
+  
+  # Resource limits
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 1Gi
+
+  # Monitoring (enable when you have Prometheus)
+  monitoring:
+    enablePodMonitor: false
