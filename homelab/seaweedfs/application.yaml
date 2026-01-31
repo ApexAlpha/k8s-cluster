@@ -114,9 +114,7 @@ spec:
           
           # Small PVC for filer cache/temp
           data:
-            type: "persistentVolumeClaim"
-            size: "5Gi"
-            storageClass: "local-path"
+            type: "emptyDir"
         
         # We'll deploy CSI driver separately for more control
         csi:
