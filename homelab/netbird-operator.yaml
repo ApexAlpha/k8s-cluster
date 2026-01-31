@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://netbirdio.github.io/helms
     chart: netbird-operator
-    targetRevision: 0.1.15 
+    targetRevision: HEAD 
     helm:
       values: |
         ingress:
