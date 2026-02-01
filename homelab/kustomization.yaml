@@ -14,6 +14,8 @@ resources:
   - seaweedfs/application.yaml      # Wave 15: main seaweedfs
   - seaweedfs/csi-application.yaml  # Wave 16: CSI driver
   
+  #Ingress
+  - traefik/application.yaml
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
   # - apps/plex.yaml
