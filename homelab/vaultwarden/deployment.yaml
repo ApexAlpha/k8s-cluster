@@ -40,13 +40,13 @@ spec:
             - name: SHOW_PASSWORD_HINT
               value: "false"
             - name: DOMAIN
-              value: "https://vault.yourdomain.com"  # Update this
-             Optional: Set admin token (generate with: openssl rand -base64 48)
-             - name: ADMIN_TOKEN
-               valueFrom:
-                 secretKeyRef:
-                   name: vaultwarden-admin
-                   key: ADMIN_TOKEN
+              value: "https://vault.k8s.hu.ls"  # Update this
+             #Optional: Set admin token (generate with: openssl rand -base64 48)
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-admin
+                  key: ADMIN_TOKEN
           volumeMounts:
             - name: data
               mountPath: /data
