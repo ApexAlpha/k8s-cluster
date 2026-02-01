@@ -13,11 +13,17 @@ spec:
       values: |
         ingress:
           enabled: true
+          router:
+            enabled: true
           policies:
             default:
               name: "Kubernetes services"
               sourceGroups:
                 - "All"
+        netbirdAPI:
+          keyFromSecret:
+            name: "netbird-mgmt-api-key"
+            key: "NB_API_KEY"
   destination:
     server: https://kubernetes.default.svc
     namespace: netbird
