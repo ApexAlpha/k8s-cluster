@@ -13,6 +13,11 @@ spec:
       values: |
         ingress:
           enabled: true
+          policies:
+            default:
+              name: "Kubernetes services"
+              sourceGroups:
+                - "All"
   destination:
     server: https://kubernetes.default.svc
     namespace: netbird
