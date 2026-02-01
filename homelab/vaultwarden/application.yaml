@@ -1,25 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: envoy-gateway
+  name: vaultwarden
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"  # Deploy after envoy-gateway
 spec:
   project: default
   source:
-    chart: gateway-helm
-    repoURL: oci://docker.io/envoyproxy
-    targetRevision: v1.2.6
-    helm:
-      valuesObject:
-        config:
-          envoyGateway:
-            gateway:
-              controllerName: gateway.envoyproxy.io/gatewayclass-controller
+    repoURL: https://github.com/ApexAlpha/k8s-cluster.git
+    targetRevision: HEAD
+    path: homelab/vaultwarden
   destination:
     server: https://kubernetes.default.svc
-    namespace: envoy-gateway-system
   syncPolicy:
     automated:
       prune: true
@@ -27,3 +18,9 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
