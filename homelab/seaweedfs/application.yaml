@@ -18,7 +18,7 @@ spec:
         global:
           # Async replication across datacenters
           replicationPlacment: "010"
-          enableReplication: true
+          enableReplication: true,k
         admin:
           enabled: true
           port: 23646
