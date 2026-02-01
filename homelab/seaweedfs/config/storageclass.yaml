@@ -10,7 +10,7 @@ reclaimPolicy: Retain  # Safety: keep data on PVC deletion
 volumeBindingMode: Immediate
 parameters:
   # Use default replication from cluster (010 = cross-datacenter)
-  replication: "010"
+  replication: "000"
   # collection: ""  # Optional: group volumes
   # diskType: ""    # Optional: ssd, hdd
 ---
