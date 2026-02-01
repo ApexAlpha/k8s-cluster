@@ -4,7 +4,7 @@ metadata:
   name: vaultwarden-data
   namespace: vaultwarden
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
     - ReadWriteOnce
