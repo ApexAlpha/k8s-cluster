@@ -12,6 +12,7 @@ spec:
     helm:
       values: |
         service:
+          type: ClusterIP
           annotations:
             netbird.io/expose: "true"
             netbird.io/groups: "k8s-ingress"
