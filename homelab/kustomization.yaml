@@ -16,6 +16,10 @@ resources:
   
   #Ingress
   - traefik/application.yaml
+
+  #CoreDNS
+  - coredns/application.yaml
+
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
   # - apps/plex.yaml
