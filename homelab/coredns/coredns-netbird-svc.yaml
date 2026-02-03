@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: coredns-netbird
+  namespace: kube-system
+  annotations:
+    netbird.io/expose: "true"
+    netbird.io/groups: "k8s-dns"
+spec:
+  selector:
+    k8s-app: kube-dns
+  ports:
+    - name: dns-udp
+      port: 53
+      protocol: UDP
+      targetPort: 53
+    - name: dns-tcp
+      port: 53
+      protocol: TCP
+      targetPort: 53
