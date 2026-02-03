@@ -23,6 +23,13 @@ spec:
           kubernetesIngress:
             publishedService:
               enabled: true
+        ports:
+          web:
+            redirections:
+              entryPoint:
+                to: websecure
+                scheme: https
+                permanent: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
