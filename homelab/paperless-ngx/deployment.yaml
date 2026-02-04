@@ -63,6 +63,8 @@ spec:
               value: "/usr/src/paperless/consume"
             - name: PAPERLESS_EXPORT_DIR
               value: "/usr/src/paperless/export"
+            - name: PAPERLESS_INDEX_DIR
+              value: "/usr/src/paperless/index"
             
             # OCR
             - name: PAPERLESS_OCR_LANGUAGE
@@ -114,7 +116,7 @@ spec:
             - name: consume
               mountPath: /usr/src/paperless/consume
             - name: paperless-index
-              mountPath: /usr/src/paperless/data/index
+              mountPath: /usr/src/paperless/index
               subPath: index
 
           
