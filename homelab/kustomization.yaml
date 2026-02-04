@@ -5,6 +5,7 @@ resources:
   # Operators - Wave 5
   - cnpg/operator.yaml
   - netbird-operator.yaml
+  - kured/application.yaml
   
   # Databases - Wave 10 (after operators)
   - cnpg/cluster-app.yaml
@@ -22,6 +23,6 @@ resources:
 
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
-  
+  - media-stack/application.yaml
   - paperless-ngx/application.yaml
   # - apps/plex.yaml

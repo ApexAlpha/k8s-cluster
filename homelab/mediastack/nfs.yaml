@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media
+---
+# NFS Persistent Volume - shared media storage
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-media
+spec:
+  capacity:
+    storage: 20Ti  # Doesn't matter for NFS, just needs to be >= PVC
+  accessModes:
+    - ReadWriteMany  # Multiple pods can mount
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-media
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+    - intr
+    - rsize=1048576
+    - wsize=1048576
+  nfs:
+    server: 100.73.28.98
+    path: /data
+---
+# PVC that apps will use
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-data
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-media
+  resources:
+    requests:
+      storage: 20Ti

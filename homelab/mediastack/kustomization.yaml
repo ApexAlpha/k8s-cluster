@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - nfs.yaml
+  - certificate.yaml
+  - transmission.yaml
+  - prowlarr.yaml
+  - sonarr.yaml
+  - sonarr-4k.yaml
+  - radarr.yaml
+  - radarr-4k.yaml
