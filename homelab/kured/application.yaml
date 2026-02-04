@@ -29,7 +29,7 @@ spec:
           # Drain settings - be generous for geo-distributed nodes
           drainGracePeriod: 300        # 5 min for pods to terminate
           drainTimeout: "600s"            # 10 min max drain time
-          skipWaitForDeleteTimeout: 60s # Wait for pod deletion
+          skipWaitForDeleteTimeout: 60 # Wait for pod deletion
           drainPodSelector: ""         # Drain all pods
           
           # What triggers a reboot
