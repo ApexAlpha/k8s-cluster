@@ -18,25 +18,7 @@ spec:
         global:
           # Async replication across datacenters
           replicationPlacment: "010"
-          enableReplication: true,k
-        admin:
-          enabled: true
-          port: 23646
-          grpcPort: 33646  # For worker connections
-          adminUser: "admin"
-          adminPassword: ""  
-  
-          # Optional: persist admin data
-          data:
-            type: "persistentVolumeClaim"
-            size: "10Gi"
-            storageClass: "your-storage-class"
-  
-          # Optional: enable ingress
-          ingress:
-            enabled: true
-            host: "admin.seaweedfs.local"
-            className: "nginx"
+          enableReplication: true
             
         master:
           enabled: true
