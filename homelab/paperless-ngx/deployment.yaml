@@ -51,6 +51,9 @@ spec:
                   name: paperless-db
                   key: password
             
+            # MMAP Setting
+            - name: PAPERLESS_INDEX_ENABLE_MMAP
+              value: "false"
             # Paths
             - name: PAPERLESS_DATA_DIR
               value: "/usr/src/paperless/data"
