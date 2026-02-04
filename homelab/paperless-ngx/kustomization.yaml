@@ -5,7 +5,6 @@ resources:
   - namespace.yaml
   - certificate.yaml
   - pvc.yaml
-  - pvc-index.yaml
   - redis.yaml
   - deployment.yaml
   - service.yaml

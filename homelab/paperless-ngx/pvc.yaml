@@ -1,24 +1,29 @@
 ---
-# Data: sqlite db (if not using postgres), search index, thumbnails
+# Data: thumbnails, classification models, misc app data
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: paperless-data
   namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: seaweedfs-storage
+  storageClassName: local-path
   resources:
     requests:
       storage: 10Gi
 ---
 # Media: actual document files (PDFs, images, etc)
+# This is the only volume that needs replication
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: paperless-media
   namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
     - ReadWriteOnce
@@ -27,30 +32,50 @@ spec:
     requests:
       storage: 50Gi
 ---
-# Export: for bulk exports
+# Export: for bulk exports (temporary data)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: paperless-export
   namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: seaweedfs-storage
+  storageClassName: local-path
   resources:
     requests:
       storage: 10Gi
 ---
-# Consume: watch folder for auto-import
+# Consume: watch folder for auto-import (temporary landing zone)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: paperless-consume
   namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: seaweedfs-storage
+  storageClassName: local-path
   resources:
     requests:
       storage: 5Gi
+---
+# Index: Whoosh search index (heavy fsync)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-index
+  namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
