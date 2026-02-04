@@ -22,4 +22,5 @@ resources:
 
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
+  - paperless-ngx/deployment.yaml
   # - apps/plex.yaml
