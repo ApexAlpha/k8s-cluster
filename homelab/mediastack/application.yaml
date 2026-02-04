@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/ApexAlpha/k8s-cluster.git
     targetRevision: HEAD
-    path: homelab/media-stack
+    path: homelab/mediastack
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
