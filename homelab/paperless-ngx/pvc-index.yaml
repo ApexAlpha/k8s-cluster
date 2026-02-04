@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: paperless-index
   namespace: paperless
+    annotations:
+    argocd.argoproj.io/health-check: Ignore
 spec:
   accessModes:
     - ReadWriteOnce
