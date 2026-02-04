@@ -63,7 +63,7 @@ spec:
             
             # OCR
             - name: PAPERLESS_OCR_LANGUAGE
-              value: "eng+nld+deu+fra"  # English + Dutch, adjust as needed
+              value: "eng"  # English + Dutch, adjust as needed
             - name: PAPERLESS_OCR_MODE
               value: "skip"  # skip if text layer exists
             
