@@ -21,6 +21,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: paperless
+                name: paperless-web
                 port:
                   number: 80
