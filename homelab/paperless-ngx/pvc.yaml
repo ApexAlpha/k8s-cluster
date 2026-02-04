@@ -1,0 +1,56 @@
+---
+# Data: sqlite db (if not using postgres), search index, thumbnails
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-data
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: seaweedfs-storage
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Media: actual document files (PDFs, images, etc)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-media
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: seaweedfs-storage
+  resources:
+    requests:
+      storage: 50Gi
+---
+# Export: for bulk exports
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-export
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: seaweedfs-storage
+  resources:
+    requests:
+      storage: 10Gi
+---
+# Consume: watch folder for auto-import
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-consume
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: seaweedfs-storage
+  resources:
+    requests:
+      storage: 5Gi
