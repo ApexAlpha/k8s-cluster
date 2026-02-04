@@ -113,6 +113,9 @@ spec:
               mountPath: /usr/src/paperless/export
             - name: consume
               mountPath: /usr/src/paperless/consume
+            - name: paperless-index
+              mountPath: /usr/src/paperless/index
+
           
           resources:
             requests:
@@ -150,3 +153,7 @@ spec:
         - name: consume
           persistentVolumeClaim:
             claimName: paperless-consume
+        - name: paperless-index
+          persistentVolumeClaim:
+            claimName: paperless-index
+
