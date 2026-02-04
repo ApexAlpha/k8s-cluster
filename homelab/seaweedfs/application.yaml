@@ -16,8 +16,8 @@ spec:
     helm:
       valuesObject:
         global:
-          # Async replication across datacenters
-          replicationPlacment: "010"
+          # Geo-distributed replication: 1 copy in different datacenter
+          replicationPlacment: "001"
           enableReplication: true
             
         master:
@@ -25,6 +25,12 @@ spec:
           replicas: 3
           port: 9333
           grpcPort: 19333
+          
+          # Datacenter awareness for masters
+          extraEnvironmentVars:
+            NODE_NAME:
+              fieldRef:
+                fieldPath: spec.nodeName
           
           # Longer timeouts for geo-distributed Raft
           config: |
@@ -58,6 +64,18 @@ spec:
           replicas: 3
           port: 8080
           grpcPort: 18080
+          
+          # Datacenter awareness - use node name as datacenter
+          # This makes each node its own DC for geo-distribution
+          extraEnvironmentVars:
+            NODE_NAME:
+              fieldRef:
+                fieldPath: spec.nodeName
+          
+          # Pass datacenter to volume server
+          # $(NODE_NAME) gets expanded by Kubernetes
+          dataCenter: "$(NODE_NAME)"
+          rack: "rack1"
           
           # Only run on nodes with storage label - must be string format
           nodeSelector: |
