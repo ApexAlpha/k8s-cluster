@@ -61,7 +61,7 @@ spec:
         
         # Metrics for Prometheus (optional)
         metrics:
-          create: true
+          create: false
         
         # Resource limits
         resources:
