@@ -4,7 +4,7 @@ metadata:
   name: paperless-index
   namespace: paperless
   annotations:
-    argocd.argoproj.io/health-check: Ignore
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
     - ReadWriteOnce
