@@ -24,7 +24,7 @@ spec:
     - wsize=1048576
   nfs:
     server: 100.73.28.98
-    path: /data
+    path: /mnt/HDD_ZFS/nas_backup
 ---
 # PVC that apps will use
 apiVersion: v1
