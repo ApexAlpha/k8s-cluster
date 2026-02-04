@@ -19,6 +19,9 @@ spec:
       labels:
         app: paperless
     spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
       containers:
         - name: paperless
           image: ghcr.io/paperless-ngx/paperless-ngx:latest
