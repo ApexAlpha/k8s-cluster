@@ -1,0 +1,149 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless
+  namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    app: paperless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless
+  strategy:
+    type: Recreate  # Required due to PVC access mode
+  template:
+    metadata:
+      labels:
+        app: paperless
+    spec:
+      containers:
+        - name: paperless
+          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            # URLs
+            - name: PAPERLESS_URL
+              value: "https://docs.k8s.hu.ls"
+            
+            # Redis
+            - name: PAPERLESS_REDIS
+              value: "redis://paperless-redis:6379"
+            
+            # PostgreSQL - using CNPG shared cluster
+            - name: PAPERLESS_DBENGINE
+              value: "postgresql"
+            - name: PAPERLESS_DBHOST
+              value: "postgres-shared-rw.database.svc"
+            - name: PAPERLESS_DBPORT
+              value: "5432"
+            - name: PAPERLESS_DBNAME
+              value: "paperless"
+            - name: PAPERLESS_DBUSER
+              value: "app"
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-db
+                  key: password
+            
+            # Paths
+            - name: PAPERLESS_DATA_DIR
+              value: "/usr/src/paperless/data"
+            - name: PAPERLESS_MEDIA_ROOT
+              value: "/usr/src/paperless/media"
+            - name: PAPERLESS_CONSUMPTION_DIR
+              value: "/usr/src/paperless/consume"
+            - name: PAPERLESS_EXPORT_DIR
+              value: "/usr/src/paperless/export"
+            
+            # OCR
+            - name: PAPERLESS_OCR_LANGUAGE
+              value: "eng+nld+deu+fra"  # English + Dutch, adjust as needed
+            - name: PAPERLESS_OCR_MODE
+              value: "skip"  # skip if text layer exists
+            
+            # Performance
+            - name: PAPERLESS_TASK_WORKERS
+              value: "2"
+            - name: PAPERLESS_THREADS_PER_WORKER
+              value: "2"
+            
+            # Security
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secret
+                  key: secret-key
+            
+            # Admin user (created on first run)
+            - name: PAPERLESS_ADMIN_USER
+              value: "admin"
+            - name: PAPERLESS_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secret
+                  key: admin-password
+            
+            # Timezone
+            - name: PAPERLESS_TIME_ZONE
+              value: "Europe/Amsterdam"  # Adjust to your timezone
+            
+            # Tika & Gotenberg for Office docs (optional, enable if you deploy them)
+            # - name: PAPERLESS_TIKA_ENABLED
+            #   value: "true"
+            # - name: PAPERLESS_TIKA_ENDPOINT
+            #   value: "http://paperless-tika:9998"
+            # - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
+            #   value: "http://paperless-gotenberg:3000"
+          
+          volumeMounts:
+            - name: data
+              mountPath: /usr/src/paperless/data
+            - name: media
+              mountPath: /usr/src/paperless/media
+            - name: export
+              mountPath: /usr/src/paperless/export
+            - name: consume
+              mountPath: /usr/src/paperless/consume
+          
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+      
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: paperless-data
+        - name: media
+          persistentVolumeClaim:
+            claimName: paperless-media
+        - name: export
+          persistentVolumeClaim:
+            claimName: paperless-export
+        - name: consume
+          persistentVolumeClaim:
+            claimName: paperless-consume
