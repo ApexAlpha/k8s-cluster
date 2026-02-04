@@ -115,6 +115,7 @@ spec:
               mountPath: /usr/src/paperless/consume
             - name: paperless-index
               mountPath: /usr/src/paperless/data/index
+              subPath: index
 
           
           resources:
