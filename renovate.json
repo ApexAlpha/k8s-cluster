@@ -1,11 +1,76 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ]
-}
-{
+    "config:recommended",
+    "docker:enableMajor",
+    ":disableRateLimiting",
+    ":automergePatch"
+  ],
   "kubernetes": {
-    "managerFilePatterns": ["/\\.yaml$/"]
-  }
+    "fileMatch": ["\\.ya?ml$"]
+  },
+  "argocd": {
+    "fileMatch": ["\\.ya?ml$"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Helm charts in ArgoCD Applications",
+      "fileMatch": ["\\.ya?ml$"],
+      "matchStrings": [
+        "repoURL:\\s*(?<registryUrl>https?://[^\\s]+)\\s+chart:\\s*(?<depName>[^\\s]+)\\s+targetRevision:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+[^\\s]*)"
+      ],
+      "datasourceTemplate": "helm"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Group LinuxServer.io images",
+      "matchPackagePatterns": ["^lscr\\.io/linuxserver/"],
+      "groupName": "linuxserver.io images"
+    },
+    {
+      "description": "Group ArgoCD updates",
+      "matchPackagePatterns": ["^quay\\.io/argoproj/", "argocd"],
+      "groupName": "argocd"
+    },
+    {
+      "description": "Group media stack apps",
+      "matchPackageNames": [
+        "lscr.io/linuxserver/radarr",
+        "lscr.io/linuxserver/sonarr",
+        "lscr.io/linuxserver/prowlarr",
+        "lscr.io/linuxserver/transmission"
+      ],
+      "groupName": "media stack"
+    },
+    {
+      "description": "Pin digest for images using latest tag",
+      "matchPackagePatterns": ["*"],
+      "matchCurrentVersion": "latest",
+      "pinDigests": true
+    },
+    {
+      "description": "Automerge patch and minor for homelab apps",
+      "matchFileNames": ["homelab/**"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true
+    },
+    {
+      "description": "Don't automerge ArgoCD install changes",
+      "matchFileNames": ["argocd-install/**"],
+      "automerge": false
+    },
+    {
+      "description": "Schedule updates for weekends",
+      "matchPackagePatterns": ["*"],
+      "schedule": ["after 9am on saturday"]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "labels": ["dependencies", "renovate"],
+  "prHourlyLimit": 5,
+  "prConcurrentLimit": 10
 }
