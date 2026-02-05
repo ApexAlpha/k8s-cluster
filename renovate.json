@@ -3,8 +3,8 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
-    ":disableRateLimiting",
-    ":automergePatch"
+    "docker:pinDigests",
+    ":disableRateLimiting"
   ],
   "kubernetes": {
     "fileMatch": ["\\.ya?ml$"]
@@ -25,6 +25,16 @@
   ],
   "packageRules": [
     {
+      "description": "Ignore self-referential repo",
+      "matchPackagePatterns": ["ApexAlpha/k8s-cluster"],
+      "enabled": false
+    },
+    {
+      "description": "Pin digests for all Docker images including latest",
+      "matchDatasources": ["docker"],
+      "pinDigests": true
+    },
+    {
       "description": "Group LinuxServer.io images",
       "matchPackagePatterns": ["^lscr\\.io/linuxserver/"],
       "groupName": "linuxserver.io images"
@@ -33,22 +43,6 @@
       "description": "Group ArgoCD updates",
       "matchPackagePatterns": ["^quay\\.io/argoproj/", "argocd"],
       "groupName": "argocd"
-    },
-    {
-      "description": "Group media stack apps",
-      "matchPackageNames": [
-        "lscr.io/linuxserver/radarr",
-        "lscr.io/linuxserver/sonarr",
-        "lscr.io/linuxserver/prowlarr",
-        "lscr.io/linuxserver/transmission"
-      ],
-      "groupName": "media stack"
-    },
-    {
-      "description": "Pin digest for images using latest tag",
-      "matchPackagePatterns": ["*"],
-      "matchCurrentVersion": "latest",
-      "pinDigests": true
     },
     {
       "description": "Automerge patch and minor for homelab apps",
