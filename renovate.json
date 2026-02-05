@@ -7,16 +7,22 @@
     ":disableRateLimiting"
   ],
   "kubernetes": {
-    "fileMatch": ["\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/\\.ya?ml$/"
+    ]
   },
   "argocd": {
-    "fileMatch": ["\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/\\.ya?ml$/"
+    ]
   },
   "customManagers": [
     {
       "customType": "regex",
       "description": "Helm charts in ArgoCD Applications",
-      "fileMatch": ["\\.ya?ml$"],
+      "managerFilePatterns": [
+        "/\\.ya?ml$/"
+      ],
       "matchStrings": [
         "repoURL:\\s*(?<registryUrl>https?://[^\\s]+)\\s+chart:\\s*(?<depName>[^\\s]+)\\s+targetRevision:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+[^\\s]*)"
       ],
@@ -26,45 +32,68 @@
   "packageRules": [
     {
       "description": "Ignore self-referential repo",
-      "matchPackagePatterns": ["ApexAlpha/k8s-cluster"],
-      "enabled": false
+      "enabled": false,
+      "matchPackageNames": [
+        "/ApexAlpha/k8s-cluster/"
+      ]
     },
     {
       "description": "Pin digests for all Docker images including latest",
-      "matchDatasources": ["docker"],
+      "matchDatasources": [
+        "docker"
+      ],
       "pinDigests": true
     },
     {
       "description": "Group LinuxServer.io images",
-      "matchPackagePatterns": ["^lscr\\.io/linuxserver/"],
-      "groupName": "linuxserver.io images"
+      "groupName": "linuxserver.io images",
+      "matchPackageNames": [
+        "/^lscr\\.io/linuxserver//"
+      ]
     },
     {
       "description": "Group ArgoCD updates",
-      "matchPackagePatterns": ["^quay\\.io/argoproj/", "argocd"],
-      "groupName": "argocd"
+      "groupName": "argocd",
+      "matchPackageNames": [
+        "/^quay\\.io/argoproj//",
+        "/argocd/"
+      ]
     },
     {
       "description": "Automerge patch and minor for homelab apps",
-      "matchFileNames": ["homelab/**"],
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchFileNames": [
+        "homelab/**"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
       "automerge": true
     },
     {
       "description": "Don't automerge ArgoCD install changes",
-      "matchFileNames": ["argocd-install/**"],
+      "matchFileNames": [
+        "argocd-install/**"
+      ],
       "automerge": false
     },
     {
       "description": "Schedule updates for weekends",
-      "matchPackagePatterns": ["*"],
-      "schedule": ["after 9am on saturday"]
+      "schedule": [
+        "after 9am on saturday"
+      ],
+      "matchPackageNames": [
+        "*"
+      ]
     }
   ],
   "vulnerabilityAlerts": {
     "enabled": true
   },
-  "labels": ["dependencies", "renovate"],
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10
 }
