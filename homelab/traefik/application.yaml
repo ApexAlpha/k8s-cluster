@@ -25,11 +25,8 @@ spec:
               enabled: true
         ports:
           web:
-            redirections:
-              entryPoint:
-                to: websecure
-                scheme: https
-                permanent: true
+            redirectTo:
+              port: websecure
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
