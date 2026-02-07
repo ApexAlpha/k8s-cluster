@@ -22,13 +22,13 @@ ENV LC_ALL=nl_NL.UTF-8
 
 # ── Auto-launch GCompris via XFCE autostart ─────────────────────────
 RUN mkdir -p $HOME/.config/autostart && \
-    printf '[Desktop Entry]\nType=Application\nName=GCompris\nExec=gcompris-qt --fullscreen\nIcon=gcompris-qt\nTerminal=false\nX-GNOME-Autostart-enabled=true\n' \
+    printf '[Desktop Entry]\nType=Application\nName=GCompris\nExec=Exec=/usr/games/gcompris-qt --fullscreen\nIcon=gcompris-qt\nTerminal=false\nX-GNOME-Autostart-enabled=true\n' \
     > $HOME/.config/autostart/gcompris.desktop && \
     chmod +x $HOME/.config/autostart/gcompris.desktop
 
 # ── Desktop shortcut (backup) ──────────────────────────────────────
 RUN mkdir -p $HOME/Desktop && \
-    printf '[Desktop Entry]\nType=Application\nName=GCompris Educatief\nExec=gcompris-qt --fullscreen\nIcon=gcompris-qt\nTerminal=false\nCategories=Education;\n' \
+    printf '[Desktop Entry]\nType=Application\nName=GCompris Educatief\nExec=Exec=/usr/games/gcompris-qt --fullscreen\nIcon=gcompris-qt\nTerminal=false\nCategories=Education;\n' \
     > $HOME/Desktop/gcompris.desktop && \
     chmod +x $HOME/Desktop/gcompris.desktop
 
