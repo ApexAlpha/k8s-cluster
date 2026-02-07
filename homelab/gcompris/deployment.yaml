@@ -44,6 +44,8 @@ spec:
               value: "nl_NL.UTF-8"
             - name: LC_ALL
               value: "nl_NL.UTF-8"
+            - name: VNC_PW_VERIFY
+              value: "0"
           volumeMounts:
             # Persist user profile (progress, settings)
             - name: profile
