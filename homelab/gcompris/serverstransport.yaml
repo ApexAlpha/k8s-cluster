@@ -1,0 +1,9 @@
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: gcompris-kasm-transport
+  namespace: gcompris
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  insecureSkipVerify: true

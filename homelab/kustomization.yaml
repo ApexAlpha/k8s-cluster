@@ -25,4 +25,5 @@ resources:
   - vaultwarden/application.yaml
   - mediastack/application.yaml
   - paperless-ngx/application.yaml
+  - gcompris/application.yaml
   # - apps/plex.yaml
