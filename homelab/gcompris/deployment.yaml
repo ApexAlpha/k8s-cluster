@@ -27,6 +27,7 @@ spec:
           # docker build -t ghcr.io/apexalpha/gcompris-kasm:latest homelab/gcompris/
           # docker push ghcr.io/apexalpha/gcompris-kasm:latest
           image: ghcr.io/apexalpha/gcompris-kasm:latest
+          imagePullPolicy: Always
           ports:
             - name: kasmvnc
               containerPort: 6901

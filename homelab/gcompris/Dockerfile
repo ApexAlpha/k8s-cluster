@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gcompris-qt \
         language-pack-nl \
         locales \
-        fonts-noto-core \
+        fonts-noto \
     && locale-gen nl_NL.UTF-8 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -20,20 +20,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV LANG=nl_NL.UTF-8
 ENV LC_ALL=nl_NL.UTF-8
 
-# ── Desktop shortcut (fallback) ────────────────────────────────────
-RUN mkdir -p $HOME/Desktop && \
-    printf '[Desktop Entry]\n\
-Type=Application\n\
-Name=GCompris Educatief\n\
-Exec=gcompris-qt\n\
-Icon=gcompris-qt\n\
-Terminal=false\n\
-Categories=Education;\n' > $HOME/Desktop/gcompris.desktop && \
-    chmod +x $HOME/Desktop/gcompris.desktop
+# ── Auto-launch GCompris via XFCE autostart ─────────────────────────
+RUN mkdir -p $HOME/.config/autostart && \
+    printf '[Desktop Entry]\nType=Application\nName=GCompris\nExec=gcompris-qt --fullscreen\nIcon=gcompris-qt\nTerminal=false\nX-GNOME-Autostart-enabled=true\n' \
+    > $HOME/.config/autostart/gcompris.desktop && \
+    chmod +x $HOME/.config/autostart/gcompris.desktop
 
-# ── Custom startup: auto-launch GCompris ────────────────────────────
-COPY custom_startup.sh $STARTUPDIR/custom_startup.sh
-RUN chmod 755 $STARTUPDIR/custom_startup.sh
+# ── Desktop shortcut (backup) ──────────────────────────────────────
+RUN mkdir -p $HOME/Desktop && \
+    printf '[Desktop Entry]\nType=Application\nName=GCompris Educatief\nExec=gcompris-qt --fullscreen\nIcon=gcompris-qt\nTerminal=false\nCategories=Education;\n' \
+    > $HOME/Desktop/gcompris.desktop && \
+    chmod +x $HOME/Desktop/gcompris.desktop
 
 # ── Permissions ─────────────────────────────────────────────────────
 RUN chown -R 1000:0 $HOME && \
