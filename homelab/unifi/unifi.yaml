@@ -62,31 +62,20 @@ spec:
     - "*.k8s.hu.ls"
     - "k8s.hu.ls"
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
   name: unifi
   namespace: unifi
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/service.serversscheme: https
-    traefik.ingress.kubernetes.io/service.serverstransport: unifi-transport@kubernetescrd
 spec:
-  ingressClassName: traefik
-  tls:
-    - hosts:
-        - unifi.k8s.hu.ls
-      secretName: wildcard-k8s-hu-ls-tls
-  rules:
-    - host: unifi.k8s.hu.ls
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: unifi-controller
-                port:
-                  number: 8443
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`unifi.example.com`)
+      kind: Rule
+      services:
+        - name: unifi
+          port: 443
+          scheme: https
+          serversTransport: unifi-transport
+  tls: {}
