@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/ApexAlpha/k8s-cluster
     targetRevision: main
-    path: apps/unifi-controller
+    path: homelab/unifi-controller
   destination:
     server: https://kubernetes.default.svc
     namespace: unifi
