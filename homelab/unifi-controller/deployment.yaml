@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-controller
+  namespace: unifi
+  labels:
+    app: unifi-controller
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: unifi-controller
+  template:
+    metadata:
+      labels:
+        app: unifi-controller
+    spec:
+      # Use host network for direct LAN access and better device discovery
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      
+      # Pin to k3s-home node
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
+      
+      containers:
+      - name: unifi-controller
+        image: lscr.io/linuxserver/unifi-network-application:latest
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "Europe/Amsterdam"  # Adjust to your timezone
+        - name: MONGO_USER
+          value: "unifi"
+        - name: MONGO_PASS
+          valueFrom:
+            secretKeyRef:
+              name: unifi-secrets
+              key: mongo-password
+        - name: MONGO_HOST
+          value: "unifi-mongodb.unifi.svc.cluster.local"
+        - name: MONGO_PORT
+          value: "27017"
+        - name: MONGO_DBNAME
+          value: "unifi"
+        volumeMounts:
+        - name: unifi-data
+          mountPath: /config
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+      volumes:
+      - name: unifi-data
+        persistentVolumeClaim:
+          claimName: unifi-data
