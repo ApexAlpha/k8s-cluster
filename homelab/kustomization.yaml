@@ -26,4 +26,5 @@ resources:
   - mediastack/application.yaml
   - paperless-ngx/application.yaml
   - gcompris/application.yaml
+  - unifi-controller/application.yaml
   # - apps/plex.yaml
