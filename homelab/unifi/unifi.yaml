@@ -72,7 +72,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/service.serversscheme: https
-    traefik.ingress.kubernetes.io/service.serverstransport: unifi-unifi-transport@kubernetescrd
+    traefik.ingress.kubernetes.io/service.serverstransport: unifi-transport@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
