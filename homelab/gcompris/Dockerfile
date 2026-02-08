@@ -1,4 +1,4 @@
-FROM kasmweb/core-ubuntu-jammy:1.16.0
+FROM kasmweb/core-ubuntu-jammy:1.18.0@sha256:514b4ed2199fe37cc1b9405475f5d103c34439dacf176973cd5f040c8bf472bf
 
 USER root
 
