@@ -74,7 +74,7 @@ spec:
     - match: Host(`unifi.example.com`)
       kind: Rule
       services:
-        - name: unifi
+        - name: unifi-controller
           port: 443
           scheme: https
           serversTransport: unifi-transport
