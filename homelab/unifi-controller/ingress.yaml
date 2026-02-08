@@ -6,6 +6,8 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/service.serversscheme: https
+    traefik.ingress.kubernetes.io/service.serverstransport: unifi-unifi-skip-verify@kubernetescrd
 spec:
   ingressClassName: traefik
   rules:
@@ -22,6 +24,14 @@ spec:
   tls:
   - hosts:
     - unifi.k8s.hu.ls
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: unifi-skip-verify
+  namespace: unifi
+spec:
+  insecureSkipVerify: true
 ---
 # ExternalName service to point to k3s-home node
 # Update the externalName to your k3s-home node IP or hostname
