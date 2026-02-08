@@ -71,7 +71,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`unifi.example.com`)
+    - match: Host(`unifi.k8s.hu.ls`)
       kind: Rule
       services:
         - name: unifi-controller
