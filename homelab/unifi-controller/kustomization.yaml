@@ -5,7 +5,6 @@ namespace: unifi
 
 resources:
   - namespace.yaml
-  - secrets.yaml
   - configmap.yaml
   - pvc.yaml
   - mongodb.yaml
