@@ -24,5 +24,6 @@ resources:
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
   - mediastack/application.yaml
-  - paperless-ngx/application.yaml
+  - paperless-ngx/application.yaml  
+  - unifi/application.yaml
   # - apps/plex.yaml

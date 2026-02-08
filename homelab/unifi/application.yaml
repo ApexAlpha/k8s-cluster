@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: unifi
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ApexAlpha/k8s-cluster.git
+    path: homelab/unifi
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: unifi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

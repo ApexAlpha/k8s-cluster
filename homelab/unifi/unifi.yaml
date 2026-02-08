@@ -1,0 +1,89 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: unifi
+---
+# Service without selector — we provide our own Endpoints
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-controller
+  namespace: unifi
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      port: 8443
+      targetPort: 8443
+      protocol: TCP
+---
+# Manual Endpoints pointing to the host's LAN IP
+# Replace <LAN_IP> with the actual IP of k3s-home (e.g. 192.168.1.x)
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: unifi-controller
+  namespace: unifi
+subsets:
+  - addresses:
+      - ip: <LAN_IP>
+    ports:
+      - name: https
+        port: 8443
+        protocol: TCP
+---
+# Tell Traefik to skip TLS verification on the self-signed Unifi backend
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: unifi-transport
+  namespace: unifi
+spec:
+  insecureSkipVerify: true
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-k8s-hu-ls
+  namespace: unifi
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  secretName: wildcard-k8s-hu-ls-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.k8s.hu.ls"
+    - "k8s.hu.ls"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: unifi
+  namespace: unifi
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/service.serversscheme: https
+    traefik.ingress.kubernetes.io/service.serverstransport: unifi-unifi-transport@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - unifi.k8s.hu.ls
+      secretName: wildcard-k8s-hu-ls-tls
+  rules:
+    - host: unifi.k8s.hu.ls
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: unifi-controller
+                port:
+                  number: 8443
