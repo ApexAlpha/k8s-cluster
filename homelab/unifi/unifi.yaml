@@ -75,7 +75,7 @@ spec:
       kind: Rule
       services:
         - name: unifi-controller
-          port: 443
+          port: 8443
           scheme: https
           serversTransport: unifi-transport
   tls: {}
