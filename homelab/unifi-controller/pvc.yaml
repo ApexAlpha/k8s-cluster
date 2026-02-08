@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 20Gi
-  storageClassName: seaweedfs-storage  # NVMe-based, replicated storage
+  storageClassName: local-path
