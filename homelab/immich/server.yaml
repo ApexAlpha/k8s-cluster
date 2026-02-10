@@ -19,6 +19,16 @@ spec:
       labels:
         app: immich-server
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - k3s-hetzner
       containers:
         - name: immich-server
           image: ghcr.io/immich-app/immich-server:release
@@ -26,19 +36,19 @@ spec:
             - name: http
               containerPort: 2283
           env:
-            # Database — dedicated CNPG cluster with VectorChord
+            # Database — shared CNPG cluster (same as paperless, vaultwarden)
             - name: DB_HOSTNAME
-              value: "immich-postgres-rw.immich.svc"
+              value: "postgres-shared-rw.database.svc"
             - name: DB_PORT
               value: "5432"
             - name: DB_DATABASE_NAME
               value: "immich"
             - name: DB_USERNAME
-              value: "immich"
+              value: "app"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: immich-db-credentials
+                  name: immich-db
                   key: password
 
             # Redis
@@ -67,19 +77,27 @@ spec:
               cpu: 4000m
               memory: 4Gi
 
-          livenessProbe:
-            httpGet:
-              path: /api/server/ping
-              port: http
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /api/server/ping
-              port: http
+          startupProbe:
+            exec:
+              command:
+                - immich-healthcheck
             initialDelaySeconds: 30
             periodSeconds: 10
+            failureThreshold: 30    # Up to 5 min for first boot (migrations, etc.)
+            timeoutSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - immich-healthcheck
+            periodSeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - immich-healthcheck
+            periodSeconds: 10
+            failureThreshold: 3
             timeoutSeconds: 5
 
       volumes:
