@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: bazarr
-          image: lscr.io/linuxserver/bazarr:latest
+          image: lscr.io/linuxserver/bazarr:latest@sha256:d40ee61030a9afafddfdd58d160281b865bfcad7cb66e920116fd6fd40668cbb
           ports:
             - name: http
               containerPort: 6767
