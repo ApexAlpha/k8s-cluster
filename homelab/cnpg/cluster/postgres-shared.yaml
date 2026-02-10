@@ -70,7 +70,7 @@ spec:
       postInitSQL:
         - CREATE DATABASE seaweedfs_filer OWNER app;
         - CREATE DATABASE vaultwarden OWNER app;
-        - CREATE DATABASE immich OWNER app;
+        - CREATE DATABASE immich OWNER immich;
         # Add more databases as needed:
         # - CREATE DATABASE sonarr OWNER app;
         # - CREATE DATABASE radarr OWNER app;
@@ -96,6 +96,17 @@ spec:
       memory: 512Mi
     limits:
       memory: 1Gi
+
+  # Managed roles — Immich requires superuser for vector index management
+  managed:
+    roles:
+      - name: immich
+        ensure: present
+        login: true
+        superuser: true
+        createdb: true
+        passwordSecret:
+          name: immich-db-credentials
 
   # Monitoring (enable when you have Prometheus)
   monitoring:
