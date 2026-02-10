@@ -50,9 +50,6 @@ spec:
                 secretKeyRef:
                   name: immich-db
                   key: password
-
-            - name: IMMICH_HOST
-              value: "0.0.0.0"
             - name: IMMICH_PORT
               value: "2283"
             # Redis
