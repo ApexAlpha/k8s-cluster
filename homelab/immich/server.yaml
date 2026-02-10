@@ -51,6 +51,10 @@ spec:
                   name: immich-db
                   key: password
 
+            - name: IMMICH_HOST
+              value: "0.0.0.0"
+            - name: IMMICH_PORT
+              value: "2283"
             # Redis
             - name: REDIS_HOSTNAME
               value: "immich-redis"
@@ -71,7 +75,7 @@ spec:
 
           resources:
             requests:
-              cpu: 100m
+              cpu: 1000m
               memory: 512Mi
             limits:
               cpu: 4000m
