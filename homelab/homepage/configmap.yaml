@@ -1,0 +1,146 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage-config
+  namespace: homepage
+data:
+  settings.yaml: |
+    title: Home
+    favicon: https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homepage.png
+    theme: dark
+    color: stone
+    headerStyle: clean
+    layout:
+      Media:
+        icon: mdi-filmstrip
+        style: row
+        columns: 4
+      Downloads:
+        icon: mdi-download
+        style: row
+        columns: 2
+      Documents & Security:
+        icon: mdi-file-document
+        style: row
+        columns: 2
+      Network & Admin:
+        icon: mdi-server
+        style: row
+        columns: 3
+
+  services.yaml: |
+    - Media:
+        - Sonarr:
+            icon: sonarr
+            href: https://sonarr.k8s.hu.ls
+            description: TV Shows
+            widget:
+              type: sonarr
+              url: http://sonarr.media.svc
+              key: "{{HOMEPAGE_VAR_SONARR_KEY}}"
+        - Sonarr 4K:
+            icon: sonarr
+            href: https://sonarr-4k.k8s.hu.ls
+            description: TV Shows (4K)
+            widget:
+              type: sonarr
+              url: http://sonarr-4k.media.svc
+              key: "{{HOMEPAGE_VAR_SONARR4K_KEY}}"
+        - Radarr:
+            icon: radarr
+            href: https://radarr.k8s.hu.ls
+            description: Movies
+            widget:
+              type: radarr
+              url: http://radarr.media.svc
+              key: "{{HOMEPAGE_VAR_RADARR_KEY}}"
+        - Radarr 4K:
+            icon: radarr
+            href: https://radarr-4k.k8s.hu.ls
+            description: Movies (4K)
+            widget:
+              type: radarr
+              url: http://radarr-4k.media.svc
+              key: "{{HOMEPAGE_VAR_RADARR4K_KEY}}"
+
+    - Downloads:
+        - Transmission:
+            icon: transmission
+            href: https://transmission.k8s.hu.ls
+            description: Torrent Client
+            widget:
+              type: transmission
+              url: http://transmission.media.svc
+        - Prowlarr:
+            icon: prowlarr
+            href: https://prowlarr.k8s.hu.ls
+            description: Indexer Manager
+            widget:
+              type: prowlarr
+              url: http://prowlarr.media.svc
+              key: "{{HOMEPAGE_VAR_PROWLARR_KEY}}"
+        - Bazarr:
+            icon: bazarr
+            href: https://bazarr.k8s.hu.ls
+            description: Subtitles
+            widget:
+              type: bazarr
+              url: http://bazarr.media.svc
+              key: "{{HOMEPAGE_VAR_BAZARR_KEY}}"
+
+    - Documents & Security:
+        - Paperless:
+            icon: paperless-ngx
+            href: https://docs.k8s.hu.ls
+            description: Document Management
+        - Vaultwarden:
+            icon: vaultwarden
+            href: https://vault.k8s.hu.ls
+            description: Password Manager
+
+    - Network & Admin:
+        - UniFi:
+            icon: unifi
+            href: https://unifi.k8s.hu.ls
+            description: Network Controller
+        - ArgoCD:
+            icon: argocd
+            href: https://argocd.k8s.hu.ls
+            description: GitOps Deployments
+        - SeaweedFS:
+            icon: mdi-nas
+            href: https://seaweed.k8s.hu.ls
+            description: Distributed Storage
+
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "k8s cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+
+    - datetime:
+        text_size: xl
+        format:
+          dateStyle: long
+          timeStyle: short
+
+    - search:
+        provider: google
+        target: _blank
+
+  bookmarks.yaml: |
+    []
+
+  kubernetes.yaml: |
+    mode: cluster
+
+  docker.yaml: |
+    # not used

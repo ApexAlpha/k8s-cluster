@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-k8s-hu-ls
+  namespace: homepage
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  secretName: wildcard-k8s-hu-ls-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.k8s.hu.ls"
+    - "k8s.hu.ls"
