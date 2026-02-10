@@ -105,6 +105,10 @@ data:
             icon: vaultwarden
             href: https://vault.k8s.hu.ls
             description: Password Manager
+        - Immich:
+            icon: immich
+            href: https://photos.k8s.hu.ls
+            description: Immich Photos
 
     - Network & Admin:
         - UniFi:
