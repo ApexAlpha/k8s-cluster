@@ -1,0 +1,34 @@
+---
+# Library: all uploaded photos, videos, thumbnails, and encoded videos.
+# SeaweedFS gives you replication across geo-distributed nodes.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-library
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: seaweedfs
+  resources:
+    requests:
+      storage: 200Gi
+---
+# ML model cache: CLIP, facial recognition models etc.
+# local-path is fine — models are re-downloaded on cache miss.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-ml-cache
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi

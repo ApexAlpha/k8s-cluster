@@ -9,8 +9,9 @@ spec:
   # 3 instances: 1 primary + 2 replicas for HA across your geo-distributed nodes
   instances: 3
   
-  # PostgreSQL 16 is current stable
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  # VectorChord image — drop-in replacement for vanilla PG, adds vchord extension.
+  # Existing databases (vaultwarden, seaweedfs_filer) are completely unaffected.
+  imageName: tensorchord/cloudnative-vectorchord:16.9-0.4.3
   
   primaryUpdateStrategy: unsupervised
   
@@ -24,6 +25,8 @@ spec:
     topologyKey: topology.kubernetes.io/zone
   
   postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
     parameters:
       # Connection settings
       max_connections: "200"
@@ -53,13 +56,21 @@ spec:
       - host all all 100.64.0.0/10 scram-sha-256  # Netbird VPN range (adjust if different)
   
   # Bootstrap: create initial databases
+  # NOTE: postInitSQL / postInitTemplateSQL only run on FRESH clusters.
+  # For your existing cluster, see the manual steps in homelab/immich/README.md
   bootstrap:
     initdb:
       database: app
       owner: app
+      # Install vchord in template1 so new databases (immich) inherit the extension
+      postInitTemplateSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS cube;
+        - CREATE EXTENSION IF NOT EXISTS earthdistance;
       postInitSQL:
         - CREATE DATABASE seaweedfs_filer OWNER app;
         - CREATE DATABASE vaultwarden OWNER app;
+        - CREATE DATABASE immich OWNER app;
         # Add more databases as needed:
         # - CREATE DATABASE sonarr OWNER app;
         # - CREATE DATABASE radarr OWNER app;

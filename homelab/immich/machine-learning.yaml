@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: immich-machine-learning
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  labels:
+    app: immich-machine-learning
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: immich-machine-learning
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: immich-machine-learning
+    spec:
+      containers:
+        - name: machine-learning
+          image: ghcr.io/immich-app/immich-machine-learning:release
+          ports:
+            - name: http
+              containerPort: 3003
+          env:
+            - name: IMMICH_HOST
+              value: "0.0.0.0"
+            - name: IMMICH_PORT
+              value: "3003"
+            - name: MACHINE_LEARNING_WORKERS
+              value: "1"
+            - name: MACHINE_LEARNING_WORKER_TIMEOUT
+              value: "120"
+            # Cache dirs inside /cache mount
+            - name: TRANSFORMERS_CACHE
+              value: "/cache"
+            - name: HF_HOME
+              value: "/cache/huggingface"
+            - name: MPLCONFIGDIR
+              value: "/cache/matplotlib"
+
+          volumeMounts:
+            - name: ml-cache
+              mountPath: /cache
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              # ML inference is CPU-hungry; adjust to your nodes
+              cpu: 4000m
+              memory: 4Gi
+
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 90
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+
+      volumes:
+        - name: ml-cache
+          persistentVolumeClaim:
+            claimName: immich-ml-cache
