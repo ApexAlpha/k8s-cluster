@@ -81,7 +81,7 @@ spec:
             exec:
               command:
                 - immich-healthcheck
-            initialDelaySeconds: 30
+            initialDelaySeconds: 90
             periodSeconds: 10
             failureThreshold: 30    # Up to 5 min for first boot (migrations, etc.)
             timeoutSeconds: 10
