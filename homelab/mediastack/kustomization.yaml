@@ -10,3 +10,4 @@ resources:
   - sonarr-4k.yaml
   - radarr.yaml
   - radarr-4k.yaml
+  - bazarr.yaml
