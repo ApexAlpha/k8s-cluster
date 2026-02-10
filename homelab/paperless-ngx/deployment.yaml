@@ -35,7 +35,9 @@ spec:
             
             # Redis
             - name: PAPERLESS_REDIS
-              value: "redis://paperless-redis:6379"
+              value: "redis://paperless-redis:6379/0"
+            - name: PAPERLESS_CACHE_URL
+              value: "redis://paperless-redis:6379/1"
             
             # PostgreSQL - using CNPG shared cluster
             - name: PAPERLESS_DBENGINE
