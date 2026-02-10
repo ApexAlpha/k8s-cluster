@@ -116,7 +116,7 @@ data:
             href: https://unifi.k8s.hu.ls
             description: Network Controller
         - ArgoCD:
-            icon: argocd
+            icon: argo-cd
             href: https://argocd.k8s.hu.ls
             description: GitOps Deployments
         - SeaweedFS:
