@@ -102,6 +102,8 @@ spec:
     roles:
       - name: immich
         ensure: present
+        connectionLimit: -1
+        inherit: true
         login: true
         superuser: true
         createdb: true

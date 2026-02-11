@@ -42,7 +42,9 @@ spec:
   managed:
     roles:
       - name: immich
+        connectionLimit: -1
         ensure: present
+        inherit: true
         login: true
         superuser: true
         passwordSecret:
