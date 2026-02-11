@@ -68,17 +68,3 @@ spec:
   
   monitoring:
     enablePodMonitor: false
----
-# Pre-create the secret for the immich DB user.
-# CHANGE THIS PASSWORD before deploying!
-apiVersion: v1
-kind: Secret
-metadata:
-  name: immich-db-credentials
-  namespace: immich
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
-type: kubernetes.io/basic-auth
-stringData:
-  username: immich
-  password: "CHANGE-ME-to-a-real-password"
