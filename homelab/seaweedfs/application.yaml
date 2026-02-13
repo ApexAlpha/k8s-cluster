@@ -149,12 +149,12 @@ spec:
             enableAuth: true
             config: ""
 
-          extraVolumes:
+          extraVolumes: |
             - name: s3-config
               secret:
                 secretName: seaweedfs-s3-config
 
-          extraVolumeMounts:
+          extraVolumeMounts: |
             - name: s3-config
               mountPath: /etc/seaweedfs/s3.json
               subPath: s3.json
