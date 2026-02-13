@@ -147,7 +147,19 @@ spec:
           s3:
             enabled: true
             port: 8333
-            enableAuth: false  # Enable later with IAM
+            enableAuth: true
+            config: ""   # important: empty
+
+        extraVolumes:
+          - name: s3-config
+            secret:
+            secretName: seaweedfs-s3-config
+
+        extraVolumeMounts:
+          - name: s3-config
+            mountPath: /etc/seaweedfs/s3.json
+            subPath: s3.json
+
           
           # No PVC needed - postgres is our store
           data:
