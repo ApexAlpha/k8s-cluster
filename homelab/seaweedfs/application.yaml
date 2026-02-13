@@ -17,7 +17,7 @@ spec:
       valuesObject:
         global:
           # Geo-distributed replication: 1 copy in different datacenter
-          replicationPlacment: "100"
+          replicationPlacement: "100"
           enableReplication: true
             
         master:
