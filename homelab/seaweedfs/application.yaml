@@ -103,8 +103,6 @@ spec:
           port: 8888
           grpcPort: 18888
           
-          extraArgs:
-            - "-s3.config=/etc/seaweedfs/s3.json"
           # Disable default leveldb - we use PostgreSQL
           filerGroup: ""
           defaultStoreDir: ""
@@ -124,7 +122,6 @@ spec:
             WEED_POSTGRES_CONNECTION_MAX_OPEN: "75"
             WEED_POSTGRES_CONNECTION_MAX_LIFETIME_SECONDS: "600"
             WEED_POSTGRES_CREATETABLE: "true"
-            S3_CONFIG: "/etc/seaweedfs/s3.json"
           
           # Password from manually-created secret (not in git)
           secretExtraEnvironmentVars:
@@ -159,8 +156,8 @@ spec:
 
           extraVolumeMounts: |
             - name: s3-config
-              mountPath: /etc/seaweedfs/s3.json
-              subPath: s3.json
+              mountPath: /etc/seaweedfs/
+              readOnly: true
           
           # No PVC needed - postgres is our store
           data:
