@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - certificate.yaml
-  - postgres.yaml
   - pvc.yaml
   - redis.yaml
   - server.yaml
