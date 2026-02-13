@@ -122,6 +122,7 @@ spec:
             WEED_POSTGRES_CONNECTION_MAX_OPEN: "75"
             WEED_POSTGRES_CONNECTION_MAX_LIFETIME_SECONDS: "600"
             WEED_POSTGRES_CREATETABLE: "true"
+            S3_CONFIG: "/etc/seaweedfs/s3.json"
           
           # Password from manually-created secret (not in git)
           secretExtraEnvironmentVars:
