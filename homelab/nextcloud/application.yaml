@@ -111,6 +111,7 @@ spec:
           existingSecret:
             enabled: true
             secretName: nextcloud-db-credentials
+            usernameKey: username
             passwordKey: password
 
         # ─── Bundled Redis (Bitnami subchart) ──────────────────────────
@@ -153,14 +154,11 @@ spec:
             traefik.ingress.kubernetes.io/service.sticky.cookie.name: nextcloud-sticky
             traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
 
-        # ─── Persistence (SeaweedFS for /var/www/html) ─────────────────
+        # ─── Persistence ───────────────────────────────────────────────
+        # No PVC needed — app code is re-extracted from the image on every start (~1 min).
+        # Actual data lives in S3 (files) and Postgres (state/config).
         persistence:
-          enabled: true
-          storageClass: seaweedfs
-          accessMode: ReadWriteOnce
-          size: 8Gi
-          annotations:
-            argocd.argoproj.io/sync-options: SkipHealthCheck=true
+          enabled: false
 
         # ─── Cron (sidecar) ───────────────────────────────────────────
         cronjob:
