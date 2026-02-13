@@ -124,7 +124,6 @@ spec:
             WEED_POSTGRES_CREATETABLE: "true"
           
           # Password from manually-created secret (not in git)
-          # Create with: kubectl create secret generic seaweedfs-db-credentials -n seaweedfs --from-literal=password=<your-pg-password>
           secretExtraEnvironmentVars:
             WEED_POSTGRES_PASSWORD:
               secretKeyRef:
@@ -148,18 +147,17 @@ spec:
             enabled: true
             port: 8333
             enableAuth: true
-            config: ""   # important: empty
+            config: ""
 
-        extraVolumes:
-          - name: s3-config
-            secret:
-            secretName: seaweedfs-s3-config
+          extraVolumes:
+            - name: s3-config
+              secret:
+                secretName: seaweedfs-s3-config
 
-        extraVolumeMounts:
-          - name: s3-config
-            mountPath: /etc/seaweedfs/s3.json
-            subPath: s3.json
-
+          extraVolumeMounts:
+            - name: s3-config
+              mountPath: /etc/seaweedfs/s3.json
+              subPath: s3.json
           
           # No PVC needed - postgres is our store
           data:
