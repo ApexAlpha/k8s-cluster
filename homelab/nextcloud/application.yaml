@@ -81,13 +81,13 @@ spec:
           objectStore:
             s3:
               enabled: true
-              host: seaweedfs-filer.seaweedfs.svc
+              host: seaweedfs-filer.seaweedfs.svc.cluster.local
               port: 8333
               ssl: false
               region: us-east-1
               bucket: nextcloud
               usePathStyle: true
-              autoCreate: true
+              autoCreate: false
               existingSecret: nextcloud-s3-credentials
               secretKeys:
                 accessKey: access-key
