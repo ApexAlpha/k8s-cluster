@@ -30,7 +30,7 @@ spec:
               containerPort: 8000
           envFrom:
             - secretRef:
-              name: paperless-s3
+                name: paperless-s3
           env:
             # URLs
             - name: PAPERLESS_URL
