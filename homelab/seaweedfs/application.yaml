@@ -146,7 +146,7 @@ spec:
           s3:
             enabled: true
             port: 8333
-            enableAuth: true
+            enableAuth: false
             config: "/etc/seaweedfs/s3.json"
 
           extraVolumes: |
