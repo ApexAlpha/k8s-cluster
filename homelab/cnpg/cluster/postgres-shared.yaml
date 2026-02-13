@@ -71,6 +71,7 @@ spec:
         - CREATE DATABASE seaweedfs_filer OWNER app;
         - CREATE DATABASE vaultwarden OWNER app;
         - CREATE DATABASE immich OWNER immich;
+        - CREATE DATABASE nextcloud OWNER app;
         # Add more databases as needed:
         # - CREATE DATABASE sonarr OWNER app;
         # - CREATE DATABASE radarr OWNER app;
