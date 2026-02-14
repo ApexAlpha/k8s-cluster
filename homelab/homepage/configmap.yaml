@@ -46,6 +46,10 @@ data:
             icon: immich
             href: https://photos.k8s.hu.ls
             description: Immich Photos
+        - NextCloud
+            icon: nextcloud
+            href: https://office.k8s.hu.ls
+            description: Nextcloud Hub 
 
     - Tools:
         - Stirling PDF:
