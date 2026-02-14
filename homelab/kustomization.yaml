@@ -28,6 +28,8 @@ resources:
   - unifi/application.yaml
   - immich/application.yaml
   - stirling-pdf/application.yaml
+  - it-tools/application.yaml
+  - cyberchef/application.yaml
   - nextcloud/application.yaml
   - homepage/application.yaml
   # - apps/plex.yaml

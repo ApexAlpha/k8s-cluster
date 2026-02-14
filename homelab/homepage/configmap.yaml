@@ -11,6 +11,14 @@ data:
     color: stone
     headerStyle: clean
     layout:
+      Documents & Security:
+        icon: mdi-file-document
+        style: row
+        columns: 3
+      Tools:
+        icon: mdi-toolbox
+        style: row
+        columns: 3
       Media:
         icon: mdi-filmstrip
         style: row
@@ -19,16 +27,40 @@ data:
         icon: mdi-download
         style: row
         columns: 2
-      Documents & Security:
-        icon: mdi-file-document
-        style: row
-        columns: 4
       Network & Admin:
         icon: mdi-server
         style: row
         columns: 3
 
   services.yaml: |
+    - Documents & Security:
+        - Paperless:
+            icon: paperless-ngx
+            href: https://docs.k8s.hu.ls
+            description: Document Management
+        - Vaultwarden:
+            icon: vaultwarden
+            href: https://vault.k8s.hu.ls
+            description: Password Manager
+        - Immich:
+            icon: immich
+            href: https://photos.k8s.hu.ls
+            description: Immich Photos
+
+    - Tools:
+        - Stirling PDF:
+            icon: stirling-pdf
+            href: https://pdf.k8s.hu.ls
+            description: PDF Tools
+        - IT-Tools:
+            icon: it-tools
+            href: https://tools.k8s.hu.ls
+            description: Developer Utilities
+        - CyberChef:
+            icon: cyberchef
+            href: https://cyberchef.k8s.hu.ls
+            description: Data Encoding & Analysis
+
     - Media:
         - Plex:
             icon: plex
@@ -96,28 +128,6 @@ data:
               url: http://bazarr.media.svc
               key: "{{HOMEPAGE_VAR_BAZARR_KEY}}"
 
-    - Documents & Security:
-        - Paperless:
-            icon: paperless-ngx
-            href: https://docs.k8s.hu.ls
-            description: Document Management
-        - Vaultwarden:
-            icon: vaultwarden
-            href: https://vault.k8s.hu.ls
-            description: Password Manager
-        - Immich:
-            icon: immich
-            href: https://photos.k8s.hu.ls
-            description: Immich Photos
-        - Nextcloud:
-            icon: nextcloud
-            href: https://office.k8s.hu.ls
-            description: Nextcloud Office
-        - Stirling PDF:
-            icon: stirling-pdf
-            href: https://pdf.k8s.hu.ls
-            description: PDF Tools
-
     - Network & Admin:
         - UniFi:
             icon: unifi
@@ -145,6 +155,14 @@ data:
           cpu: true
           memory: true
           showLabel: true
+
+    - openmeteo:
+        label: Maastricht
+        latitude: 50.8514
+        longitude: 5.6910
+        timezone: Europe/Amsterdam
+        units: metric
+        cache: 5
 
     - datetime:
         text_size: xl
