@@ -22,7 +22,7 @@ data:
       Documents & Security:
         icon: mdi-file-document
         style: row
-        columns: 2
+        columns: 4
       Network & Admin:
         icon: mdi-server
         style: row
@@ -113,6 +113,10 @@ data:
             icon: nextcloud
             href: https://office.k8s.hu.ls
             description: Nextcloud Office
+        - Stirling PDF:
+            icon: stirling-pdf
+            href: https://pdf.k8s.hu.ls
+            description: PDF Tools
 
     - Network & Admin:
         - UniFi:
