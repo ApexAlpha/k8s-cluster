@@ -30,6 +30,7 @@ resources:
   - stirling-pdf/application.yaml
   - it-tools/application.yaml
   - cyberchef/application.yaml
+  - mealie/application.yaml
   - nextcloud/application.yaml
   - homepage/application.yaml
   # - apps/plex.yaml

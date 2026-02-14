@@ -14,7 +14,7 @@ data:
       Documents & Security:
         icon: mdi-file-document
         style: row
-        columns: 3
+        columns: 4
       Tools:
         icon: mdi-toolbox
         style: row
@@ -46,10 +46,10 @@ data:
             icon: immich
             href: https://photos.k8s.hu.ls
             description: Immich Photos
-        - NextCloud:
-            icon: nextcloud
-            href: https://office.k8s.hu.ls
-            description: Nextcloud Hub 
+        - Mealie:
+            icon: mealie
+            href: https://recipes.k8s.hu.ls
+            description: Recipes & Meal Planning
 
     - Tools:
         - Stirling PDF:
