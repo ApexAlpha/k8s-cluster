@@ -13,6 +13,7 @@ spec:
       values: |
         service:
           type: ClusterIP
+          clusterIP: 10.43.139.66
           annotations:
             netbird.io/expose: "true"
             netbird.io/groups: "k8s-ingress"
@@ -34,6 +35,10 @@ spec:
                   to: websecure
                   scheme: https
                   permanent: true
+          websecure:
+            transport:
+              respondingTimeouts:
+                readTimeout: "0s"
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system

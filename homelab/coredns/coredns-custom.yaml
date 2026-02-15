@@ -8,6 +8,6 @@ data:
     k8s.hu.ls:53 {
         errors
         template IN A {
-            answer "{{ .Name }} 60 IN CNAME traefik.kube-system.svc.cluster.local."
+            answer "{{ .Name }} 60 IN A 10.43.139.66"
         }
     }
