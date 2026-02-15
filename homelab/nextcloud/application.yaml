@@ -177,7 +177,7 @@ spec:
         # No PVC needed — app code is re-extracted from the image on every start (~1 min).
         # Actual data lives in S3 (files) and Postgres (state/config).
         persistence:
-          enabled: false
+          enabled: true
 
         # ─── Cron (sidecar) ───────────────────────────────────────────
         cronjob:
