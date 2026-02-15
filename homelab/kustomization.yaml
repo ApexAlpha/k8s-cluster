@@ -16,7 +16,7 @@ resources:
   - seaweedfs/csi-application.yaml  # Wave 16: CSI driver
   
   #Ingress
-  - traefik/application.yaml
+  - traefik/
 
   #CoreDNS
   - coredns/application.yaml
