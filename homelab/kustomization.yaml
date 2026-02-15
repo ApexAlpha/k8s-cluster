@@ -21,6 +21,7 @@ resources:
   #CoreDNS
   - coredns/application.yaml
 
+  - argocd/ingress.yaml
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
   - mediastack/application.yaml
