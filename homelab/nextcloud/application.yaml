@@ -24,6 +24,15 @@ spec:
 
         replicaCount: 1
 
+        # ─── Lifecycle hooks ──────────────────────────────────────────
+        # Disable maintenance mode before the pod is killed so the
+        # replacement pod does not find a stale lock in the DB.
+        lifecycle:
+          preStopCommand:
+            - /bin/sh
+            - -c
+            - php /var/www/html/occ maintenance:mode --off || true
+
         nginx:
           enabled: true
           image:
@@ -35,6 +44,12 @@ spec:
         # ─── Nextcloud core settings ───────────────────────────────────
         nextcloud:
           host: office.k8s.hu.ls
+
+          # Hooks run by the Nextcloud Docker entrypoint.
+          # Clear stale maintenance mode left by a crashed / replaced pod.
+          hooks:
+            before-starting: |-
+              php /var/www/html/occ maintenance:mode --off 2>/dev/null || true
           
           existingSecret:
             enabled: true
