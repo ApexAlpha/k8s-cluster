@@ -44,8 +44,11 @@ spec:
       
       # Sync replication for strong consistency across geo-distributed nodes
       # Change to 'remote_write' if latency is too high
-      synchronous_commit: "remote_apply"
+      synchronous_commit: "local"
       
+      checkpoint_timeout: "15min"
+      max_wal_size: "2GB"
+
       # Logging
       log_statement: "ddl"
       log_min_duration_statement: "1000"  # Log queries > 1s
@@ -97,7 +100,7 @@ spec:
       cpu: 100m
       memory: 512Mi
     limits:
-      memory: 1Gi
+      memory: 2Gi
 
   # Managed roles — Immich requires superuser for vector index management
   managed:
