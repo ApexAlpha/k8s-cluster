@@ -32,8 +32,8 @@ spec:
       max_connections: "200"
       
       # Memory (tune based on your nodes' RAM)
-      shared_buffers: "256MB"
-      effective_cache_size: "512MB"
+      shared_buffers: "512MB"
+      effective_cache_size: "1.5GB"
       work_mem: "16MB"
       maintenance_work_mem: "128MB"
       
