@@ -17,6 +17,9 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
+        runAsUser: 1000
+        runASGroup: 1000
+        fsGroup: 1000
       serviceAccountName: homepage
       containers:
         - name: homepage
@@ -27,6 +30,10 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "home.k8s.hu.ls"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
           envFrom:
             - secretRef:
                 name: homepage-secrets
