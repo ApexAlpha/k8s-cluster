@@ -1,0 +1,35 @@
+---
+# /configs: persists settings.yml + user accounts/auth database
+# Without this, Stirling PDF forgets all accounts on every pod restart / upgrade.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stirling-pdf-configs
+  namespace: stirling-pdf
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: seaweedfs   # replicated across geo-distributed nodes
+  resources:
+    requests:
+      storage: 1Gi
+---
+# /customFiles: persists custom branding, CSS, JS overrides
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stirling-pdf-custom
+  namespace: stirling-pdf
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: seaweedfs
+  resources:
+    requests:
+      storage: 1Gi

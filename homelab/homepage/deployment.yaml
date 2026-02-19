@@ -21,6 +21,30 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       serviceAccountName: homepage
+      # initContainer copies the read-only ConfigMap into a writable emptyDir.
+      # This is necessary because:
+      #   (a) subPath-mounted ConfigMap files are owned root:root — fsGroup doesn't apply to them.
+      #   (b) Homepage writes dynamic files (custom.css, custom.js, cache) into /app/config/
+      #       and will silently fall back to defaults if it can't write there.
+      initContainers:
+        - name: copy-config
+          image: busybox:1.37
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          command:
+            - sh
+            - -c
+            - |
+              cp /cm/* /app/config/
+              # Ensure logs subdir exists so the main container doesn't try to create it
+              mkdir -p /app/config/logs
+          volumeMounts:
+            - name: configmap
+              mountPath: /cm
+              readOnly: true
+            - name: config
+              mountPath: /app/config
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage:latest@sha256:0b596092c0b55fe4c65379a428a3fe90bd192f10d1b07d189a34fe5fabe7eedb
@@ -40,25 +64,7 @@ spec:
                 optional: true
           volumeMounts:
             - name: config
-              mountPath: /app/config/settings.yaml
-              subPath: settings.yaml
-            - name: config
-              mountPath: /app/config/services.yaml
-              subPath: services.yaml
-            - name: config
-              mountPath: /app/config/widgets.yaml
-              subPath: widgets.yaml
-            - name: config
-              mountPath: /app/config/bookmarks.yaml
-              subPath: bookmarks.yaml
-            - name: config
-              mountPath: /app/config/kubernetes.yaml
-              subPath: kubernetes.yaml
-            - name: config
-              mountPath: /app/config/docker.yaml
-              subPath: docker.yaml
-            - name: logs
-              mountPath: /app/config/logs
+              mountPath: /app/config
           resources:
             requests:
               cpu: 50m
@@ -77,8 +83,12 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
       volumes:
-        - name: config
+        # Read-only ConfigMap source — only used by the initContainer
+        - name: configmap
           configMap:
             name: homepage-config
-        - name: logs
+            defaultMode: 0444
+        # Writable emptyDir that becomes /app/config in the main container.
+        # fsGroup: 1000 applies here, so UID 1000 can read and write freely.
+        - name: config
           emptyDir: {}

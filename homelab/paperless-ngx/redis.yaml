@@ -1,4 +1,22 @@
 ---
+# Redis data PVC — persists the Celery task queue so in-flight jobs survive Redis restarts.
+# local-path is fine: Redis AOF is node-local and Redis is not the source-of-truth.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-redis-data
+  namespace: paperless
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,6 +31,8 @@ spec:
   selector:
     matchLabels:
       app: paperless-redis
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -21,8 +41,12 @@ spec:
       containers:
         - name: redis
           image: redis:8-alpine@sha256:fd83658b0e40e2164617d262f13c02ca9ee9e1e6b276fd2fa06617e09bd5c780
+          command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec"]
           ports:
             - containerPort: 6379
+          volumeMounts:
+            - name: data
+              mountPath: /data
           resources:
             requests:
               cpu: 25m
@@ -44,6 +68,10 @@ spec:
                 - ping
             initialDelaySeconds: 5
             periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: paperless-redis-data
 ---
 apiVersion: v1
 kind: Service

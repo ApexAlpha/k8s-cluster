@@ -1,4 +1,21 @@
 ---
+# Valkey/Redis data PVC — persists job queue so in-flight Immich jobs survive restarts.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-redis-data
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,6 +30,8 @@ spec:
   selector:
     matchLabels:
       app: immich-redis
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -21,8 +40,12 @@ spec:
       containers:
         - name: redis
           image: valkey/valkey:8-bookworm@sha256:fea8b3e67b15729d4bb70589eb03367bab9ad1ee89c876f54327fc7c6e618571
+          command: ["valkey-server", "--appendonly", "yes", "--appendfsync", "everysec"]
           ports:
             - containerPort: 6379
+          volumeMounts:
+            - name: data
+              mountPath: /data
           resources:
             requests:
               cpu: 25m
@@ -44,6 +67,10 @@ spec:
                 - ping
             initialDelaySeconds: 5
             periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: immich-redis-data
 ---
 apiVersion: v1
 kind: Service
