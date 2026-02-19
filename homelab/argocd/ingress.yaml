@@ -1,18 +1,6 @@
-# Tell ArgoCD to serve plain HTTP instead of HTTPS.
-# Without this, ArgoCD redirects every incoming request to https:// and
-# Traefik ends up in a redirect loop since it's already on the TLS side.
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-cmd-params-cm
-  namespace: argocd
-  labels:
-    app.kubernetes.io/name: argocd-cmd-params-cm
-    app.kubernetes.io/part-of: argocd
-data:
-  server.insecure: "true"
----
-# Standard HTTP ingress — Traefik terminates TLS, proxies plain HTTP to ArgoCD.
+# Traefik terminates TLS and proxies plain HTTP to argocd-server:80.
+# ArgoCD already runs in insecure mode (server.insecure: "true" is set in
+# argocd-install/install.yaml), so no redirect loop occurs.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

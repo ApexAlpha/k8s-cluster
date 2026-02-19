@@ -32,6 +32,7 @@ spec:
       app: immich-redis
   strategy:
     type: Recreate
+    rollingUpdate: null
   template:
     metadata:
       labels:

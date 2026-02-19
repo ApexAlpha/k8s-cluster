@@ -13,7 +13,8 @@ spec:
     matchLabels:
       app: stirling-pdf
   strategy:
-    type: Recreate   # Required for RWO PVCs — prevents two pods binding the same volume
+    type: Recreate
+    rollingUpdate: null   # Required for RWO PVCs — prevents two pods binding the same volume
   template:
     metadata:
       labels:
