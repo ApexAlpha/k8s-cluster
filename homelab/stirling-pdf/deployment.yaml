@@ -4,6 +4,7 @@ metadata:
   name: stirling-pdf
   namespace: stirling-pdf
   annotations:
+    argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/sync-wave: "2"
   labels:
     app: stirling-pdf
@@ -14,7 +15,6 @@ spec:
       app: stirling-pdf
   strategy:
     type: Recreate
-    rollingUpdate: null   # Required for RWO PVCs — prevents two pods binding the same volume
   template:
     metadata:
       labels:

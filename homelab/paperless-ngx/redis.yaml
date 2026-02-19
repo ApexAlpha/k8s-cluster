@@ -24,6 +24,8 @@ metadata:
   namespace: paperless
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+    # Replace instead of Apply — see immich/redis.yaml for explanation.
+    argocd.argoproj.io/sync-options: Replace=true
   labels:
     app: paperless-redis
 spec:
@@ -33,7 +35,6 @@ spec:
       app: paperless-redis
   strategy:
     type: Recreate
-    rollingUpdate: null
   template:
     metadata:
       labels:

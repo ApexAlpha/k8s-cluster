@@ -23,6 +23,10 @@ metadata:
   namespace: immich
   annotations:
     argocd.argoproj.io/sync-wave: "1"
+    # Replace instead of Apply so ArgoCD fully overwrites the live object.
+    # Needed because the Deployment was created with RollingUpdate (the default) and
+    # kubectl apply cannot remove the stored rollingUpdate sub-fields when switching to Recreate.
+    argocd.argoproj.io/sync-options: Replace=true
   labels:
     app: immich-redis
 spec:
@@ -32,7 +36,6 @@ spec:
       app: immich-redis
   strategy:
     type: Recreate
-    rollingUpdate: null
   template:
     metadata:
       labels:
