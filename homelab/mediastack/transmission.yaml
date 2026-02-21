@@ -14,6 +14,38 @@ spec:
     requests:
       storage: 1Gi
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: transmission-scripts
+  namespace: media
+data:
+  unrar-done.sh: |
+    #!/bin/sh
+    # Called by Transmission with:
+    #   TR_TORRENT_DIR  - download directory
+    #   TR_TORRENT_NAME - torrent name
+    DOWNLOAD_DIR="${TR_TORRENT_DIR}/${TR_TORRENT_NAME}"
+
+    # Handle both single-file and directory torrents
+    if [ -d "$DOWNLOAD_DIR" ]; then
+      SEARCH_DIR="$DOWNLOAD_DIR"
+    else
+      SEARCH_DIR="$TR_TORRENT_DIR"
+    fi
+
+    # Find and extract any .rar files (handles multi-part too)
+    find "$SEARCH_DIR" -name "*.rar" | while read rarfile; do
+      # Skip numbered parts (part02.rar, etc.) - only process part01 or plain .rar
+      case "$rarfile" in
+        *.part[0-9]*.rar)
+          echo "$rarfile" | grep -qE "\.part0*1\.rar$" || continue
+          ;;
+      esac
+      echo "[unrar] Extracting: $rarfile to $SEARCH_DIR"
+      unrar x -o+ -y "$rarfile" "$SEARCH_DIR"
+    done
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,6 +67,23 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: k3s-home  # Same location as NFS server
+      initContainers:            # <-- add here
+        - name: configure-script
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              SETTINGS=/config/settings.json
+              if [ -f "$SETTINGS" ]; then
+                sed -i 's|"script-torrent-done-enabled":.*|"script-torrent-done-enabled": true,|' "$SETTINGS"
+                sed -i 's|"script-torrent-done-filename":.*|"script-torrent-done-filename": "/scripts/unrar-done.sh",|' "$SETTINGS"
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: scripts
+              mountPath: /scripts
       containers:
         - name: transmission
           image: lscr.io/linuxserver/transmission:latest@sha256:4d84e7d6459b0bb760623d968a19bc20028b32014cc6f7eec72580be7281b249
@@ -85,6 +134,10 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media-data
+        - name: scripts
+          configMap:
+            name: transmission-scripts
+            defaultMode: 0755
 ---
 apiVersion: v1
 kind: Service
