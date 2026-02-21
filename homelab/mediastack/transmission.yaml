@@ -69,7 +69,7 @@ spec:
         kubernetes.io/hostname: k3s-home  # Same location as NFS server
       initContainers:            # <-- add here
         - name: configure-script
-          image: busybox
+          image: busybox@sha256:b3255e7dfbcd10cb367af0d409747d511aeb66dfac98cf30e97e87e4207dd76f
           command:
             - sh
             - -c
