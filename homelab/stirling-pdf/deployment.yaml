@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: stirling-pdf
-          image: stirlingtools/stirling-pdf:latest@sha256:9e5cdc1eb8c06f4f704655fa093effe659f342000c7b9cdb30ca4b408f2bda71  # Pin with digest — Renovate will manage this
+          image: stirlingtools/stirling-pdf:latest@sha256:74c9ad9e280087f0652bfc98c9b5524b03ea5c138050406d2e3936f9cd60906f  # Pin with digest — Renovate will manage this
           ports:
             - name: http
               containerPort: 8080
