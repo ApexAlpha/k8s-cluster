@@ -23,19 +23,19 @@ spec:
           replicas: 1
           resources:
             requests:
-              cpu: 10m
-              memory: 32Mi
-            limits:
+              cpu: 50m
               memory: 128Mi
-        
+            limits:
+              memory: 256Mi
+
         # Node plugin runs on all nodes via DaemonSet
         node:
           resources:
             requests:
-              cpu: 10m
-              memory: 32Mi
-            limits:
+              cpu: 50m
               memory: 128Mi
+            limits:
+              memory: 256Mi
           
           # Tolerations to run on all nodes including control plane
           tolerations:

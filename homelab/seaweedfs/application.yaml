@@ -25,7 +25,18 @@ spec:
           replicas: 3
           port: 9333
           grpcPort: 19333
-          
+
+          # Async replication: writes complete locally, replicate in background
+          # Trades ~1sec potential data loss for significantly lower write latency
+          extraArgs: "-volumeServerAsyncReplication=true"
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+
           # Datacenter awareness for masters
           extraEnvironmentVars:
             NODE_NAME:
@@ -64,7 +75,27 @@ spec:
           replicas: 3
           port: 8080
           grpcPort: 18080
-          
+
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              memory: 1Gi
+
+          # Read cache in memory for frequently accessed files
+          extraArgs: "-cacheDir=/cache -cacheCapacityMB=512 -fileSizeLimitMB=1024 -compactionMBps=100 -concurrentUploadLimitMB=256"
+
+          extraVolumes: |
+            - name: cache
+              emptyDir:
+                medium: Memory
+                sizeLimit: 512Mi
+
+          extraVolumeMounts: |
+            - name: cache
+              mountPath: /cache
+
           # Datacenter awareness - use node name as datacenter
           # This makes each node its own DC for geo-distribution
           extraEnvironmentVars:
@@ -102,11 +133,21 @@ spec:
           replicas: 3
           port: 8888
           grpcPort: 18888
-          
+
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              memory: 1Gi
+
+          # Cache small files in filer, prefer local datacenter for reads
+          extraArgs: "-cacheToFilerLimit=1048576 -dataCenter=$(NODE_NAME)"
+
           # Disable default leveldb - we use PostgreSQL
           filerGroup: ""
           defaultStoreDir: ""
-          
+
           # Override chart's default extraEnvironmentVars completely
           # The chart defaults to WEED_LEVELDB2_ENABLED=true, we must override
           extraEnvironmentVars:
@@ -118,8 +159,8 @@ spec:
             WEED_POSTGRES_DATABASE: "seaweedfs_filer"
             WEED_POSTGRES_USERNAME: "app"
             WEED_POSTGRES_SSLMODE: "disable"
-            WEED_POSTGRES_CONNECTION_MAX_IDLE: "5"
-            WEED_POSTGRES_CONNECTION_MAX_OPEN: "75"
+            WEED_POSTGRES_CONNECTION_MAX_IDLE: "20"
+            WEED_POSTGRES_CONNECTION_MAX_OPEN: "100"
             WEED_POSTGRES_CONNECTION_MAX_LIFETIME_SECONDS: "600"
             WEED_POSTGRES_CREATETABLE: "true"
           
