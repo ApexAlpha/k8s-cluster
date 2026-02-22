@@ -26,11 +26,6 @@ spec:
           port: 9333
           grpcPort: 19333
 
-          # Async replication: writes complete locally, replicate in background
-          # Trades ~1sec potential data loss for significantly lower write latency
-          extraArgs:
-            - "-volumeServerAsyncReplication=true"
-
           resources:
             requests:
               cpu: 100m
