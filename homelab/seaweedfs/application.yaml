@@ -79,23 +79,11 @@ spec:
             limits:
               memory: 1Gi
 
-          # Read cache in memory for frequently accessed files
+          # Volume server tuning
           extraArgs:
-            - "-cacheDir=/cache"
-            - "-cacheCapacityMB=512"
             - "-fileSizeLimitMB=1024"
             - "-compactionMBps=100"
             - "-concurrentUploadLimitMB=256"
-
-          extraVolumes: |
-            - name: cache
-              emptyDir:
-                medium: Memory
-                sizeLimit: 512Mi
-
-          extraVolumeMounts: |
-            - name: cache
-              mountPath: /cache
 
           # Datacenter awareness - use node name as datacenter
           # This makes each node its own DC for geo-distribution
