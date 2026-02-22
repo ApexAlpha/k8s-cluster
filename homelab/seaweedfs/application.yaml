@@ -149,7 +149,7 @@ spec:
 
           # Cache small files in filer, prefer local datacenter for reads
           extraArgs:
-            - "-cacheToFilerLimit=1048576"
+            - "-saveToFilerLimit=1048576"
             - "-dataCenter=$(NODE_NAME)"
 
           # Disable default leveldb - we use PostgreSQL
@@ -159,6 +159,9 @@ spec:
           # Override chart's default extraEnvironmentVars completely
           # The chart defaults to WEED_LEVELDB2_ENABLED=true, we must override
           extraEnvironmentVars:
+            NODE_NAME:
+              fieldRef:
+                fieldPath: spec.nodeName
             WEED_MYSQL_ENABLED: "false"
             WEED_LEVELDB2_ENABLED: "false"
             WEED_POSTGRES_ENABLED: "true"
