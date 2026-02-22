@@ -28,7 +28,8 @@ spec:
 
           # Async replication: writes complete locally, replicate in background
           # Trades ~1sec potential data loss for significantly lower write latency
-          extraArgs: "-volumeServerAsyncReplication=true"
+          extraArgs:
+            - "-volumeServerAsyncReplication=true"
 
           resources:
             requests:
@@ -84,7 +85,12 @@ spec:
               memory: 1Gi
 
           # Read cache in memory for frequently accessed files
-          extraArgs: "-cacheDir=/cache -cacheCapacityMB=512 -fileSizeLimitMB=1024 -compactionMBps=100 -concurrentUploadLimitMB=256"
+          extraArgs:
+            - "-cacheDir=/cache"
+            - "-cacheCapacityMB=512"
+            - "-fileSizeLimitMB=1024"
+            - "-compactionMBps=100"
+            - "-concurrentUploadLimitMB=256"
 
           extraVolumes: |
             - name: cache
@@ -142,7 +148,9 @@ spec:
               memory: 1Gi
 
           # Cache small files in filer, prefer local datacenter for reads
-          extraArgs: "-cacheToFilerLimit=1048576 -dataCenter=$(NODE_NAME)"
+          extraArgs:
+            - "-cacheToFilerLimit=1048576"
+            - "-dataCenter=$(NODE_NAME)"
 
           # Disable default leveldb - we use PostgreSQL
           filerGroup: ""
