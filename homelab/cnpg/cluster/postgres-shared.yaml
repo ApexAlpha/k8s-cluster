@@ -49,6 +49,10 @@ spec:
       checkpoint_timeout: "15min"
       max_wal_size: "2GB"
 
+      # Retain WAL for replicas that go offline
+      # 8GB allows ~hours of downtime depending on write volume
+      wal_keep_size: "8GB"
+
       # Logging
       log_statement: "ddl"
       log_min_duration_statement: "1000"  # Log queries > 1s
