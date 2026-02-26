@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://netbirdio.github.io/helms
     chart: kubernetes-operator
-    targetRevision: 0.2.1 
+    targetRevision: 0.2.2 
     helm:
       values: |
         ingress:
