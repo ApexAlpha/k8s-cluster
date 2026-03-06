@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://juicefs.github.io/helm-charts
+    repoURL: https://juicefs.github.io/charts
     chart: juicefs-csi-driver
     targetRevision: 0.21.0
     helm:
