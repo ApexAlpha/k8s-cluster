@@ -16,7 +16,7 @@ spec:
       storage: 10Gi
 ---
 # Media: actual document files (PDFs, images, etc)
-# This is the only volume that needs replication
+# JuiceFS provides compression and encryption over Garage S3 backend
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -26,8 +26,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: seaweedfs-storage
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 50Gi

@@ -4,8 +4,7 @@ Nextcloud deployment using the [community Helm chart](https://github.com/nextclo
 
 - **URL**: https://office.k8s.hu.ls
 - **Database**: Shared CNPG PostgreSQL cluster (`postgres-shared-rw.database.svc`)
-- **File storage**: SeaweedFS S3 (`seaweedfs-filer.seaweedfs.svc:8333`)
-- **Config storage**: SeaweedFS PVC (storageClass: `seaweedfs`)
+- **File storage**: JuiceFS (compression & encryption over Garage S3)
 - **Cache**: Bundled Bitnami Redis (standalone)
 - **Ingress**: Traefik with sticky sessions
 
@@ -32,14 +31,7 @@ kubectl create secret generic nextcloud-credentials -n nextcloud \
 kubectl create secret generic nextcloud-db-credentials -n nextcloud \
   --from-literal=password='<your-pg-app-password>'
 
-# S3 credentials (SeaweedFS has auth disabled — use dummy values for now)
-kubectl create secret generic nextcloud-s3-credentials -n nextcloud \
-  --from-literal=access-key='nextcloud' \
-  --from-literal=secret-key='nextcloud'
 ```
-
-> **Note:** If you later enable SeaweedFS S3 auth (`filer.s3.enableAuth: true`),
-> update the `nextcloud-s3-credentials` secret with real IAM credentials.
 
 ### 3. Update shared PostgreSQL bootstrap (for fresh clusters)
 
@@ -67,8 +59,8 @@ Add to `homelab/cnpg/cluster/postgres-shared.yaml` under `postInitSQL`:
               ┌─────────────┼─────────────┐
               ▼             ▼             ▼
         ┌──────────┐ ┌──────────┐ ┌──────────┐
-        │ Postgres │ │ SeaweedFS│ │  Redis   │
-        │ (shared) │ │ S3 + PVC │ │(bundled) │
+        │ Postgres │ │ JuiceFS  │ │  Redis   │
+        │ (shared) │ │  (RWX)   │ │(bundled) │
         └──────────┘ └──────────┘ └──────────┘
 ```
 

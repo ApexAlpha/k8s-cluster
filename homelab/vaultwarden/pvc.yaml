@@ -7,8 +7,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: seaweedfs
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 5Gi

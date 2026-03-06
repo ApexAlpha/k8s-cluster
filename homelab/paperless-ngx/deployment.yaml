@@ -13,7 +13,10 @@ spec:
     matchLabels:
       app: paperless
   strategy:
-    type: Recreate  # Required due to PVC access mode
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -28,23 +31,10 @@ spec:
           ports:
             - name: http
               containerPort: 8000
-          envFrom:
-            - secretRef:
-                name: paperless-s3
           env:
             # URLs
             - name: PAPERLESS_URL
               value: "https://docs.k8s.hu.ls"
-            - name: PAPERLESS_STORAGE_BACKEND
-              value: "s3"
-            - name: PAPERLESS_S3_ENDPOINT
-              value: "http://seaweedfs-filer.seaweedfs.svc.cluster.local:8333"
-            - name: PAPERLESS_S3_BUCKET
-              value: "paperless"
-            - name: PAPERLESS_S3_REGION
-              value: "us-east-1"
-            - name: PAPERLESS_S3_USE_SSL
-              value: "false"
 
             # Redis
             - name: PAPERLESS_REDIS
@@ -127,6 +117,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /usr/src/paperless/data
+            - name: media
+              mountPath: /usr/src/paperless/media
             - name: export
               mountPath: /usr/src/paperless/export
             - name: consume
@@ -161,6 +153,9 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: paperless-data
+        - name: media
+          persistentVolumeClaim:
+            claimName: paperless-media
         - name: export
           persistentVolumeClaim:
             claimName: paperless-export

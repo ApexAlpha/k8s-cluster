@@ -11,8 +11,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: seaweedfs   # replicated across geo-distributed nodes
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 1Gi
@@ -28,8 +28,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: seaweedfs
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 1Gi

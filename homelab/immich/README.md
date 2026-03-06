@@ -22,19 +22,16 @@ using the `cloudnative-vectorchord` image. It still uses the same CNPG operator.
 
 | PVC | StorageClass | Purpose |
 |-----|-------------|---------|
-| `immich-library` | `seaweedfs` | Photos, videos, thumbnails — replicated across nodes |
+| `immich-library` | `juicefs` | Photos, videos, thumbnails — replicated via Garage S3 |
 | `immich-ml-cache` | `local-path` | ML model cache — can be re-downloaded |
 | Postgres PVC | `local-path` | Database files (managed by CNPG) |
 
-### SeaweedFS for photo storage
+### JuiceFS for photo storage
 
-SeaweedFS is a solid choice here: your photos get automatic replication across
-geo-distributed nodes, which is exactly what you want for irreplaceable data.
-Trade-off is slightly higher latency for thumbnail browsing compared to local
-NVMe. In practice, Immich pre-generates thumbnails so this is barely noticeable.
-
-If you find SeaweedFS too slow for the library, you could switch to NFS on
-`k3s-home` for bulk storage — just change the `storageClassName` in `pvc.yaml`.
+JuiceFS provides compression and encryption over the Garage S3 backend. Your
+photos get automatic replication across geo-distributed nodes via Garage, which
+is exactly what you want for irreplaceable data. RWX access mode enables
+RollingUpdate deployments for zero-downtime upgrades.
 
 ## Before deploying
 

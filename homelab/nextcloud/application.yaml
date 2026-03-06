@@ -94,21 +94,10 @@ spec:
               max_execution_time=3600
               max_input_time=3600
 
-          # S3 primary object storage (SeaweedFS)
+          # File storage via JuiceFS (provides compression & encryption over Garage S3)
           objectStore:
             s3:
-              enabled: true
-              host: seaweedfs-filer.seaweedfs.svc.cluster.local
-              port: 8333
-              ssl: false
-              region: us-east-1
-              bucket: nextcloud
-              usePathStyle: true
-              autoCreate: false
-              existingSecret: nextcloud-s3-credentials
-              secretKeys:
-                accessKey: access-key
-                secretKey: secret-key
+              enabled: false
 
         # ─── HTTPS behind Traefik ─────────────────────────────────────
         phpClientHttpsFix:
@@ -174,10 +163,12 @@ spec:
             traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
 
         # ─── Persistence ───────────────────────────────────────────────
-        # No PVC needed — app code is re-extracted from the image on every start (~1 min).
-        # Actual data lives in S3 (files) and Postgres (state/config).
+        # JuiceFS provides compression & encryption over Garage S3 backend
         persistence:
           enabled: true
+          storageClass: juicefs
+          accessMode: ReadWriteMany
+          size: 100Gi
 
         # ─── Cron (sidecar) ───────────────────────────────────────────
         cronjob:
