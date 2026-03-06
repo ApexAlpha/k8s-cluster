@@ -46,6 +46,22 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
+            # PostgreSQL configuration
+            - name: SONARR__POSTGRES__HOST
+              value: "postgres-shared-rw.database.svc"
+            - name: SONARR__POSTGRES__PORT
+              value: "5432"
+            - name: SONARR__POSTGRES__USER
+              value: "sonarr4k"
+            - name: SONARR__POSTGRES__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sonarr-4k-db-credentials
+                  key: password
+            - name: SONARR__POSTGRES__MAINDB
+              value: "sonarr4k-main"
+            - name: SONARR__POSTGRES__LOGDB
+              value: "sonarr4k-log"
           volumeMounts:
             - name: config
               mountPath: /config

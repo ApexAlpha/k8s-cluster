@@ -46,6 +46,22 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
+            # PostgreSQL configuration
+            - name: RADARR__POSTGRES__HOST
+              value: "postgres-shared-rw.database.svc"
+            - name: RADARR__POSTGRES__PORT
+              value: "5432"
+            - name: RADARR__POSTGRES__USER
+              value: "radarr4k"
+            - name: RADARR__POSTGRES__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: radarr-4k-db-credentials
+                  key: password
+            - name: RADARR__POSTGRES__MAINDB
+              value: "radarr4k-main"
+            - name: RADARR__POSTGRES__LOGDB
+              value: "radarr4k-log"
           volumeMounts:
             - name: config
               mountPath: /config

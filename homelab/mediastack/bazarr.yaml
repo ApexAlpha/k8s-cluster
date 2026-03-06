@@ -45,6 +45,22 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
+            # PostgreSQL configuration
+            - name: POSTGRES_ENABLED
+              value: "true"
+            - name: POSTGRES_HOST
+              value: "postgres-shared-rw.database.svc"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USERNAME
+              value: "bazarr"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bazarr-db-credentials
+                  key: password
+            - name: POSTGRES_DATABASE
+              value: "bazarr"
           volumeMounts:
             - name: config
               mountPath: /config
