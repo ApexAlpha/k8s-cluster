@@ -10,9 +10,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://juicefs.github.io/charts
+    repoURL: https://juicedata.github.io/charts
     chart: juicefs-csi-driver
-    targetRevision: 0.21.0
+    targetRevision: 0.31.0
     helm:
       valuesObject:
         controller:
