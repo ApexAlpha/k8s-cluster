@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: seaweedfs-config
+  name: garage
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "14"
@@ -10,12 +10,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ApexAlpha/k8s-cluster.git
+    repoURL: https://github.com/ApexAlpha/k8s-cluster
     targetRevision: main
-    path: homelab/seaweedfs/config
+    path: homelab/garage
   destination:
     server: https://kubernetes.default.svc
-    namespace: seaweedfs
+    namespace: garage
   syncPolicy:
     automated:
       prune: true

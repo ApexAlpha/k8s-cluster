@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: seaweedfs-csi
+  name: juicefs-csi
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "16"
@@ -10,15 +10,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://seaweedfs.github.io/seaweedfs-csi-driver/helm
-    chart: seaweedfs-csi-driver
-    targetRevision: 0.2.10
+    repoURL: https://juicefs.github.io/helm-charts
+    chart: juicefs-csi-driver
+    targetRevision: 0.21.0
     helm:
       valuesObject:
-        # Connect to filer service
-        seaweedfsFiler: "seaweedfs-filer.seaweedfs.svc:8888"
-        
-        # Controller runs on one node
         controller:
           replicas: 1
           resources:
@@ -28,27 +24,27 @@ spec:
             limits:
               memory: 256Mi
 
-        # Node plugin runs on all nodes via DaemonSet
         node:
+          # hostNetwork: use the host network namespace so the CSI node plugin
+          # reaches Garage at 127.0.0.1:3900 (local node) instead of going
+          # cross-node. Garage is leaderless so hitting local is always valid
+          # and saves a WAN hop on every S3 operation.
+          hostNetwork: true
           resources:
             requests:
               cpu: 50m
-              memory: 128Mi
-            limits:
               memory: 256Mi
-          
-          # Tolerations to run on all nodes including control plane
+            limits:
+              memory: 512Mi
           tolerations:
             - operator: Exists
-        
-        # Storage class will be created separately for more control
-        storageClass:
-          enabled: false
+
+        # StorageClass managed separately in juicefs/storageclass.yaml
+        storageClasses: []
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: seaweedfs
-  
+    namespace: kube-system
   syncPolicy:
     automated:
       prune: true

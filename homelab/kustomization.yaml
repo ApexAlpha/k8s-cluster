@@ -11,9 +11,9 @@ resources:
   - cnpg/cluster-app.yaml
   
   # Storage - Wave 14-17 (after databases)
-  - seaweedfs/config-app.yaml      # Wave 14: namespace, secrets, storageclasses
-  - seaweedfs/application.yaml      # Wave 15: main seaweedfs
-  - seaweedfs/csi-application.yaml  # Wave 16: CSI driver
+  - garage/application.yaml         # Wave 14: Garage namespace, services, ingress
+  - juicefs/csi-application.yaml    # Wave 16: JuiceFS CSI driver (Helm)
+  - juicefs/config-application.yaml # Wave 17: JuiceFS StorageClass
   
   #Ingress
   - traefik/

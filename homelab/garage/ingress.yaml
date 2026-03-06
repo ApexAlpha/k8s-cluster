@@ -1,12 +1,8 @@
----
-# Certificate - reuse wildcard or use existing secret
-# If you already have wildcard-k8s-hu-ls-tls in a shared namespace, 
-# you can use reflector to copy it, or just create a new cert here
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: wildcard-k8s-hu-ls
-  namespace: seaweedfs
+  namespace: garage
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -18,56 +14,59 @@ spec:
     - "*.k8s.hu.ls"
     - "k8s.hu.ls"
 ---
-# Master UI - cluster overview, volume status, topology
+# S3 API: external access for rclone, AWS CLI, mc, etc.
+# In-cluster consumers skip this and use garage-s3.garage.svc.cluster.local directly.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: seaweedfs-master
-  namespace: seaweedfs
+  name: garage-s3
+  namespace: garage
   annotations:
+    argocd.argoproj.io/sync-wave: "15"
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - seaweed.k8s.hu.ls
+        - s3.k8s.hu.ls
       secretName: wildcard-k8s-hu-ls-tls
   rules:
-    - host: seaweed.k8s.hu.ls
+    - host: s3.k8s.hu.ls
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: seaweedfs-master
+                name: garage-s3
                 port:
-                  number: 9333
+                  number: 3900
 ---
-# Filer UI - file browser, S3 browser
+# Admin UI: cluster layout, bucket browser, key management.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: seaweedfs-filer
-  namespace: seaweedfs
+  name: garage-admin
+  namespace: garage
   annotations:
+    argocd.argoproj.io/sync-wave: "15"
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - filer.k8s.hu.ls
+        - garage.k8s.hu.ls
       secretName: wildcard-k8s-hu-ls-tls
   rules:
-    - host: filer.k8s.hu.ls
+    - host: garage.k8s.hu.ls
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: seaweedfs-filer
+                name: garage-admin
                 port:
-                  number: 8888
+                  number: 3903
