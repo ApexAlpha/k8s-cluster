@@ -17,7 +17,7 @@ spec:
       storage: 200Gi
 ---
 # ML model cache: CLIP, facial recognition models etc.
-# local-path is fine — models are re-downloaded on cache miss.
+# juicefs for node failover - models are large and slow to re-download.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -27,8 +27,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 10Gi

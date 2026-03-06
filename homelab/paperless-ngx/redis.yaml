@@ -1,6 +1,6 @@
 ---
 # Redis data PVC — persists the Celery task queue so in-flight jobs survive Redis restarts.
-# local-path is fine: Redis AOF is node-local and Redis is not the source-of-truth.
+# juicefs for node failover.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -11,8 +11,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 1Gi

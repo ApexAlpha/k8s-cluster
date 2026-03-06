@@ -1,5 +1,6 @@
 ---
 # Valkey/Redis data PVC — persists job queue so in-flight Immich jobs survive restarts.
+# juicefs for node failover.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -10,8 +11,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 1Gi

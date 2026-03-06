@@ -7,8 +7,8 @@ metadata:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
+    - ReadWriteMany
+  storageClassName: juicefs
   resources:
     requests:
       storage: 2Gi
