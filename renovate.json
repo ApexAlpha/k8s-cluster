@@ -6,6 +6,12 @@
     "docker:pinDigests",
     ":disableRateLimiting"
   ],
+  "hostRules": [
+    {
+      "matchHost": "juicedata.github.io",
+      "hostType": "helm"
+    }
+  ],
   "kubernetes": {
     "managerFilePatterns": [
       "/\\.ya?ml$/"
