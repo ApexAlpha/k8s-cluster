@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: authelia
-          image: authelia/authelia:4.38
+          image: authelia/authelia:4.38@sha256:46021dc20efdcc5cdc38a29e3050b8835429a155ae6215388ed3b793a02eb0ab
           args:
             - authelia
             - --config=/config/configuration.template.yml
