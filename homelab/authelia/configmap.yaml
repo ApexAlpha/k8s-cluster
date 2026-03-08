@@ -50,7 +50,7 @@ data:
       rules:
         - domain: auth.k8s.hu.ls
           policy: bypass
-        - domain: mealie.k8s.hu.ls
+        - domain: recipes.k8s.hu.ls
           policy: bypass
         - domain: bazarr.k8s.hu.ls
           policy: two_factor
@@ -106,9 +106,9 @@ data:
             public: false
             authorization_policy: one_factor
             redirect_uris:
-              - https://mealie.k8s.hu.ls/login
-              - https://mealie.k8s.hu.ls/login/
-              - https://mealie.k8s.hu.ls/api/auth/callback/oidc
+              - https://recipes.k8s.hu.ls/login
+              - https://recipes.k8s.hu.ls/login/
+              - https://recipes.k8s.hu.ls/api/auth/callback/oidc
             scopes:
               - openid
               - profile
