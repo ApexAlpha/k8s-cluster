@@ -20,14 +20,15 @@ spec:
       containers:
         - name: authelia
           image: authelia/authelia:4.38
+          args:
+            - --config=/config/configuration.template.yml
           ports:
             - name: http
               containerPort: 9091
           env:
             - name: TZ
               value: "Europe/Amsterdam"
-            # Secrets loaded from environment
-            - name: AUTHELIA_JWT_SECRET_FILE
+            - name: AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE
               value: /secrets/jwt_secret
             - name: AUTHELIA_SESSION_SECRET_FILE
               value: /secrets/session_secret
@@ -35,20 +36,18 @@ spec:
               value: /secrets/storage_encryption_key
             - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE
               value: /secrets/oidc_hmac_secret
-            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_JWKS_0_KEY_FILE
-              value: /secrets/oidc_jwks_key
           volumeMounts:
             - name: config
-              mountPath: /config
-            - name: authelia-config
-              mountPath: /config/configuration.yml
-              subPath: configuration.yml
+              mountPath: /config/configuration.template.yml
+              subPath: configuration.template.yml
             - name: users
               mountPath: /config/users_database.yml
               subPath: users_database.yml
             - name: secrets
               mountPath: /secrets
               readOnly: true
+            - name: data
+              mountPath: /data
           resources:
             requests:
               cpu: 10m
@@ -69,8 +68,6 @@ spec:
             periodSeconds: 10
       volumes:
         - name: config
-          emptyDir: {}
-        - name: authelia-config
           configMap:
             name: authelia-config
         - name: users
@@ -79,3 +76,5 @@ spec:
         - name: secrets
           secret:
             secretName: authelia-secrets
+        - name: data
+          emptyDir: {}

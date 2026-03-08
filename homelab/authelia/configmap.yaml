@@ -4,8 +4,8 @@ metadata:
   name: authelia-config
   namespace: authelia
 data:
-  configuration.yml: |
-    # Authelia configuration
+  configuration.template.yml: |
+    # Authelia configuration for 4.38+
     # Docs: https://www.authelia.com/configuration/
 
     theme: auto
@@ -29,7 +29,6 @@ data:
       user_verification: required
       timeout: 60s
 
-    # Enable passwordless login (passkey only, no password needed)
     identity_validation:
       reset_password:
         jwt_lifespan: 5m
@@ -49,29 +48,24 @@ data:
     access_control:
       default_policy: deny
       rules:
-        # Bypass for Authelia itself
         - domain: auth.k8s.hu.ls
           policy: bypass
-
-        # Apps with OIDC - let them handle auth
         - domain: mealie.k8s.hu.ls
           policy: bypass
-
-        # Apps with forward auth - require passkey/2FA
         - domain: bazarr.k8s.hu.ls
           policy: two_factor
-
-        # Default: require passkey/2FA for all apps
         - domain: "*.k8s.hu.ls"
           policy: two_factor
 
     session:
-      name: authelia_session
-      domain: k8s.hu.ls
-      same_site: lax
-      expiration: 1h
-      inactivity: 5m
-      remember_me: 1M
+      cookies:
+        - domain: k8s.hu.ls
+          authelia_url: https://auth.k8s.hu.ls
+          name: authelia_session
+          same_site: lax
+          expiration: 1h
+          inactivity: 5m
+          remember_me: 1M
       redis:
         host: authelia-redis
         port: 6379
@@ -83,17 +77,18 @@ data:
 
     storage:
       local:
-        path: /config/db.sqlite3
+        path: /data/db.sqlite3
 
     notifier:
-      # For production, configure SMTP for password reset emails
-      # For now, use filesystem (check /config/notification.txt)
       filesystem:
-        filename: /config/notification.txt
+        filename: /data/notification.txt
 
     identity_providers:
       oidc:
-        # HMAC secret loaded from environment
+        jwks:
+          - key_id: main
+            algorithm: RS256
+            key: {{ secret "/secrets/oidc_jwks_key" | mindent 10 "|" | msquote }}
         cors:
           endpoints:
             - authorization
