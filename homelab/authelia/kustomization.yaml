@@ -1,0 +1,12 @@
+apiVersion: kustomize.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - redis.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - certificate.yaml
+  - traefik-middleware.yaml

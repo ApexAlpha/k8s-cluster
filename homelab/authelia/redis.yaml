@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authelia-redis
+  namespace: authelia
+  labels:
+    app: authelia-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authelia-redis
+  template:
+    metadata:
+      labels:
+        app: authelia-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authelia-redis
+  namespace: authelia
+spec:
+  selector:
+    app: authelia-redis
+  ports:
+    - port: 6379
+      targetPort: 6379

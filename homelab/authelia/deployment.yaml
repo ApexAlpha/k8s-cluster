@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authelia
+  namespace: authelia
+  labels:
+    app: authelia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authelia
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: authelia
+    spec:
+      containers:
+        - name: authelia
+          image: authelia/authelia:4.38
+          ports:
+            - name: http
+              containerPort: 9091
+          env:
+            - name: TZ
+              value: "Europe/Amsterdam"
+            # Secrets loaded from environment
+            - name: AUTHELIA_JWT_SECRET_FILE
+              value: /secrets/jwt_secret
+            - name: AUTHELIA_SESSION_SECRET_FILE
+              value: /secrets/session_secret
+            - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+              value: /secrets/storage_encryption_key
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE
+              value: /secrets/oidc_hmac_secret
+            - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_JWKS_0_KEY_FILE
+              value: /secrets/oidc_jwks_key
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: authelia-config
+              mountPath: /config/configuration.yml
+              subPath: configuration.yml
+            - name: users
+              mountPath: /config/users_database.yml
+              subPath: users_database.yml
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: authelia-config
+          configMap:
+            name: authelia-config
+        - name: users
+          secret:
+            secretName: authelia-users
+        - name: secrets
+          secret:
+            secretName: authelia-secrets

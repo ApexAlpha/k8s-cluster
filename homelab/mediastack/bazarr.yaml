@@ -125,6 +125,8 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    # Authelia forward auth
+    traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:

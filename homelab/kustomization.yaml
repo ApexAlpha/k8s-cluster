@@ -22,6 +22,10 @@ resources:
   - coredns/application.yaml
 
   - argocd/
+
+  # Auth - Wave 15 (before apps)
+  - authelia/application.yaml
+
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
   - mediastack/application.yaml

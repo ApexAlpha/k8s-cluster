@@ -67,6 +67,23 @@ spec:
                   name: mealie-db
                   key: password
 
+            # OIDC / Authelia
+            - name: OIDC_AUTH_ENABLED
+              value: "true"
+            - name: OIDC_SIGNUP_ENABLED
+              value: "true"
+            - name: OIDC_CONFIGURATION_URL
+              value: "https://auth.k8s.hu.ls/.well-known/openid-configuration"
+            - name: OIDC_CLIENT_ID
+              value: "mealie"
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: mealie-oidc
+                  key: client_secret
+            - name: OIDC_AUTO_REDIRECT
+              value: "false"
+
           volumeMounts:
             - name: data
               mountPath: /app/data

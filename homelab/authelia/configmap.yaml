@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authelia-config
+  namespace: authelia
+data:
+  configuration.yml: |
+    # Authelia configuration
+    # Docs: https://www.authelia.com/configuration/
+
+    theme: auto
+
+    server:
+      address: 'tcp://0.0.0.0:9091'
+
+    log:
+      level: info
+      format: text
+
+    totp:
+      issuer: k8s.hu.ls
+      period: 30
+      skew: 1
+
+    webauthn:
+      disable: false
+      display_name: k8s.hu.ls
+      attestation_conveyance_preference: indirect
+      user_verification: required
+      timeout: 60s
+
+    # Enable passwordless login (passkey only, no password needed)
+    identity_validation:
+      reset_password:
+        jwt_lifespan: 5m
+        jwt_algorithm: HS256
+
+    authentication_backend:
+      file:
+        path: /config/users_database.yml
+        password:
+          algorithm: argon2id
+          iterations: 3
+          memory: 65536
+          parallelism: 4
+          key_length: 32
+          salt_length: 16
+
+    access_control:
+      default_policy: deny
+      rules:
+        # Bypass for Authelia itself
+        - domain: auth.k8s.hu.ls
+          policy: bypass
+
+        # Apps with OIDC - let them handle auth
+        - domain: mealie.k8s.hu.ls
+          policy: bypass
+
+        # Apps with forward auth - require passkey/2FA
+        - domain: bazarr.k8s.hu.ls
+          policy: two_factor
+
+        # Default: require passkey/2FA for all apps
+        - domain: "*.k8s.hu.ls"
+          policy: two_factor
+
+    session:
+      name: authelia_session
+      domain: k8s.hu.ls
+      same_site: lax
+      expiration: 1h
+      inactivity: 5m
+      remember_me: 1M
+      redis:
+        host: authelia-redis
+        port: 6379
+
+    regulation:
+      max_retries: 3
+      find_time: 2m
+      ban_time: 5m
+
+    storage:
+      local:
+        path: /config/db.sqlite3
+
+    notifier:
+      # For production, configure SMTP for password reset emails
+      # For now, use filesystem (check /config/notification.txt)
+      filesystem:
+        filename: /config/notification.txt
+
+    identity_providers:
+      oidc:
+        # HMAC secret loaded from environment
+        cors:
+          endpoints:
+            - authorization
+            - token
+            - revocation
+            - introspection
+          allowed_origins_from_client_redirect_uris: true
+        clients:
+          - client_id: mealie
+            client_name: Mealie
+            client_secret: '$pbkdf2-sha512$310000$ZQGy.bEs8MOijC3BpD/H1A$NetXzVc0us/QQp7sDnwNlxjK3O/.UgPVrBJ0KbbtfRa9Ye7Ni0z.MKZ64Y8j3Mxgnx8H6HAjQ.N6HuExpeZOBw'
+            public: false
+            authorization_policy: one_factor
+            redirect_uris:
+              - https://mealie.k8s.hu.ls/login
+              - https://mealie.k8s.hu.ls/login/
+              - https://mealie.k8s.hu.ls/api/auth/callback/oidc
+            scopes:
+              - openid
+              - profile
+              - email
+              - groups
+            userinfo_signed_response_alg: none
+            token_endpoint_auth_method: client_secret_basic
