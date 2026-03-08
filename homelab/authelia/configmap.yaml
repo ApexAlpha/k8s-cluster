@@ -76,8 +76,11 @@ data:
       ban_time: 5m
 
     storage:
-      local:
-        path: /data/db.sqlite3
+      postgres:
+        address: 'tcp://postgres-shared-rw.database.svc:5432'
+        database: authelia
+        username: authelia
+        password: {{ secret "/secrets/db_password" | msquote }}
 
     notifier:
       filesystem:
