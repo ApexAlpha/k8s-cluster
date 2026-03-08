@@ -67,7 +67,7 @@ data:
           inactivity: 5m
           remember_me: 1M
       redis:
-        host: authelia-redis
+        host: auth-redis
         port: 6379
 
     regulation:

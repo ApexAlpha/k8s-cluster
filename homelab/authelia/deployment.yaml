@@ -23,6 +23,7 @@ spec:
           args:
             - authelia
             - --config=/config/configuration.template.yml
+            - --config.experimental.filters=template
           ports:
             - name: http
               containerPort: 9091
