@@ -21,6 +21,7 @@ spec:
         - name: authelia
           image: authelia/authelia:4.38
           args:
+            - authelia
             - --config=/config/configuration.template.yml
           ports:
             - name: http
