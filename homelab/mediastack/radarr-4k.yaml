@@ -33,6 +33,19 @@ spec:
       labels:
         app: radarr-4k
     spec:
+      # Prefer running on the same node as PostgreSQL primary for lower latency
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    cnpg.io/cluster: postgres-shared
+                    role: primary
+                topologyKey: kubernetes.io/hostname
+                namespaces:
+                  - database
       containers:
         - name: radarr
           image: lscr.io/linuxserver/radarr:latest@sha256:a360633a3682d41e96f71a07ff36ecbdf2394a9628465b84b0a8437087715b41

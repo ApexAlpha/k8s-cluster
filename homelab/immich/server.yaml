@@ -22,16 +22,19 @@ spec:
       labels:
         app: immich-server
     spec:
+      # Prefer running on the same node as PostgreSQL primary for lower latency
       affinity:
-        nodeAffinity:
+        podAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - k3s-hetzner
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    cnpg.io/cluster: postgres-shared
+                    role: primary
+                topologyKey: kubernetes.io/hostname
+                namespaces:
+                  - database
       containers:
         - name: immich-server
           image: ghcr.io/immich-app/immich-server:release@sha256:aa163d2e1cc2b16a9515dd1fef901e6f5231befad7024f093d7be1f2da14341a

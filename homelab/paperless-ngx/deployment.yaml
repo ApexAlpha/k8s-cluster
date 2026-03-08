@@ -25,6 +25,19 @@ spec:
       securityContext:
         fsGroup: 1000
   #     runAsUser: 1000
+      # Prefer running on the same node as PostgreSQL primary for lower latency
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    cnpg.io/cluster: postgres-shared
+                    role: primary
+                topologyKey: kubernetes.io/hostname
+                namespaces:
+                  - database
       containers:
         - name: paperless
           image: ghcr.io/paperless-ngx/paperless-ngx:latest@sha256:07a0b4ba01ce377c82a0636e16c0c3d931fde5b7e9304de6601986cc42d9b6e6

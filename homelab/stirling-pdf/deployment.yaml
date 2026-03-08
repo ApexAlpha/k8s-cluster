@@ -40,6 +40,18 @@ spec:
               value: "true"
             - name: LANGS
               value: "en_GB"
+            # PostgreSQL configuration
+            - name: SYSTEM_DATASOURCE_ENABLECUSTOMDATABASE
+              value: "true"
+            - name: SYSTEM_DATASOURCE_CUSTOMDATABASEURL
+              value: "jdbc:postgresql://postgres-shared-rw.database.svc:5432/stirling"
+            - name: SYSTEM_DATASOURCE_CUSTOMDATABASEUSERNAME
+              value: "stirling"
+            - name: SYSTEM_DATASOURCE_CUSTOMDATABASEPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: stirling-db-credentials
+                  key: password
           volumeMounts:
             - name: configs
               mountPath: /configs        # settings.yml + user/auth database

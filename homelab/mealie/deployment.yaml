@@ -22,6 +22,19 @@ spec:
       labels:
         app: mealie
     spec:
+      # Prefer running on the same node as PostgreSQL primary for lower latency
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    cnpg.io/cluster: postgres-shared
+                    role: primary
+                topologyKey: kubernetes.io/hostname
+                namespaces:
+                  - database
       containers:
         - name: mealie
           image: ghcr.io/mealie-recipes/mealie:latest@sha256:8d962f611390a1cca667eed32a29e9467e9c01c523e2db3ad00f667372067f9d

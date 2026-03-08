@@ -33,6 +33,19 @@ spec:
       labels:
         app: sonarr
     spec:
+      # Prefer running on the same node as PostgreSQL primary for lower latency
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    cnpg.io/cluster: postgres-shared
+                    role: primary
+                topologyKey: kubernetes.io/hostname
+                namespaces:
+                  - database
       containers:
         - name: sonarr
           image: lscr.io/linuxserver/sonarr:latest@sha256:37be832b78548e3f55f69c45b50e3b14d18df1b6def2a4994258217e67efb1a1
