@@ -18,6 +18,7 @@ spec:
         # ─── FPM mode with nginx sidecar ───────────────────────────────
         image:
           flavor: fpm
+          tag: 33.0.0-fpm
           pullPolicy: IfNotPresent
 
         replicaCount: 1
