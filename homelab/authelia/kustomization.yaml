@@ -8,5 +8,4 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
-  - certificate.yaml
   - traefik-middleware.yaml
