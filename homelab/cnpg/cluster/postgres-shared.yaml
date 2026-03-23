@@ -5,7 +5,10 @@ metadata:
   namespace: database
 spec:
   description: "Shared PostgreSQL cluster for homelab services"
-  
+
+  # High priority ensures postgres pods preempt app pods when resources are tight
+  priorityClassName: database-critical
+
   # 3 instances: 1 primary + 2 replicas for HA across your geo-distributed nodes
   instances: 3
   
