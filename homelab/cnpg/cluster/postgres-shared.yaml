@@ -10,7 +10,7 @@ spec:
   priorityClassName: database-critical
 
   # 3 instances: 1 primary + 2 replicas for HA across your geo-distributed nodes
-  instances: 3
+  instances: 2
   
   # VectorChord image — drop-in replacement for vanilla PG, adds vchord extension.
   # Existing databases (vaultwarden, seaweedfs_filer) are completely unaffected.
