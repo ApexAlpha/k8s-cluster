@@ -19,6 +19,11 @@ spec:
       valuesObject:
         replicaCount: 1
 
+        image:
+          registry: ghcr.io
+          repository: headlamp-k8s/headlamp
+          tag: latest
+
         config:
           # Allow plugin installation
           pluginsDir: /headlamp/plugins
