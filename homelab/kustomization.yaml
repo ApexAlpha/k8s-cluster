@@ -38,4 +38,7 @@ resources:
   - mealie/application.yaml
   - nextcloud/application.yaml
   - homepage/application.yaml
+
+  # Admin - Wave 25
+  - headlamp/
   # - apps/plex.yaml
