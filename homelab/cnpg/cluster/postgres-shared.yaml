@@ -56,6 +56,12 @@ spec:
       # 8GB allows ~hours of downtime depending on write volume
       wal_keep_size: "8GB"
 
+      # WAN resilience (NL-NL: 9ms, NL-Finland: 30ms)
+      wal_sender_timeout: "120s"       # 2x default, tolerates latency spikes
+      tcp_keepalives_idle: "60"        # Start keepalives after 60s idle
+      tcp_keepalives_interval: "10"    # Probe every 10s
+      tcp_keepalives_count: "6"        # ~60s to detect dead connection
+
       # Logging
       log_statement: "ddl"
       log_min_duration_statement: "1000"  # Log queries > 1s
