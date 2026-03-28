@@ -24,7 +24,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: s3
-          image: juicedata/mount:ce-v1.3.1
+          image: juicedata/mount:ce-v1.3.1@sha256:ddba2917edee5af0e0dc367c79aae55f91de4666f8c13795d238b937d44e3b3c
           command:
             - juicefs
             - gateway
@@ -84,7 +84,7 @@ spec:
             periodSeconds: 10
 
         - name: webdav
-          image: juicedata/mount:ce-v1.3.1
+          image: juicedata/mount:ce-v1.3.1@sha256:ddba2917edee5af0e0dc367c79aae55f91de4666f8c13795d238b937d44e3b3c
           command:
             - juicefs
             - webdav
