@@ -189,7 +189,7 @@ spec:
           enabled: true
           initialDelaySeconds: 30
           periodSeconds: 15
-          timeoutSeconds: 5
+          timeoutSeconds: 15
           failureThreshold: 3
           successThreshold: 1
 
@@ -197,7 +197,7 @@ spec:
           enabled: true
           initialDelaySeconds: 30
           periodSeconds: 15
-          timeoutSeconds: 5
+          timeoutSeconds: 15
           failureThreshold: 3
           successThreshold: 1
 
