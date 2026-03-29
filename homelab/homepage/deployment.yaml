@@ -48,6 +48,7 @@ spec:
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage:latest@sha256:9627769818fbfb14147d3e633e57cef9c27c0c5f07585f5a1d6c3d3425b3b33c
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 3000

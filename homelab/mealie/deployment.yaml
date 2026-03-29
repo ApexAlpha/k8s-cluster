@@ -38,6 +38,7 @@ spec:
       containers:
         - name: mealie
           image: ghcr.io/mealie-recipes/mealie:latest@sha256:b9fac07e6daaabd8c29d0dc97965c2f500ce7d6b188b0c51f494627f23ad32f2
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 9000
