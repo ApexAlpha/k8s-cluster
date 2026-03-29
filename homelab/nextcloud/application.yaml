@@ -171,22 +171,12 @@ spec:
           enabled: true
           type: sidecar
 
-        # ─── Probes (generous timeouts for network storage) ────────────
+        # ─── Probes (disabled during first install, re-enable after) ───
         startupProbe:
-          enabled: true
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          timeoutSeconds: 10
-          failureThreshold: 180
-          successThreshold: 1
+          enabled: false
 
         livenessProbe:
-          enabled: true
-          initialDelaySeconds: 30
-          periodSeconds: 15
-          timeoutSeconds: 15
-          failureThreshold: 3
-          successThreshold: 1
+          enabled: false
 
         readinessProbe:
           enabled: true
