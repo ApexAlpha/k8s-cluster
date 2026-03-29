@@ -26,7 +26,7 @@ data:
       Downloads:
         icon: mdi-download
         style: row
-        columns: 2
+        columns: 4
       Network & Admin:
         icon: mdi-server
         style: row
@@ -119,6 +119,13 @@ data:
             widget:
               type: transmission
               url: http://transmission.media.svc
+        - qBittorrent:
+            icon: qbittorrent
+            href: https://qbittorrent.k8s.hu.ls
+            description: Torrent Client
+            widget:
+              type: qbittorrent
+              url: https://qbittorrent.k8s.hu.ls
         - Prowlarr:
             icon: prowlarr
             href: https://prowlarr.k8s.hu.ls
