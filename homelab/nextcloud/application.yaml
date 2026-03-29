@@ -47,6 +47,17 @@ spec:
         nextcloud:
           host: office.k8s.hu.ls
 
+          # PHP-FPM tuning - default 5 workers is too low
+          extraEnv:
+            - name: PHP_FPM_PM_MAX_CHILDREN
+              value: "20"
+            - name: PHP_FPM_PM_START_SERVERS
+              value: "5"
+            - name: PHP_FPM_PM_MIN_SPARE_SERVERS
+              value: "3"
+            - name: PHP_FPM_PM_MAX_SPARE_SERVERS
+              value: "10"
+
           # Hooks run by the Nextcloud Docker entrypoint.
           # Clear stale maintenance mode left by a crashed / replaced pod.
           hooks:
