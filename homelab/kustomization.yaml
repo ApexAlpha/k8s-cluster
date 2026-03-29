@@ -40,5 +40,5 @@ resources:
   - homepage/application.yaml
 
   # Admin - Wave 25
-  - headlamp/
+  - headlamp/application.yaml
   # - apps/plex.yaml

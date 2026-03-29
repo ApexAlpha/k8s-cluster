@@ -10,7 +10,7 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: headlamp
+  name: headlamp-admin
   namespace: headlamp
   annotations:
     argocd.argoproj.io/sync-wave: "25"
@@ -27,7 +27,7 @@ roleRef:
   name: cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: headlamp
+    name: headlamp-admin
     namespace: headlamp
 ---
 apiVersion: apps/v1
@@ -49,7 +49,7 @@ spec:
       labels:
         app: headlamp
     spec:
-      serviceAccountName: headlamp
+      serviceAccountName: headlamp-admin
       containers:
         - name: headlamp
           image: ghcr.io/headlamp-k8s/headlamp:latest@sha256:89c6c65810bfde61796483c93c70d659104355593792bf55cab680d685da8eeb
