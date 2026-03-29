@@ -23,6 +23,9 @@ spec:
 
         replicaCount: 1
 
+        strategy:
+          type: Recreate
+
         # ─── Lifecycle hooks ──────────────────────────────────────────
         # Disable maintenance mode before the pod is killed so the
         # replacement pod does not find a stale lock in the DB.
