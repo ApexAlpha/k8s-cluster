@@ -112,6 +112,15 @@ spec:
                 'check_data_directory_permissions' => false,
               );
 
+            trusted-domains.config.php: |-
+              <?php
+              $CONFIG = array (
+                'trusted_domains' => array (
+                  0 => 'localhost',
+                  1 => 'office.k8s.hu.ls',
+                ),
+              );
+
           phpConfigs:
             zz-nextcloud.ini: |-
               memory_limit=512M
