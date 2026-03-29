@@ -37,7 +37,7 @@ spec:
         kubernetes.io/hostname: k3s-home
       containers:
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:latest
+          image: lscr.io/linuxserver/qbittorrent:latest@sha256:474ef1f1c63fc060236e85cd6ec4a3232aea5a0d7a033c6bab9911039933f147
           ports:
             - name: http
               containerPort: 8080
