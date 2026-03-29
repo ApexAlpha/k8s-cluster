@@ -174,10 +174,10 @@ spec:
         # ─── Probes (generous timeouts for network storage) ────────────
         startupProbe:
           enabled: true
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
           periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 30
+          timeoutSeconds: 10
+          failureThreshold: 180
           successThreshold: 1
 
         livenessProbe:
