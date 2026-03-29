@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: headlamp
-  namespace: headlamp
+  namespace: kube-system
   annotations:
     argocd.argoproj.io/sync-wave: "25"
     traefik.ingress.kubernetes.io/router.tls: "true"
