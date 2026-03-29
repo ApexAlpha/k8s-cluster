@@ -191,10 +191,10 @@ spec:
     - name: peer-tcp
       port: 51413
       targetPort: 51413
-      nodePort: 51413
+      nodePort: 31413
       protocol: TCP
     - name: peer-udp
       port: 51413
       targetPort: 51413
-      nodePort: 51413
+      nodePort: 31413
       protocol: UDP

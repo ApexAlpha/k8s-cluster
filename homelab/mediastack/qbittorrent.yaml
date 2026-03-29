@@ -116,12 +116,12 @@ spec:
     - name: peer-tcp
       port: 51414
       targetPort: 51414
-      nodePort: 51414
+      nodePort: 31414
       protocol: TCP
     - name: peer-udp
       port: 51414
       targetPort: 51414
-      nodePort: 51414
+      nodePort: 31414
       protocol: UDP
 ---
 apiVersion: networking.k8s.io/v1
