@@ -5,6 +5,7 @@ resources:
   - nfs.yaml
   - certificate.yaml
   - transmission.yaml
+  - qbittorrent.yaml
   - prowlarr.yaml
   - sonarr.yaml
   - sonarr-4k.yaml
