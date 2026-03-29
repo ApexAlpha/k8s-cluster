@@ -246,6 +246,8 @@ spec:
             kind: Certificate
             metadata:
               name: wildcard-k8s-hu-ls
+              annotations:
+                argocd.argoproj.io/sync-options: SkipHealthCheck=true
             spec:
               secretName: wildcard-k8s-hu-ls-tls
               issuerRef:
