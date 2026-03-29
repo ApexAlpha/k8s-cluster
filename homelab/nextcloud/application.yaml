@@ -106,6 +106,12 @@ spec:
                 ),
               );
 
+            skip-permissions.config.php: |-
+              <?php
+              $CONFIG = array (
+                'check_data_directory_permissions' => false,
+              );
+
           phpConfigs:
             zz-nextcloud.ini: |-
               memory_limit=512M
