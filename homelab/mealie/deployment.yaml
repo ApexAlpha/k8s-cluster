@@ -13,10 +13,7 @@ spec:
     matchLabels:
       app: mealie
   strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+    type: Recreate
   template:
     metadata:
       labels:
