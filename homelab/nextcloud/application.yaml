@@ -150,6 +150,18 @@ spec:
                 memory: 64Mi
               limits:
                 memory: 256Mi
+            affinity:
+              podAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 100
+                    podAffinityTerm:
+                      labelSelector:
+                        matchLabels:
+                          cnpg.io/cluster: postgres-shared
+                          role: primary
+                      topologyKey: kubernetes.io/hostname
+                      namespaces:
+                        - database
 
         # ─── Ingress via Traefik ───────────────────────────────────────
         ingress:
