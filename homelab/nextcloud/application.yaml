@@ -15,10 +15,10 @@ spec:
     targetRevision: 9.0.3
     helm:
       valuesObject:
-        # ─── FPM mode with nginx sidecar ───────────────────────────────
+        # ─── Apache mode (simpler than FPM+nginx) ─────────────────────
         image:
-          flavor: fpm
-          tag: 33.0.0-fpm
+          flavor: apache
+          tag: 33.0.1-apache
           pullPolicy: IfNotPresent
 
         replicaCount: 1
@@ -36,27 +36,11 @@ spec:
             - php /var/www/html/occ maintenance:mode --off || true
 
         nginx:
-          enabled: true
-          image:
-            repository: nginx
-            tag: alpine
-          config:
-            default: true
+          enabled: false
 
         # ─── Nextcloud core settings ───────────────────────────────────
         nextcloud:
           host: office.k8s.hu.ls
-
-          # PHP-FPM tuning - default 5 workers is too low
-          extraEnv:
-            - name: PHP_FPM_PM_MAX_CHILDREN
-              value: "20"
-            - name: PHP_FPM_PM_START_SERVERS
-              value: "5"
-            - name: PHP_FPM_PM_MIN_SPARE_SERVERS
-              value: "3"
-            - name: PHP_FPM_PM_MAX_SPARE_SERVERS
-              value: "10"
 
           # Hooks run by the Nextcloud Docker entrypoint.
           # Clear stale maintenance mode left by a crashed / replaced pod.
