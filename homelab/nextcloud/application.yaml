@@ -23,6 +23,15 @@ spec:
 
         replicaCount: 1
 
+        # Fix data directory permissions for www-data
+        securityContext:
+          fsGroup: 33
+
+        # Suppress Apache ServerName warning
+        extraEnv:
+          - name: APACHE_SERVER_NAME
+            value: office.k8s.hu.ls
+
         strategy:
           type: Recreate
 
@@ -205,12 +214,7 @@ spec:
           enabled: false
 
         readinessProbe:
-          enabled: true
-          initialDelaySeconds: 30
-          periodSeconds: 15
-          timeoutSeconds: 15
-          failureThreshold: 3
-          successThreshold: 1
+          enabled: false
 
         # ─── Resources ────────────────────────────────────────────────
         resources:
