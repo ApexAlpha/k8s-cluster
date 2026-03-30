@@ -12,8 +12,7 @@ spec:
     helm:
       values: |
         service:
-          type: ClusterIP
-          clusterIP: 10.43.139.66
+          type: NodePort
           annotations:
             netbird.io/expose: "true"
             netbird.io/groups: "k8s-ingress"
@@ -27,6 +26,7 @@ spec:
         ports:
           web:
             port: 80
+            nodePort: 30080
             expose:
               default: true
             http:
@@ -36,6 +36,7 @@ spec:
                   scheme: https
                   permanent: true
           websecure:
+            nodePort: 30443
             transport:
               respondingTimeouts:
                 readTimeout: "0s"
