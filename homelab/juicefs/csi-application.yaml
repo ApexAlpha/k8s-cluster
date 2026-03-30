@@ -39,6 +39,17 @@ spec:
           tolerations:
             - operator: Exists
 
+        # Mount pod resources (per-PVC mount helper pods)
+        globalConfig:
+          mountPodPatch:
+            - resources:
+                requests:
+                  cpu: 50m
+                  memory: 256Mi
+                limits:
+                  cpu: 1000m
+                  memory: 1Gi
+
         # StorageClass managed separately in juicefs/storageclass.yaml
         storageClasses: []
 
