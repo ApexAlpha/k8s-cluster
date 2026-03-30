@@ -11,6 +11,15 @@ spec:
     targetRevision: 39.0.6
     helm:
       values: |
+        deployment:
+          replicas: 2
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: traefik
+                topologyKey: kubernetes.io/hostname
         service:
           type: ClusterIP
           annotations:

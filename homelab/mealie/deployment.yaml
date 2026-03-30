@@ -32,6 +32,15 @@ spec:
                 topologyKey: kubernetes.io/hostname
                 namespaces:
                   - database
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
       containers:
         - name: mealie
           image: ghcr.io/mealie-recipes/mealie:latest@sha256:b9fac07e6daaabd8c29d0dc97965c2f500ce7d6b188b0c51f494627f23ad32f2

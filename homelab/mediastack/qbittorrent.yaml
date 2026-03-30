@@ -35,6 +35,15 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: k3s-home
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest@sha256:474ef1f1c63fc060236e85cd6ec4a3232aea5a0d7a033c6bab9911039933f147

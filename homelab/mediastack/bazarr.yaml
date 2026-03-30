@@ -45,6 +45,15 @@ spec:
                 topologyKey: kubernetes.io/hostname
                 namespaces:
                   - database
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
       containers:
         - name: bazarr
           image: lscr.io/linuxserver/bazarr:latest@sha256:9a631194c0dee21c85b5bff59e23610e1ae2f54594e922973949d271102e585e

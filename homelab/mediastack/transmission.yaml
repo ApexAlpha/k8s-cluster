@@ -67,6 +67,15 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: k3s-home  # Same location as NFS server
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
       initContainers:            # <-- add here
         - name: configure-script
           image: busybox@sha256:1487d0af5f52b4ba31c7e465126ee2123fe3f2305d638e7827681e7cf6c83d5e
