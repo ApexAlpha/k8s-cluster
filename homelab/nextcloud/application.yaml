@@ -38,16 +38,14 @@ spec:
         # ─── Prefer same node as PostgreSQL primary ───────────────────
         affinity:
           podAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 100
-                podAffinityTerm:
-                  labelSelector:
-                    matchLabels:
-                      cnpg.io/cluster: postgres-shared
-                      role: primary
-                  topologyKey: kubernetes.io/hostname
-                  namespaces:
-                    - database
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    cnpg.io/cluster: postgres-shared
+                    role: primary
+                topologyKey: kubernetes.io/hostname
+                namespaces:
+                  - database
 
         # ─── Lifecycle hooks ──────────────────────────────────────────
         # Disable maintenance mode before the pod is killed so the
