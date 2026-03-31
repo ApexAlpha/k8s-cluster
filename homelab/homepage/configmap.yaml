@@ -150,13 +150,8 @@ data:
             description: Network Controller
         - ArgoCD:
             icon: argo-cd
-            href: https://argocd.k8s.hu.ls
+            href: https://argo.k8s.hu.ls
             description: GitOps Deployments
-        - SeaweedFS:
-            icon: mdi-nas
-            href: https://seaweed.k8s.hu.ls
-            description: Distributed Storage
-
   widgets.yaml: |
     - kubernetes:
         cluster:
