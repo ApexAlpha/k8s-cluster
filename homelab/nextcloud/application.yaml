@@ -87,6 +87,8 @@ spec:
                   1 => '10.0.0.0/8',
                 ),
                 'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
+                'overwrite.cli.url' => 'https://office.k8s.hu.ls',
+                'overwriteprotocol' => 'https',
               );
             
             previews.config.php: |-
@@ -128,6 +130,12 @@ spec:
               post_max_size=16G
               max_execution_time=3600
               max_input_time=3600
+              opcache.enable=1
+              opcache.memory_consumption=256
+              opcache.interned_strings_buffer=16
+              opcache.max_accelerated_files=10000
+              opcache.revalidate_freq=60
+              opcache.save_comments=1
 
           # File storage via JuiceFS (provides compression & encryption over Garage S3)
           objectStore:
