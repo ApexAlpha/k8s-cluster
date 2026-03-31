@@ -30,4 +30,4 @@ spec:
     deleteEmptyDirData: true
     timeout: 300
   upgrade:
-    image: rancher/k3s-upgrade
+    image: rancher/k3s-upgrade@sha256:3200176f13458428e0d3015f0b0c6cc83e54661ffc4074f9ba16aa6e4a7e36f2
