@@ -6,8 +6,7 @@ resources:
   - cnpg/operator.yaml
   - netbird-operator.yaml
   - kured/application.yaml
-  - system-upgrade/
-  
+
   # Databases - Wave 10 (after operators)
   - cnpg/cluster-app.yaml
   
