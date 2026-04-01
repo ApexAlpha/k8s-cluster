@@ -30,7 +30,7 @@ resources:
   - authelia/application.yaml
 
   # Monitoring - Wave 20 (after storage)
-  - monitoring/
+  - monitoring/application.yaml
 
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
