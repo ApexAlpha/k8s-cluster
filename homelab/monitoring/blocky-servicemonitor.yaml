@@ -3,6 +3,8 @@ kind: ServiceMonitor
 metadata:
   name: blocky
   namespace: monitoring
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - port: http
