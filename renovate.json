@@ -66,17 +66,6 @@
       ]
     },
     {
-      "description": "Automerge patch and minor for homelab apps",
-      "matchFileNames": [
-        "homelab/**"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor"
-      ],
-      "automerge": true
-    },
-    {
       "description": "Don't automerge ArgoCD install changes",
       "matchFileNames": [
         "argocd-install/**"
