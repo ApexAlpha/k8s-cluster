@@ -101,5 +101,6 @@
     "renovate"
   ],
   "prHourlyLimit": 5,
-  "prConcurrentLimit": 10
+  "prConcurrentLimit": 10,
+  "minimumReleaseAge": "3 days"
 }
