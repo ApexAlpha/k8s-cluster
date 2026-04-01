@@ -121,11 +121,11 @@ data:
               url: http://transmission.media.svc
         - qBittorrent:
             icon: qbittorrent
-            href: http://qbittorrent.media.svc
+            href: http://qbittorrent.k8s.hu.ls
             description: Torrent Client
             widget:
               type: qbittorrent
-              url: https://qbittorrent.k8s.hu.ls
+              url: https://qbittorrent.media.svc
         - Prowlarr:
             icon: prowlarr
             href: https://prowlarr.k8s.hu.ls
