@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: promtail
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "21"
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: promtail
+    targetRevision: 6.16.6
+    helm:
+      values: |
+        config:
+          clients:
+            - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

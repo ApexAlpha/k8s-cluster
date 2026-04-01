@@ -29,6 +29,9 @@ resources:
   # Auth - Wave 15 (before apps)
   - authelia/application.yaml
 
+  # Monitoring - Wave 20 (after storage)
+  - monitoring/
+
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml
   - mediastack/application.yaml

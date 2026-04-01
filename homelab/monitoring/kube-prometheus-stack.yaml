@@ -1,0 +1,88 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 65.3.1
+    helm:
+      values: |
+        grafana:
+          # kubectl create secret generic grafana-admin -n monitoring \
+          #   --from-literal=admin-user=admin \
+          #   --from-literal=admin-password=<password>
+          admin:
+            existingSecret: grafana-admin
+            userKey: admin-user
+            passwordKey: admin-password
+          persistence:
+            enabled: true
+            storageClassName: juicefs
+            accessModes:
+              - ReadWriteMany
+            size: 5Gi
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            annotations:
+              traefik.ingress.kubernetes.io/router.tls: "true"
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            hosts:
+              - grafana.k8s.hu.ls
+            tls:
+              - hosts:
+                  - grafana.k8s.hu.ls
+                secretName: wildcard-k8s-hu-ls-tls
+          additionalDataSources:
+            - name: Loki
+              type: loki
+              url: http://loki.monitoring.svc.cluster.local:3100
+              access: proxy
+
+        prometheus:
+          prometheusSpec:
+            retention: 30d
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: juicefs
+                  accessModes:
+                    - ReadWriteMany
+                  resources:
+                    requests:
+                      storage: 20Gi
+            # Discover ServiceMonitors/PodMonitors in all namespaces
+            serviceMonitorSelectorNilUsesHelmValues: false
+            podMonitorSelectorNilUsesHelmValues: false
+            ruleSelectorNilUsesHelmValues: false
+
+        alertmanager:
+          enabled: false
+
+        nodeExporter:
+          enabled: true
+
+        kubeStateMetrics:
+          enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
