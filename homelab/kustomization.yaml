@@ -21,6 +21,9 @@ resources:
   #CoreDNS
   - coredns/application.yaml
 
+  #Blocky
+  - blocky/application.yaml
+
   - argocd/
 
   # Auth - Wave 15 (before apps)
