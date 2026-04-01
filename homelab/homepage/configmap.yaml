@@ -121,7 +121,7 @@ data:
               url: http://transmission.media.svc
         - qBittorrent:
             icon: qbittorrent
-            href: https://qbittorrent.k8s.hu.ls
+            href: http://qbittorrent.media.svc
             description: Torrent Client
             widget:
               type: qbittorrent
