@@ -1,22 +1,4 @@
 ---
-# Redis data PVC — persists the Celery task queue so in-flight jobs survive Redis restarts.
-# juicefs for node failover.
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-redis-data
-  namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -52,7 +34,7 @@ spec:
       containers:
         - name: redis
           image: redis:8-alpine@sha256:81b6f81d6a6c5b9019231a2e8eb10085e3a139a34f833dcc965a8a959b040b72
-          command: ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec", "--save", "", "--aof-load-truncated", "yes"]
+          command: ["redis-server", "--appendonly", "no", "--save", ""]
           ports:
             - containerPort: 6379
           volumeMounts:
@@ -81,8 +63,7 @@ spec:
             periodSeconds: 5
       volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: paperless-redis-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
