@@ -6,4 +6,3 @@ resources:
   - kube-prometheus-stack.yaml
   - loki.yaml
   - promtail.yaml
-  - blocky-servicemonitor.yaml
