@@ -33,6 +33,8 @@ spec:
               secretKeyRef:
                 name: grafana-db
                 key: password
+          persistence:
+            enabled: false
           ingress:
             enabled: true
             ingressClassName: traefik
