@@ -89,6 +89,7 @@ spec:
         - CREATE DATABASE immich OWNER immich;
         - CREATE DATABASE nextcloud OWNER app;
         - CREATE DATABASE mealie OWNER app;
+        - CREATE DATABASE grafana OWNER app;
         # Add more databases as needed:
         # - CREATE DATABASE sonarr OWNER app;
         # - CREATE DATABASE radarr OWNER app;

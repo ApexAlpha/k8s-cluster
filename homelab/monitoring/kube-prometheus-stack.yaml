@@ -21,12 +21,18 @@ spec:
             existingSecret: grafana-admin
             userKey: admin-user
             passwordKey: admin-password
-          persistence:
-            enabled: true
-            storageClassName: juicefs
-            accessModes:
-              - ReadWriteMany
-            size: 5Gi
+          # kubectl create secret generic grafana-db -n monitoring \
+          #   --from-literal=password=<password>
+          env:
+            GF_DATABASE_TYPE: postgres
+            GF_DATABASE_HOST: postgres-shared-rw.database.svc:5432
+            GF_DATABASE_NAME: grafana
+            GF_DATABASE_USER: app
+          envValueFrom:
+            GF_DATABASE_PASSWORD:
+              secretKeyRef:
+                name: grafana-db
+                key: password
           ingress:
             enabled: true
             ingressClassName: traefik
