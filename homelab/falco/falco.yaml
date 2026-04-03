@@ -40,9 +40,9 @@ spec:
           metrics:
             enabled: true
             interval: 1h
-            outputRule: true
-            resourcesSnapshot:
-              enabled: true
+            output_rule: true
+          webserver:
+            prometheus_metrics_enabled: true
 
         # ServiceMonitor for Falco's own /metrics endpoint
         serviceMonitor:
