@@ -110,8 +110,6 @@ data:
         clients:
           - client_id: immich
             client_name: Immich
-            # Generate secret: openssl rand -hex 32
-            # Hash for here: authelia crypto hash generate pbkdf2 --variant sha512
             client_secret: '$pbkdf2-sha512$310000$3nJHyQ4uL6B1nClu9OV8gQ$gtbpamIVSrlD8tX2bcmHR3JSMnpVG8AVwn6ZK5GJY3qlcnWLJJhRgwTqTZCu2wuiP/Zb2Fqy8W2PEY2wKfRhuA'
             public: false
             authorization_policy: one_factor
