@@ -11,3 +11,17 @@ spec:
     - port: metrics
       path: /metrics
       interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: juicefs-mount
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: juicefs-mount
+  podMetricsEndpoints:
+    - targetPort: 9567
+      path: /metrics
+      interval: 30s
