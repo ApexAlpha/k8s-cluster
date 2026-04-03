@@ -17,6 +17,11 @@ data:
       level: info
       format: text
 
+    telemetry:
+      metrics:
+        enabled: true
+        address: 'tcp://0.0.0.0:9959'
+
     totp:
       issuer: k8s.hu.ls
       period: 30

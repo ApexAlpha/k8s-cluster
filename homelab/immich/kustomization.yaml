@@ -9,3 +9,4 @@ resources:
   - machine-learning.yaml
   - service.yaml
   - ingress.yaml
+  - servicemonitor.yaml

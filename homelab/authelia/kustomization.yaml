@@ -9,3 +9,4 @@ resources:
   - service.yaml
   - ingress.yaml
   - traefik-middleware.yaml
+  - servicemonitor.yaml

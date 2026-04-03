@@ -1,0 +1,68 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: falco
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "21"
+spec:
+  project: default
+  source:
+    repoURL: https://falcosecurity.github.io/charts
+    chart: falco
+    targetRevision: 4.21.0
+    helm:
+      values: |
+        # Use modern eBPF driver (requires kernel >= 5.8, cluster is on 6.19.10)
+        driver:
+          kind: modern_ebpf
+
+        # Forward Falco events to falcosidekick which routes to Loki and exposes metrics
+        falcosidekick:
+          enabled: true
+          config:
+            loki:
+              hostport: "http://loki.monitoring.svc.cluster.local:3100"
+              minimumpriority: "debug"
+              # Add Kubernetes labels as Loki stream labels for better filtering
+              customHeaders: ""
+            # Also expose event counts as Prometheus metrics via falcosidekick
+            prometheus:
+              enabled: true
+          # ServiceMonitor for falcosidekick's own /metrics endpoint
+          serviceMonitor:
+            enabled: true
+            namespace: falco
+            additionalLabels: {}
+
+        # Enable Falco's native Prometheus metrics (requires Falco >= 0.38)
+        falco:
+          metrics:
+            enabled: true
+            interval: 1h
+            outputRule: true
+            resourcesSnapshot:
+              enabled: true
+
+        # ServiceMonitor for Falco's own /metrics endpoint
+        serviceMonitor:
+          enabled: true
+          namespace: falco
+          additionalLabels: {}
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: falco
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

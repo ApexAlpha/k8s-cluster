@@ -17,9 +17,9 @@ spec:
       valuesObject:
         # Monitoring - enable if you have prometheus
         monitoring:
-          podMonitorEnabled: false
+          podMonitorEnabled: true
           grafanaDashboard:
-            create: false
+            create: true
         
         # Resource limits for the operator itself
         resources:

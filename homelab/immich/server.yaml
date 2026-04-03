@@ -48,6 +48,8 @@ spec:
           ports:
             - name: http
               containerPort: 2283
+            - name: metrics
+              containerPort: 8081
           env:
             # Database — shared CNPG cluster (same as paperless, vaultwarden)
             - name: DB_HOSTNAME
@@ -78,6 +80,10 @@ spec:
             # Timezone
             - name: TZ
               value: "Europe/Amsterdam"
+
+            # Telemetry / Prometheus metrics (port 8081)
+            - name: IMMICH_TELEMETRY_INCLUDE
+              value: "all"
 
           volumeMounts:
             - name: library

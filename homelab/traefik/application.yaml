@@ -50,6 +50,11 @@ spec:
             transport:
               respondingTimeouts:
                 readTimeout: "0s"
+        metrics:
+          prometheus:
+            addEntryPointsLabels: true
+            addRoutersLabels: true
+            addServicesLabels: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system

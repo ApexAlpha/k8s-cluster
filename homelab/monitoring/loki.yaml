@@ -42,6 +42,17 @@ spec:
           replicas: 0
         backend:
           replicas: 0
+        monitoring:
+          serviceMonitor:
+            enabled: true
+          selfMonitoring:
+            enabled: false
+            grafanaAgent:
+              installOperator: false
+          dashboards:
+            enabled: false
+          rules:
+            enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

@@ -27,6 +27,8 @@ spec:
           ports:
             - name: http
               containerPort: 9091
+            - name: metrics
+              containerPort: 9959
           env:
             - name: TZ
               value: "Europe/Amsterdam"

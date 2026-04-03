@@ -129,6 +129,5 @@ spec:
         passwordSecret:
           name: immich-db-credentials
 
-  # Monitoring (enable when you have Prometheus)
   monitoring:
-    enablePodMonitor: false
+    enablePodMonitor: true
