@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://falcosecurity.github.io/charts
     chart: falco
-    targetRevision: 4.21.0
+    targetRevision: 8.0.1
     helm:
       values: |
         # Use modern eBPF driver (requires kernel >= 5.8, cluster is on 6.19.10)
