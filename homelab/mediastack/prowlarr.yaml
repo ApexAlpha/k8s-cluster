@@ -68,6 +68,11 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
+            # External auth — trust Authelia's Remote-User header, skip Prowlarr's own login
+            - name: PROWLARR__AUTH__METHOD
+              value: "External"
+            - name: PROWLARR__AUTH__REQUIRED
+              value: "DisabledForLocalAddresses"
             # PostgreSQL configuration
             - name: PROWLARR__POSTGRES__HOST
               value: "postgres-shared-rw.database.svc"
@@ -132,6 +137,7 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
