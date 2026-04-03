@@ -130,6 +130,7 @@ data:
             authorization_policy: one_factor
             redirect_uris:
               - https://abs.k8s.hu.ls/auth/openid/callback
+              - https://abs.k8s.hu.ls/auth/openid/mobile-redirect
             scopes:
               - openid
               - profile
