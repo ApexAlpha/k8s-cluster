@@ -2,6 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  # Cert-manager config + Reflector - Wave 3-5
+  - cert-manager/application.yaml
+
   # Operators - Wave 5
   - cnpg/operator.yaml
   - netbird-operator.yaml

@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
   - nfs.yaml
-  - certificate.yaml
   - transmission.yaml
   - qbittorrent.yaml
   - prowlarr.yaml
