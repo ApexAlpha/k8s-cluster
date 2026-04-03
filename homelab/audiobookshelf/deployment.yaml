@@ -31,7 +31,7 @@ spec:
           tolerationSeconds: 30
       initContainers:
         - name: litestream-restore
-          image: litestream/litestream:v0.3.13
+          image: litestream/litestream:0.3.14
           args:
             - restore
             - -if-replica-exists
@@ -90,7 +90,7 @@ spec:
             periodSeconds: 10
 
         - name: litestream
-          image: litestream/litestream:v0.3.13
+          image: litestream/litestream:0.3.14
           args:
             - replicate
           env:
