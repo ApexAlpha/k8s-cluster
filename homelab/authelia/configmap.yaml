@@ -105,6 +105,23 @@ data:
             - introspection
           allowed_origins_from_client_redirect_uris: true
         clients:
+          - client_id: immich
+            client_name: Immich
+            # Generate secret: openssl rand -hex 32
+            # Hash for here: authelia crypto hash generate pbkdf2 --variant sha512
+            client_secret: '$pbkdf2-sha512$310000$3nJHyQ4uL6B1nClu9OV8gQ$gtbpamIVSrlD8tX2bcmHR3JSMnpVG8AVwn6ZK5GJY3qlcnWLJJhRgwTqTZCu2wuiP/Zb2Fqy8W2PEY2wKfRhuA'
+            public: false
+            authorization_policy: one_factor
+            redirect_uris:
+              - https://immich.k8s.hu.ls/auth/login
+              - app.immich:///oauth-callback
+            scopes:
+              - openid
+              - profile
+              - email
+            userinfo_signed_response_alg: none
+            token_endpoint_auth_method: client_secret_post
+
           - client_id: mealie
             client_name: Mealie
             client_secret: '$pbkdf2-sha512$310000$ZQGy.bEs8MOijC3BpD/H1A$NetXzVc0us/QQp7sDnwNlxjK3O/.UgPVrBJ0KbbtfRa9Ye7Ni0z.MKZ64Y8j3Mxgnx8H6HAjQ.N6HuExpeZOBw'
