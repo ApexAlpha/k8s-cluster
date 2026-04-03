@@ -30,6 +30,26 @@ spec:
           effect: "NoExecute"
           tolerationSeconds: 30
       initContainers:
+        - name: create-litestream-bucket
+          image: minio/mc:latest
+          command:
+            - sh
+            - -c
+            - |
+              mc alias set gw http://juicefs-s3-gateway.kube-system.svc:9000 "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
+              mc mb --ignore-existing gw/litestream
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: juicefs-gateway-credentials
+                  key: access-key
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: juicefs-gateway-credentials
+                  key: secret-key
+
         - name: litestream-restore
           image: litestream/litestream:0.3.14
           args:
