@@ -51,7 +51,7 @@ spec:
                   key: secret-key
 
         - name: litestream-restore
-          image: litestream/litestream:0.3.14
+          image: litestream/litestream:latest
           args:
             - restore
             - -if-replica-exists
@@ -110,7 +110,7 @@ spec:
             periodSeconds: 10
 
         - name: litestream
-          image: litestream/litestream:0.3.14
+          image: litestream/litestream:latest
           args:
             - replicate
           env:
