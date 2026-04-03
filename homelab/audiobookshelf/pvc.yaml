@@ -2,6 +2,21 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: audiobookshelf-config
+  namespace: audiobookshelf
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: juicefs
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: audiobookshelf-audiobooks
   namespace: audiobookshelf
   annotations:

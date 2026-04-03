@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - pvc.yaml
-  - litestream-config.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml
