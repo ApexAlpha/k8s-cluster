@@ -1,0 +1,132 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audiobookshelf
+  namespace: audiobookshelf
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+  labels:
+    app: audiobookshelf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: audiobookshelf
+  strategy:
+    # Must be Recreate — litestream cannot have two writers against the same S3 path
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: audiobookshelf
+    spec:
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+      initContainers:
+        - name: litestream-restore
+          image: litestream/litestream:v0.3.13
+          args:
+            - restore
+            - -if-replica-exists
+            - /config/absdatabase.sqlite
+          env:
+            - name: LITESTREAM_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: juicefs-gateway-credentials
+                  key: access-key
+            - name: LITESTREAM_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: juicefs-gateway-credentials
+                  key: secret-key
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: litestream-config
+              mountPath: /etc/litestream.yml
+              subPath: litestream.yml
+      containers:
+        - name: audiobookshelf
+          image: ghcr.io/advplyr/audiobookshelf:latest
+          ports:
+            - name: http
+              containerPort: 13378
+          env:
+            - name: PORT
+              value: "13378"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: metadata
+              mountPath: /metadata
+            - name: audiobooks
+              mountPath: /audiobooks
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+        - name: litestream
+          image: litestream/litestream:v0.3.13
+          args:
+            - replicate
+          env:
+            - name: LITESTREAM_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: juicefs-gateway-credentials
+                  key: access-key
+            - name: LITESTREAM_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: juicefs-gateway-credentials
+                  key: secret-key
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: litestream-config
+              mountPath: /etc/litestream.yml
+              subPath: litestream.yml
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: metadata
+          persistentVolumeClaim:
+            claimName: audiobookshelf-metadata
+        - name: audiobooks
+          persistentVolumeClaim:
+            claimName: audiobookshelf-audiobooks
+        - name: litestream-config
+          configMap:
+            name: litestream-config

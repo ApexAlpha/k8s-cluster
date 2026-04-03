@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litestream-config
+  namespace: audiobookshelf
+data:
+  litestream.yml: |
+    dbs:
+      - path: /config/absdatabase.sqlite
+        replicas:
+          - type: s3
+            bucket: litestream
+            path: audiobookshelf
+            endpoint: http://juicefs-s3-gateway.kube-system.svc:9000
+            force-path-style: true

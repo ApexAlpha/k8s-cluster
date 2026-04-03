@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: audiobookshelf
+  namespace: audiobookshelf
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - abs.k8s.hu.ls
+      secretName: wildcard-k8s-hu-ls-tls
+  rules:
+    - host: abs.k8s.hu.ls
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: audiobookshelf
+                port:
+                  number: 80

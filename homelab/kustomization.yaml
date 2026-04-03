@@ -48,6 +48,7 @@ resources:
   - it-tools/application.yaml
   - cyberchef/application.yaml
   - mealie/application.yaml
+  - audiobookshelf/application.yaml
   - nextcloud/application.yaml
   - homepage/application.yaml
 
