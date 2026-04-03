@@ -53,6 +53,8 @@ spec:
         customRules:
           custom-k8s-api-exceptions.yaml: |-
             - rule: Contact K8S API Server From Container
+              override:
+                exceptions: append
               exceptions:
                 - name: trusted_namespaces
                   fields: [k8s.ns.name]
