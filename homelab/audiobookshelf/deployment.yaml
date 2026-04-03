@@ -47,6 +47,8 @@ spec:
           env:
             - name: PORT
               value: "13378"
+            - name: ROUTER_BASE_PATH
+              value: "/"
           volumeMounts:
             - name: config
               mountPath: /config
