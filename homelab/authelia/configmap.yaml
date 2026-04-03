@@ -113,7 +113,7 @@ data:
             public: false
             authorization_policy: one_factor
             redirect_uris:
-              - https://immich.k8s.hu.ls/auth/login
+              - https://photos.k8s.hu.ls/auth/login
               - app.immich:///oauth-callback
             scopes:
               - openid
