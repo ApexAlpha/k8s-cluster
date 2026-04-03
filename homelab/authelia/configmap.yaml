@@ -29,6 +29,9 @@ data:
 
     webauthn:
       disable: false
+      enable_passkey_login: true
+      # Allows a Yubikey with PIN to satisfy both factors (password + 2FA) at once
+      experimental_enable_passkey_uv_two_factors: true
       display_name: k8s.hu.ls
       attestation_conveyance_preference: indirect
       user_verification: required
