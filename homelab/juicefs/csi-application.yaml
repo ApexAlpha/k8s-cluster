@@ -53,10 +53,6 @@ spec:
         # StorageClass managed separately in juicefs/storageclass.yaml
         storageClasses: []
 
-        # Prometheus metrics for the CSI controller (port 9567)
-        serviceMonitor:
-          enabled: true
-
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
