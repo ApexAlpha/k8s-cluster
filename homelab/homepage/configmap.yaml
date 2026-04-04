@@ -70,6 +70,14 @@ data:
             description: Data Encoding & Analysis
 
     - Media:
+        - Audiobookshelf:
+            icon: audiobookshelf
+            href: https://abs.k8s.hu.ls
+            description: Audiobooks
+            widget:
+              type: audiobookshelf
+              url: http://audiobookshelf.audiobookshelf.svc
+              key: "{{HOMEPAGE_VAR_ABS_KEY}}"
         - Plex:
             icon: plex
             href: http://100.73.28.98:32400/web
