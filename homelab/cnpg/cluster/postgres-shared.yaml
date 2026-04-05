@@ -101,4 +101,4 @@ spec:
           name: immich-db-credentials
 
   monitoring:
-    enablePodMonitor: true
+    enablePodMonitor: false
