@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - storageclass.yaml
   - gateway.yaml
-  - podmonitor.yaml
