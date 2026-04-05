@@ -64,23 +64,12 @@ spec:
       postInitSQL:
         - CREATE DATABASE juicefs OWNER app;
         - CREATE DATABASE vaultwarden OWNER app;
-        - CREATE DATABASE immich OWNER immich;
+        - CREATE DATABASE immich OWNER app;
         - CREATE DATABASE nextcloud OWNER app;
         - CREATE DATABASE mealie OWNER app;
         - CREATE DATABASE grafana OWNER app;
         - CREATE DATABASE authentik OWNER app;
 
-  backup:
-    barmanObjectStore:
-      destinationPath: s3://cnpg-backups/
-      endpointURL: http://garage-s3.garage.svc.cluster.local:3900
-      s3Credentials:
-        accessKeyId:
-          name: cnpg-s3-creds
-          key: ACCESS_KEY_ID
-        secretAccessKey:
-          name: cnpg-s3-creds
-          key: SECRET_ACCESS_KEY
 
   resources:
     requests:
@@ -89,17 +78,6 @@ spec:
     limits:
       memory: 2Gi
 
-  managed:
-    roles:
-      - name: immich
-        ensure: present
-        connectionLimit: -1
-        inherit: true
-        login: true
-        superuser: true
-        createdb: true
-        passwordSecret:
-          name: immich-db-credentials
 
   monitoring:
     enablePodMonitor: false
