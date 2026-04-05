@@ -5,4 +5,3 @@ resources:
   - namespace.yaml
   - services.yaml
   - ingress.yaml
-  - servicemonitor.yaml
