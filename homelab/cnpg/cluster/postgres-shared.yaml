@@ -18,8 +18,9 @@ spec:
   primaryUpdateStrategy: unsupervised
 
   # Pin to home VM node — uses local-path storage, must stay here
-  nodeSelector:
-    kubernetes.io/hostname: k3s-home
+  affinity:
+    nodeSelector:
+      kubernetes.io/hostname: k3s-home
 
   storage:
     storageClass: local-path
