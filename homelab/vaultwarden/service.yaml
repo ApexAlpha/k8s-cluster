@@ -6,7 +6,6 @@ metadata:
   labels:
     app: vaultwarden
   annotations:
-    netbird.io/expose: "true"
     argocd.argoproj.io/sync-wave: "4"
 spec:
   type: ClusterIP

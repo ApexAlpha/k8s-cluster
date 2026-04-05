@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://charts.goauthentik.io
+    chart: authentik
+    targetRevision: 2025.4.0
+    helm:
+      valuesObject:
+        authentik:
+          secret_key: ""  # from secret: authentik-secret, key: secret_key
+          postgresql:
+            host: postgres-shared-rw.database.svc.cluster.local
+            name: authentik
+            user: app
+            password: ""  # from secret: authentik-secret, key: pg_pass
+          redis:
+            host: authentik-redis-master
+
+        # Use external CNPG cluster
+        postgresql:
+          enabled: false
+
+        # Redis for sessions and cache
+        redis:
+          enabled: true
+
+        server:
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            annotations:
+              traefik.ingress.kubernetes.io/router.tls: "true"
+            hosts:
+              - auth.k8s.hu.ls
+            tls:
+              - secretName: authentik-tls
+                hosts:
+                  - auth.k8s.hu.ls
+
+          metrics:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+
+        worker:
+          replicas: 1
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authentik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

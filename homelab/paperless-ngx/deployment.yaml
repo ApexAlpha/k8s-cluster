@@ -22,19 +22,6 @@ spec:
       securityContext:
         fsGroup: 1000
   #     runAsUser: 1000
-      # Prefer running on the same node as PostgreSQL primary for lower latency
-      affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    cnpg.io/cluster: postgres-shared
-                    role: primary
-                topologyKey: kubernetes.io/hostname
-                namespaces:
-                  - database
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

@@ -7,12 +7,13 @@ resources:
 
   # Operators - Wave 5
   - cnpg/operator.yaml
-  - netbird-operator.yaml
-  - kured/application.yaml
 
   # Databases - Wave 10 (after operators)
   - cnpg/cluster-app.yaml
   
+  # Cilium L2 - Wave 6 (after operators, before storage)
+  - cilium/
+
   # Storage - Wave 14-17 (after databases)
   - garage/application.yaml         # Wave 14: Garage namespace, services, ingress
   - juicefs/csi-application.yaml    # Wave 16: JuiceFS CSI driver (Helm)
@@ -30,7 +31,7 @@ resources:
   - argocd/
 
   # Auth - Wave 15 (before apps)
-  - authelia/application.yaml
+  - authentik/application.yaml
 
   # Monitoring - Wave 20 (after storage)
   - monitoring/application.yaml

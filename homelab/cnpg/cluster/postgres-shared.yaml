@@ -9,106 +9,78 @@ spec:
   # High priority ensures postgres pods preempt app pods when resources are tight
   priorityClassName: database-critical
 
-  # 3 instances: 1 primary + 2 replicas for HA across your geo-distributed nodes
-  instances: 2
-  
-  # VectorChord image — drop-in replacement for vanilla PG, adds vchord extension.
-  # Existing databases (vaultwarden, seaweedfs_filer) are completely unaffected.
-  imageName: tensorchord/cloudnative-vectorchord:16.9-0.4.3
-  
+  # Single instance — control plane is on home VM, no point in replica
+  instances: 1
+
+  # Standard CNPG image — includes pgvector, PGAudit, Postgres Failover Slots
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+
   primaryUpdateStrategy: unsupervised
-  
+
+  # Pin to home VM node — uses local-path storage, must stay here
+  nodeSelector:
+    kubernetes.io/hostname: k3s-home
+
   storage:
     storageClass: local-path
     size: 20Gi
-  
-  # Spread across availability zones (your geo-distributed nodes)
-  affinity:
-    podAntiAffinityType: required
-    topologyKey: topology.kubernetes.io/zone
-  
+
   postgresql:
-    shared_preload_libraries:
-      - "vchord.so"
     parameters:
-      # Connection settings
       max_connections: "200"
-      
-      # Memory (tune based on your nodes' RAM)
+
+      # Memory
       shared_buffers: "512MB"
       effective_cache_size: "1.5GB"
       work_mem: "16MB"
       maintenance_work_mem: "128MB"
-      
-      # WAL settings for replication
+
+      # WAL
       wal_level: replica
       max_wal_senders: "10"
       max_replication_slots: "10"
-      
-      # Sync replication for strong consistency across geo-distributed nodes
-      # Change to 'remote_write' if latency is too high
+
       synchronous_commit: "local"
-      
+
       checkpoint_timeout: "15min"
       max_wal_size: "2GB"
 
-      # Retain WAL for replicas that go offline
-      # 8GB allows ~hours of downtime depending on write volume
-      wal_keep_size: "8GB"
-
-      # WAN resilience (NL-NL: 9ms, NL-Finland: 30ms)
-      wal_sender_timeout: "120s"       # 2x default, tolerates latency spikes
-      tcp_keepalives_idle: "60"        # Start keepalives after 60s idle
-      tcp_keepalives_interval: "10"    # Probe every 10s
-      tcp_keepalives_count: "6"        # ~60s to detect dead connection
-
       # Logging
       log_statement: "ddl"
-      log_min_duration_statement: "1000"  # Log queries > 1s
-    
-    # Enable pg_stat_statements for query analysis
+      log_min_duration_statement: "1000"
+
     pg_hba:
-      - host all all 10.0.0.0/8 scram-sha-256      # Cluster pod network
-      - host all all 100.64.0.0/10 scram-sha-256  # Netbird VPN range (adjust if different)
-  
-  # Bootstrap: create initial databases
-  # NOTE: postInitSQL / postInitTemplateSQL only run on FRESH clusters.
-  # For your existing cluster, see the manual steps in homelab/immich/README.md
+      - host all all 10.0.0.0/8 scram-sha-256
+
   bootstrap:
     initdb:
       database: app
       owner: app
-      # Install vchord in template1 so new databases (immich) inherit the extension
       postInitTemplateSQL:
-        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS vector CASCADE;
         - CREATE EXTENSION IF NOT EXISTS cube;
         - CREATE EXTENSION IF NOT EXISTS earthdistance;
       postInitSQL:
-        - CREATE DATABASE seaweedfs_filer OWNER app;
+        - CREATE DATABASE juicefs OWNER app;
         - CREATE DATABASE vaultwarden OWNER app;
         - CREATE DATABASE immich OWNER immich;
         - CREATE DATABASE nextcloud OWNER app;
         - CREATE DATABASE mealie OWNER app;
         - CREATE DATABASE grafana OWNER app;
-        # Add more databases as needed:
-        # - CREATE DATABASE sonarr OWNER app;
-        # - CREATE DATABASE radarr OWNER app;
-  
-  # Backup configuration (we'll configure S3 backup via SeaweedFS later)
-  # For now, keep WAL on local storage
-  # backup:
-  #   barmanObjectStore:
-  #     destinationPath: s3://cnpg-backups/
-  #     endpointURL: http://seaweedfs-s3.seaweedfs.svc:8333
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: cnpg-s3-creds
-  #         key: ACCESS_KEY_ID
-  #       secretAccessKey:
-  #         name: cnpg-s3-creds
-  #         key: SECRET_ACCESS_KEY
-  
-  # Resource limits
+        - CREATE DATABASE authentik OWNER app;
+
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://cnpg-backups/
+      endpointURL: http://garage-s3.garage.svc.cluster.local:3900
+      s3Credentials:
+        accessKeyId:
+          name: cnpg-s3-creds
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: cnpg-s3-creds
+          key: SECRET_ACCESS_KEY
+
   resources:
     requests:
       cpu: 100m
@@ -116,7 +88,6 @@ spec:
     limits:
       memory: 2Gi
 
-  # Managed roles — Immich requires superuser for vector index management
   managed:
     roles:
       - name: immich

@@ -1,5 +1,5 @@
 # S3 API: stable in-cluster DNS for JuiceFS CSI and CNPG barman.
-# Points directly at Garage host processes via Netbird IPs.
+# Points directly at Garage host processes on both nodes.
 # In-cluster consumers use: http://garage-s3.garage.svc.cluster.local:3900
 apiVersion: v1
 kind: Service
@@ -24,9 +24,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "14"
 subsets:
   - addresses:
-      - ip: 100.73.131.192  # k3s-home
-      - ip: 100.73.122.53   # k3s-hetzner
-      - ip: 100.73.218.33   # k3s-nuc
+      - ip: 192.168.1.228  # home VM
+      - ip: 192.168.1.230  # NUC
     ports:
       - name: s3-api
         port: 3900
@@ -59,9 +58,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "14"
 subsets:
   - addresses:
-      - ip: 100.73.131.192  # k3s-home
-      - ip: 100.73.122.53   # k3s-hetzner
-      - ip: 100.73.218.33   # k3s-nuc
+      - ip: 192.168.1.228  # home VM
+      - ip: 192.168.1.230  # NUC
     ports:
       - name: admin
         port: 3903

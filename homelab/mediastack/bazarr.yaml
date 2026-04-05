@@ -32,19 +32,6 @@ spec:
       labels:
         app: bazarr
     spec:
-      # Prefer running on the same node as PostgreSQL primary for lower latency
-      affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    cnpg.io/cluster: postgres-shared
-                    role: primary
-                topologyKey: kubernetes.io/hostname
-                namespaces:
-                  - database
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -135,7 +122,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     # Authelia forward auth
-    traefik.ingress.kubernetes.io/router.middlewares: authelia-authelia@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:

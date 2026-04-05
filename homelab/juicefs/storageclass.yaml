@@ -17,7 +17,6 @@ parameters:
   csi.storage.k8s.io/provisioner-secret-namespace: kube-system
   csi.storage.k8s.io/node-publish-secret-name: juicefs-secret
   csi.storage.k8s.io/node-publish-secret-namespace: kube-system
-  # ─── WAN Optimizations ─────────────────────────────────────────────
-  # Aggressive metadata caching to minimize cross-WAN Postgres calls
-  # Data cache to reduce S3 round-trips
-  juicefs/mount-options: "cache-size=20480,writeback,prefetch=3,buffer-size=512,max-uploads=10,attr-cache=300,entry-cache=300,dir-entry-cache=300,open-cache=300"
+  # Metadata caching — reduces Postgres round-trips, important for Nextcloud small files
+  # Data cache is less critical on LAN but kept for burst performance
+  juicefs/mount-options: "cache-size=4096,writeback,prefetch=2,buffer-size=256,max-uploads=10,attr-cache=300,entry-cache=300,dir-entry-cache=300,open-cache=300"

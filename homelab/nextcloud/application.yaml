@@ -35,18 +35,6 @@ spec:
         strategy:
           type: Recreate
 
-        # ─── Prefer same node as PostgreSQL primary ───────────────────
-        affinity:
-          podAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              - labelSelector:
-                  matchLabels:
-                    cnpg.io/cluster: postgres-shared
-                    role: primary
-                topologyKey: kubernetes.io/hostname
-                namespaces:
-                  - database
-
         # ─── Lifecycle hooks ──────────────────────────────────────────
         # Disable maintenance mode before the pod is killed so the
         # replacement pod does not find a stale lock in the DB.
@@ -180,16 +168,6 @@ spec:
                 memory: 64Mi
               limits:
                 memory: 256Mi
-            affinity:
-              podAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  - labelSelector:
-                      matchLabels:
-                        cnpg.io/cluster: postgres-shared
-                        role: primary
-                    topologyKey: kubernetes.io/hostname
-                    namespaces:
-                      - database
 
         # ─── Ingress via Traefik ───────────────────────────────────────
         ingress:
