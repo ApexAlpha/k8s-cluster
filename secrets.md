@@ -52,8 +52,8 @@ Uses the same JuiceFS gateway credentials to write backups to the `postgres-back
 
 ```bash
 kubectl create secret generic cnpg-barman-credentials -n database \
-  --from-literal=access-key=<juicefs-gateway-access-key> \
-  --from-literal=secret-key=<juicefs-gateway-secret-key> \
+  --from-literal=access-key=GK8bedc300d10921b4f7e57472 \
+  --from-literal=secret-key=ec18c41709d06868d0de288916eaf444973ec8c7cd0938eeab3f1d52c59e3e05 \
   --dry-run=client -o yaml | \
   kubeseal --controller-namespace kube-system --controller-name sealed-secrets-controller --format yaml \
   > homelab/cnpg/cluster/cnpg-barman-credentials-sealed.yaml
