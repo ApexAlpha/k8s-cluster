@@ -6,3 +6,5 @@ resources:
   - kube-prometheus-stack.yaml
   - loki.yaml
   - promtail.yaml
+  - grafana-admin-sealed.yaml
+  - grafana-db-sealed.yaml

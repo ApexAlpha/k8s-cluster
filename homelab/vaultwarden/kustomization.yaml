@@ -7,3 +7,5 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - vaultwarden-db-sealed.yaml
+  - vaultwarden-admin-sealed.yaml

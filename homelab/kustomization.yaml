@@ -53,7 +53,7 @@ resources:
   - cyberchef/application.yaml
   - mealie/application.yaml
   - audiobookshelf/application.yaml
-  - nextcloud/application.yaml
+  - nextcloud/
   - homepage/application.yaml
 
   # Admin - Wave 25

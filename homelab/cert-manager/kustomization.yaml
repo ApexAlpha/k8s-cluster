@@ -6,3 +6,4 @@ resources:
   - reflector.yaml
   - cluster-issuer.yaml
   - certificate.yaml
+  - cloudflare-api-token-sealed.yaml

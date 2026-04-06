@@ -8,3 +8,5 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - paperless-db-sealed.yaml
+  - paperless-secret-sealed.yaml
