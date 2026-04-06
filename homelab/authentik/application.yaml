@@ -16,14 +16,22 @@ spec:
     helm:
       valuesObject:
         authentik:
-          secret_key: ""  # from secret: authentik-secret, key: secret_key
           postgresql:
             host: postgres-shared-rw.database.svc.cluster.local
             name: authentik
             user: app
-            password: ""  # from secret: authentik-secret, key: pg_pass
           redis:
             host: authentik-redis-master
+
+        envValueFrom:
+          AUTHENTIK_SECRET_KEY:
+            secretKeyRef:
+              name: authentik-secret
+              key: secret_key
+          AUTHENTIK_POSTGRESQL__PASSWORD:
+            secretKeyRef:
+              name: authentik-secret
+              key: pg_pass
 
         # Use external CNPG cluster
         postgresql:
