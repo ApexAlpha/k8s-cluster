@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: paperless-db
+  namespace: paperless
+spec:
+  encryptedData:
+    password: AgCSX2mvZTyed+HMZqJRZDUMG70Jq7uLnx94qxuMRjyXFB+bAxBQhujSJPwl6tF4fbzIrrPhFXFFAZK2gV4mjxaca2QTvp2HGMNQmSq1CBJF7zHNnIbgBfzYdAfciVUG+rhG6hFKslxQYrqyp61KwSHo9G/HXBWNKSBoKSDJsZ2BKF9krb/tfsFbLfFpZLGlmiUuUSHWurcvbjWQDZBQJ1BlO6t6bnFG35beeNiAlrFYRcrPsWhw3fHlTrlVua9ThMPhoIJ+foYXD6OEW16RJ8h4JSc7cY/HJq0BcZFloSxrnj852q2bJNTKXTPgc2A+USC/Bf5J5tJL8BxXg6SmNHKfsSom1OQ1gGEU3LmaWR+Xq4ivsIPRxBaj/RA/5ldTXmAomQYWdiVORsO7SlRECmTpFeKSEdYCy2hsd26MLOdIrK3MbvwAeqdTHhRFrKlyJArg7jGdh8ufE+PP4IMYNny6JYJZTfP0GVtQr7R9FQ+DxC/QD7Td7p0YzQsNVkeFdJ+hL4rQTxJNRkr3KSLX+kqd7pwQzFcM//NaVgAaAug4GN4R+fQoYC0e/OKOcqVTN6OSJkDX11ncgtr8qpxSPoMLaMDWuBsGSuubBKx1Z78bGJmK6wLbLQV0XtNap7RIJP5PuC+WcsJyCJdKi8YCjywYoXaa9ydMCRF606G5Rb++3Pc81K2HzQxjLjYGXCk620ccEwMChqe2AfwSG/gdwd6iP+G6wudTWf8eqBEKlXD071gaWsae2hAdLB42/wI3O8Hm6I+7Dw3T1OJcDBQUHMBL
+  template:
+    metadata:
+      name: paperless-db
+      namespace: paperless
