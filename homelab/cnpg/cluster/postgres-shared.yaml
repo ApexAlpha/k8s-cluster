@@ -83,6 +83,23 @@ spec:
         - CREATE DATABASE bazarr OWNER app;
 
 
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://postgres-backups/
+      endpointURL: http://juicefs-s3-gateway.kube-system.svc.cluster.local:9000
+      s3Credentials:
+        accessKeyId:
+          name: cnpg-barman-credentials
+          key: access-key
+        secretAccessKey:
+          name: cnpg-barman-credentials
+          key: secret-key
+      wal:
+        compression: gzip
+      data:
+        compression: gzip
+    retentionPolicy: "7d"
+
   resources:
     requests:
       cpu: 100m

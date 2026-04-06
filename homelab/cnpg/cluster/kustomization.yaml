@@ -6,3 +6,5 @@ namespace: database
 resources:
   - priority-class.yaml
   - postgres-shared.yaml
+  - scheduled-backup.yaml
+  - cnpg-barman-credentials-sealed.yaml

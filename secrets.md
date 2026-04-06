@@ -46,6 +46,26 @@ Then add the file to the app's `kustomization.yaml` and commit.
 
 ## Secrets by namespace
 
+### database (CNPG barman backups)
+
+Uses the same JuiceFS gateway credentials to write backups to the `postgres-backups` bucket via the S3 gateway.
+
+```bash
+kubectl create secret generic cnpg-barman-credentials -n database \
+  --from-literal=access-key=<juicefs-gateway-access-key> \
+  --from-literal=secret-key=<juicefs-gateway-secret-key> \
+  --dry-run=client -o yaml | \
+  kubeseal --controller-namespace kube-system --controller-name sealed-secrets-controller --format yaml \
+  > homelab/cnpg/cluster/cnpg-barman-credentials-sealed.yaml
+```
+
+Add to `homelab/cnpg/cluster/kustomization.yaml`:
+```yaml
+  - cnpg-barman-credentials-sealed.yaml
+```
+
+---
+
 ### cert-manager
 
 ```bash
