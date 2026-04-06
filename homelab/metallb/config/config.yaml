@@ -1,0 +1,24 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: lan-pool
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  addresses:
+    - 192.168.1.245-192.168.1.254
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: lan
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  ipAddressPools:
+    - lan-pool
+  interfaces:
+    - ens18
+    - enp89s0

@@ -1,6 +1,6 @@
 # Cluster Migration Guide
 
-Migration from 3-node WAN cluster (home + NUC + Hetzner) to 2-node LAN cluster (home VM + NUC bare metal) with Cilium CNI.
+Migration from 3-node WAN cluster (home + NUC + Hetzner) to 2-node LAN cluster (home VM + NUC bare metal).
 
 ## Target Architecture
 
@@ -9,7 +9,8 @@ Migration from 3-node WAN cluster (home + NUC + Hetzner) to 2-node LAN cluster (
 | Home VM (Proxmox) | k3s control plane + worker | 12GB | 2TB NVMe (Garage) |
 | NUC (bare metal) | k3s worker | 16GB | 2TB NVMe (Garage) |
 
-- **CNI:** Cilium (replacing Flannel)
+- **CNI:** Flannel (k3s default)
+- **LoadBalancer:** MetalLB (L2, pool 192.168.1.245-254)
 - **DNS/VPN:** WireGuard (replacing Netbird), wg-easy on Proxmox host
 - **Storage:** Garage replication factor 1 (4TB usable), JuiceFS on top
 - **Database:** CNPG single instance PG18, pinned to home VM, local-path storage
@@ -88,48 +89,29 @@ Home VM LAN IP `192.168.1.228` already set in `homelab/garage/services.yaml`.
 /usr/local/bin/k3s-uninstall.sh
 ```
 
-### 4. Reinstall k3s without Flannel
+### 4. Reinstall k3s (flannel + kube-proxy, no traefik)
 ```bash
 curl -sfL https://get.k3s.io | sh -s - \
-  --flannel-backend=none \
-  --disable-kube-proxy \
   --disable=traefik
 ```
 
-### 5. Install Cilium CLI
-Download the latest release from https://github.com/cilium/cilium-cli/releases and move the binary to `/usr/local/bin/cilium`.
-
-### 6. Install Cilium into the cluster
-```bash
-cilium install \
-  --set kubeProxyReplacement=true \
-  --set l2announcements.enabled=true \
-  --set hubble.enabled=true \
-  --set hubble.relay.enabled=true \
-  --set hubble.ui.enabled=true \
-  --set hubble.metrics.enabled="{dns,drop,tcp,flow,icmp,http}" \
-  --set prometheus.enabled=true \
-  --set operator.prometheus.enabled=true
-cilium status --wait
-```
-
-### 7. Re-apply secrets
+### 5. Re-apply secrets
 ```bash
 kubectl apply -f ~/secrets-backup.yaml
 ```
 
-### 8. Bootstrap ArgoCD
+### 6. Bootstrap ArgoCD
 ```bash
 kubectl apply -f bootstrap/
 ```
-ArgoCD will sync everything from git including the Cilium L2 pool and announcement policy.
+ArgoCD will sync everything from git. MetalLB (wave 4-5) will come up before apps and assign LoadBalancer IPs from the pool.
 Monitor progress:
 ```bash
 argocd app list
 ```
 
-### 9. Update CoreDNS after Traefik gets its IP
-Once Traefik has a LoadBalancer IP from the Cilium pool:
+### 7. Update CoreDNS after Traefik gets its IP
+Once Traefik has a LoadBalancer IP from the MetalLB pool:
 ```bash
 kubectl get svc -n kube-system traefik
 ```
@@ -226,14 +208,14 @@ headscale routes enable -r <route-id>
 ```
 Remote Tailscale clients can now reach `192.168.1.245` (Traefik) and any other LAN IP.
 
-### Cilium L2 + Blocky for DNS
-- Cilium L2 announcement pool: `192.168.1.245-254` (already in repo at `homelab/cilium/`)
-- Give Blocky a LoadBalancer service — Cilium assigns it a LAN IP on port 53
+### MetalLB + Blocky for DNS
+- MetalLB L2 pool: `192.168.1.245-254` (already in repo at `homelab/metallb/`)
+- Blocky has a LoadBalancer service — MetalLB assigns it a LAN IP on port 53
 - Set that IP as DNS server in UniFi DHCP settings
 - LAN clients get ad blocking and `*.k8s.hu.ls` resolution without VPN
 
-### Traefik via Cilium L2
-- Traefik service type is already `LoadBalancer` — Cilium assigns it a LAN IP
+### Traefik via MetalLB
+- Traefik service type is already `LoadBalancer` — MetalLB assigns it a LAN IP
 - Port forward 443 on router to that IP for external access
 - Update `homelab/coredns/coredns-custom.yaml` with the assigned IP
 
@@ -257,13 +239,11 @@ Once cluster is healthy, NUC is joined, and backups are configured:
 - [ ] CNPG on PG18, single instance, home VM
 - [ ] Garage replication factor 1, both nodes, 4TB usable
 - [ ] JuiceFS connected to local Garage on each node
-- [ ] Cilium installed, Hubble enabled
-- [ ] Hubble metrics flowing to Grafana
 - [ ] Headscale running on Proxmox host (already done)
 - [ ] Home VM joined to Headscale as subnet router (192.168.1.0/24 advertised)
-- [ ] Cilium L2 pool active (192.168.1.245-254)
-- [ ] Blocky on Cilium L2 IP, set as LAN DNS in UniFi
-- [ ] Traefik on Cilium L2 IP, port 443 forwarded from router
+- [ ] MetalLB pool active (192.168.1.245-254)
+- [ ] Blocky on MetalLB IP, set as LAN DNS in UniFi
+- [ ] Traefik on MetalLB IP, port 443 forwarded from router
 - [ ] CoreDNS coredns-custom.yaml updated with Traefik LAN IP
 - [ ] Immich ML pinned to NUC (Intel iGPU)
 - [ ] Plex transcoding pinned to NUC (QuickSync)

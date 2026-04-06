@@ -22,6 +22,8 @@ spec:
       # Use host network to reach local Garage at 127.0.0.1:3900
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
       containers:
         - name: s3
           image: juicedata/mount:ce-v1.3.1@sha256:ddba2917edee5af0e0dc367c79aae55f91de4666f8c13795d238b937d44e3b3c
