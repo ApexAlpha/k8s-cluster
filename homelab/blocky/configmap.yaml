@@ -12,7 +12,7 @@ data:
 
     customDNS:
       mapping:
-        "*.k8s.hu.ls": 192.168.1.245
+        k8s.hu.ls: 192.168.1.245
 
     blocking:
       blackLists:
