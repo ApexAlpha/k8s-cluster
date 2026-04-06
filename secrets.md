@@ -302,3 +302,19 @@ Add all to `homelab/mediastack/kustomization.yaml`:
   - prowlarr-db-credentials-sealed.yaml
   - bazarr-db-credentials-sealed.yaml
 ```
+
+---
+
+## 4. Format JuiceFS
+
+After all secrets are applied and the JuiceFS gateway pod is running, the filesystem must be formatted once against the Postgres metadata database. This only needs to be done on a fresh install.
+
+```bash
+kubectl exec -n kube-system -it deploy/juicefs-gateway -- juicefs format \
+  --storage s3 \
+  --bucket "http://garage-s3.garage.svc.cluster.local:3900/juicefs-data" \
+  --access-key <garage-key-id> \
+  --secret-key <garage-secret> \
+  "postgres://app:<cnpg-app-password>@postgres-shared-rw.database.svc.cluster.local/juicefs" \
+  juicefs
+```
