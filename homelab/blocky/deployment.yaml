@@ -18,6 +18,7 @@ spec:
       containers:
         - name: blocky
           image: ghcr.io/0xerr0r/blocky:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - name: dns-udp
               containerPort: 53
