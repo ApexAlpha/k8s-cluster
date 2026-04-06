@@ -9,6 +9,10 @@ data:
       default:
         - 1.1.1.1
         - 1.0.0.1
+      k8s.hu.ls:
+        - 10.43.0.10  # CoreDNS cluster IP
+      hu.ls:
+        - 10.43.0.10  # CoreDNS cluster IP
 
     blocking:
       blackLists:
