@@ -33,7 +33,7 @@ spec:
           image:
             registry: docker.io
             repository: bitnami/redis
-            tag: 7.4.2-debian-12-r6
+            digest: sha256:8beb49786cd278b0e0e2494aff147e3a1a84d354fca94b4a27b049f7d951069d
 
         server:
           env:
