@@ -24775,10 +24775,8 @@ data:
   resource.exclusions: |
     ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter
     - apiGroups:
-      - ''
       - discovery.k8s.io
       kinds:
-      - Endpoints
       - EndpointSlice
     ### Internal Kubernetes resources excluded reduce the number of watched events
     - apiGroups:
