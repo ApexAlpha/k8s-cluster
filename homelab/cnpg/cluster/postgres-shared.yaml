@@ -31,8 +31,8 @@ spec:
       max_connections: "300"
 
       # Memory
-      shared_buffers: "512MB"
-      effective_cache_size: "1.5GB"
+      shared_buffers: "1GB"
+      effective_cache_size: "3GB"
       work_mem: "16MB"
       maintenance_work_mem: "128MB"
 
@@ -113,9 +113,9 @@ spec:
   resources:
     requests:
       cpu: 100m
-      memory: 512Mi
+      memory: 1Gi
     limits:
-      memory: 2Gi
+      memory: 4Gi
 
 
   monitoring:
