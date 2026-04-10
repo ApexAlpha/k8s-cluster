@@ -54,7 +54,7 @@ spec:
 
       containers:
         - name: plex
-          image: lscr.io/linuxserver/plex:latest
+          image: lscr.io/linuxserver/plex:latest@sha256:09fe33e5efd991681ea3cbd3e3cb262cd1ae26d4a0145a4141ead284d8f21de6
           imagePullPolicy: IfNotPresent
           ports:
             - name: plex
