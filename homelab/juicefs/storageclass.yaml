@@ -19,4 +19,6 @@ parameters:
   csi.storage.k8s.io/node-publish-secret-namespace: kube-system
   # Metadata caching — reduces Postgres round-trips, important for Nextcloud small files
   # Data cache is less critical on LAN but kept for burst performance
-  juicefs/mount-options: "cache-size=4096,writeback,prefetch=2,buffer-size=256,max-uploads=10,attr-cache=300,entry-cache=300,dir-entry-cache=300,open-cache=300"
+  # cache-size=512: Garage is local LAN so large data cache wastes RAM with little benefit.
+  # buffer-size=128: reduced from 256, sufficient for homelab workloads.
+  juicefs/mount-options: "cache-size=512,writeback,prefetch=1,buffer-size=128,max-uploads=10,attr-cache=300,entry-cache=300,dir-entry-cache=300,open-cache=300"
