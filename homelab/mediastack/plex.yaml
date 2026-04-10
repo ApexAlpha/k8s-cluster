@@ -72,6 +72,8 @@ spec:
             # Advertise the NUC's LAN IP so clients on the network can find it
             - name: ADVERTISE_IP
               value: "http://192.168.1.230:32400"
+            - name: PLEX_CLAIM
+              value: "claim-REPLACEME"
 
           volumeMounts:
             - name: config

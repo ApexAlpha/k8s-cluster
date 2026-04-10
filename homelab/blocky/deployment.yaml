@@ -15,6 +15,7 @@ spec:
       labels:
         app: blocky
     spec:
+      priorityClassName: dns-critical
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -42,10 +43,10 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 50Mi
+              memory: 256Mi
             limits:
               cpu: 200m
-              memory: 128Mi
+              memory: 512Mi
           readinessProbe:
             tcpSocket:
               port: 53
