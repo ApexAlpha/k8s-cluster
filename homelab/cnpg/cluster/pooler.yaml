@@ -29,10 +29,11 @@ spec:
       affinity:
         nodeSelector:
           kubernetes.io/hostname: k3s-home
-
-  resources:
-    requests:
-      cpu: 10m
-      memory: 32Mi
-    limits:
-      memory: 128Mi
+      containers:
+        - name: pgbouncer
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
