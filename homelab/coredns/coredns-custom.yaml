@@ -4,6 +4,10 @@ metadata:
   name: coredns-custom
   namespace: kube-system
 data:
+  override.override: |
+    forward . 1.1.1.1 1.0.0.1 8.8.8.8 {
+        policy sequential
+    }
   k8s-hu-ls.server: |
     k8s.hu.ls:53 {
         errors
