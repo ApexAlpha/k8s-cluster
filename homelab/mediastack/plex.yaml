@@ -59,6 +59,7 @@ spec:
           ports:
             - name: plex
               containerPort: 32400
+              hostPort: 32400
               protocol: TCP
           env:
             - name: PUID
