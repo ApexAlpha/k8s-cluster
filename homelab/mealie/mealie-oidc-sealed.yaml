@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: mealie-oidc
+  namespace: mealie
+spec:
+  encryptedData:
+    client_secret: AgASJilIHkT2fbkhDhxGJ7sExZuR2PLZ9W5XAPfOFn8itdh/TPyAU1cC2lpMCTqxOpSjeZ4sOwBaViP9BsLlgmH/VnlHenrunSgzcCfyJ4ivIheQskF4EXGDQSJVk1SaMZ2cbWpj81JGQSvbxLf8xnFz2s5UUNG0ExvcGG7/4lSSxRzlN+Y1B51wxJszHa5Bvp3N/Rtg+4f8R4m6M5YR3vCPJ5jIkklwuJ0Mh76EpKz8VpWsFvub72LQTaeIAHvbHG723w2tTFIDYASj/50Hw+YlW9ZXH1C74vrxvjVElbr/D4aykTixRfq480+5zFiKRQJiSV+slEyhLbJAcTNBzsoyqQy9qM8QwB8xhUzhVNZP4jocadJLbt8U9wybJlJjbPsCd/GeXMf74bic/IrV+UB6jUVdwi3wOHLqHMcGCbinsKs3kibsHs0Wc4VPELjdxF6YXwQZV5sw1CEQ6XeCbnDwJ7brU26RT90V/JRQr0VpE29vUeNkhJQUZShYkl7XgDMuxhUyGwTawvwDt+gQ56h9bN9JLho7pIPNcO1FSrFishz6HJXpp+N72jQXs4udAhVf+8Zg7jtj4HXs2kTKQQh+NnlBMWwTO5STnBjnYcz8wawRwwoP2+dA82FP1cmKaJ7uIMl875j8io2vP0X3Fv+OFhvdOTiKfcsbM/r5EzZwGwJTI904G0/M3kLs6Ozj50w8d82lDCJ0hhYnGsliLdcc1Gb5zDn4NrWXl8wn3EEDLmE0pd9qMeHTJSQc2NWLgiWWsLconZKWr6PMKVoyBG0LaZZaI0DPc3GP17KncyiVvfSew5lCfD5st5G7spjTPWdbGp4d7pJ1vowUhE+cvgdHWwVZ8RHAhm0WS9OGUbe6EA==
+  template:
+    metadata:
+      name: mealie-oidc
+      namespace: mealie

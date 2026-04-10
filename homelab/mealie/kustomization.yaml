@@ -8,3 +8,4 @@ resources:
   - service.yaml
   - ingress.yaml
   - mealie-db-sealed.yaml
+  - mealie-oidc-sealed.yaml
