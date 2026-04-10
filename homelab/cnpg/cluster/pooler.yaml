@@ -26,9 +26,8 @@ spec:
   # Keep pooler co-located with the PG primary
   template:
     spec:
-      affinity:
-        nodeSelector:
-          kubernetes.io/hostname: k3s-home
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
       containers:
         - name: pgbouncer
           resources:
