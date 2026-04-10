@@ -10,17 +10,17 @@ spec:
   priorityClassName: database-critical
 
   # Single instance — control plane is on home VM, no point in replica
-  instances: 1
+  instances: 2
 
   # Standard CNPG image — includes pgvector, PGAudit, Postgres Failover Slots
   imageName: ghcr.io/cloudnative-pg/postgresql:18
 
   primaryUpdateStrategy: unsupervised
 
-  # Pin to home VM node — uses local-path storage, must stay here
+  # Spread primary and replica across nodes for zero-downtime rolling restarts
   affinity:
-    nodeSelector:
-      kubernetes.io/hostname: k3s-home
+    podAntiAffinityType: required
+    topologyKey: kubernetes.io/hostname
 
   storage:
     storageClass: local-path

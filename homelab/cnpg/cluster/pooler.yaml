@@ -23,11 +23,8 @@ spec:
       # Keep client connections alive indefinitely (apps reconnect on their own)
       client_idle_timeout: "0"
 
-  # Keep pooler co-located with the PG primary
   template:
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home
       containers:
         - name: pgbouncer
           resources:
