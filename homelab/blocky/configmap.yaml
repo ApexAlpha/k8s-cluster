@@ -8,7 +8,6 @@ data:
     upstreamTimeout: 5s
 
     upstream:
-      strategy: parallel_best
       default:
         - 1.1.1.1
         - 1.0.0.1
