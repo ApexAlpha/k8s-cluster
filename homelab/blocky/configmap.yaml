@@ -5,10 +5,17 @@ metadata:
   namespace: blocky
 data:
   config.yml: |
+    upstreamTimeout: 5s
+
     upstream:
+      strategy: parallel_best
       default:
         - 1.1.1.1
         - 1.0.0.1
+        - 8.8.8.8
+        - 9.9.9.9
+
+    startVerifyUpstream: false
 
     customDNS:
       mapping:
