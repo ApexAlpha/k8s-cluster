@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spegel
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://spegel-org.github.io/spegel
+    chart: spegel
+    targetRevision: v0.0.30
+    helm:
+      valuesObject:
+        # k3s containerd socket and registry config paths
+        spegel:
+          containerdSock: /run/k3s/containerd/containerd.sock
+          containerdRegistryConfigPath: /etc/rancher/k3s/registries.yaml
+          containerdContentPath: /var/lib/rancher/k3s/agent/containerd/io.containerd.content.v1.content
+          containerdSnapshotterPath: /var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.overlayfs
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: spegel
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
