@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rclone-config
+  namespace: cluster-backup
+data:
+  rclone.conf: |
+    [garage]
+    type = s3
+    provider = Other
+    endpoint = http://garage-s3.garage.svc.cluster.local:3900
+    force_path_style = true
+    no_check_bucket = true
+
+    [nas]
+    type = sftp
+    host = 86.82.52.4
+    port = 22022
+    key_file = /secrets/ssh-private-key
+    known_hosts_file = /secrets/known-hosts
+    # OpenSSH 6.7 compatibility
+    use_insecure_cipher = true

@@ -70,6 +70,10 @@ spec:
             podMonitorSelectorNilUsesHelmValues: false
             ruleSelectorNilUsesHelmValues: false
 
+        prometheusOperator:
+          admissionWebhooks:
+            enabled: false
+
         alertmanager:
           enabled: false
 

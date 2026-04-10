@@ -1,0 +1,67 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: garage-to-nas
+  namespace: cluster-backup
+spec:
+  schedule: "0 4 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: rclone
+              image: rclone/rclone:latest
+              args:
+                - sync
+                - garage:
+                - nas:/i-data/71a461ba/nfs/NFS_NAS/backup_k3s_cluster_garage
+                - --config=/config/rclone.conf
+                - --transfers=2
+                - --checkers=4
+                - --retries=5
+                - --low-level-retries=10
+                - --timeout=5m
+                - --contimeout=60s
+                - --size-only
+                - --stats=10m
+                - --log-level=INFO
+              env:
+                - name: RCLONE_CONFIG_GARAGE_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup-credentials
+                      key: garage-access-key
+                - name: RCLONE_CONFIG_GARAGE_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup-credentials
+                      key: garage-secret-key
+                - name: RCLONE_CONFIG_NAS_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: backup-credentials
+                      key: nas-user
+              volumeMounts:
+                - name: rclone-config
+                  mountPath: /config
+                - name: ssh-secrets
+                  mountPath: /secrets
+                  readOnly: true
+          volumes:
+            - name: rclone-config
+              configMap:
+                name: rclone-config
+            - name: ssh-secrets
+              secret:
+                secretName: backup-credentials
+                defaultMode: 0400
+                items:
+                  - key: ssh-private-key
+                    path: ssh-private-key
+                  - key: known-hosts
+                    path: known-hosts
