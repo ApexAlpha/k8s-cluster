@@ -30,7 +30,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: machine-learning
-          image: ghcr.io/immich-app/immich-machine-learning:release@sha256:33b17015c3d14f2565e9b8cd36b48a70027b14b5cd20da7fbfff21a370b0309c
+          image: ghcr.io/immich-app/immich-machine-learning:release@sha256:ccea091ea02086bb9a4712497a6db945a10548f7817101fa18e9b20fdb4f746f
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
