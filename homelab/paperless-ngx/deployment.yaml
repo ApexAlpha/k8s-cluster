@@ -53,7 +53,7 @@ spec:
             - name: PAPERLESS_DBENGINE
               value: "postgresql"
             - name: PAPERLESS_DBHOST
-              value: "postgres-shared-pooler.database.svc"
+              value: "postgres-shared-rw.database.svc"
             - name: PAPERLESS_DBPORT
               value: "5432"
             - name: PAPERLESS_DBNAME

@@ -17,7 +17,7 @@ spec:
       valuesObject:
         authentik:
           postgresql:
-            host: postgres-shared-pooler.database.svc.cluster.local
+            host: postgres-shared-rw.database.svc.cluster.local
             name: authentik
             user: app
           redis:
@@ -66,6 +66,9 @@ spec:
 
         worker:
           replicas: 1
+          startupProbe:
+            failureThreshold: 60
+            periodSeconds: 10
           env:
             - name: AUTHENTIK_SECRET_KEY
               valueFrom:
