@@ -1,33 +1,88 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blocky
+  name: blocky-home
   namespace: blocky
   labels:
     app: blocky
+    blocky-instance: home
 spec:
-  replicas: 2
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 0
+  replicas: 1
   selector:
     matchLabels:
       app: blocky
+      blocky-instance: home
   template:
     metadata:
       labels:
         app: blocky
+        blocky-instance: home
     spec:
       priorityClassName: dns-critical
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: blocky
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
+      containers:
+        - name: blocky
+          image: ghcr.io/0xerr0r/blocky:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: dns-udp
+              containerPort: 53
+              protocol: UDP
+            - name: dns-tcp
+              containerPort: 53
+              protocol: TCP
+            - name: http
+              containerPort: 4000
+          volumeMounts:
+            - name: config
+              mountPath: /app/config.yml
+              subPath: config.yml
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              cpu: 200m
+              memory: 512Mi
+          readinessProbe:
+            tcpSocket:
+              port: 53
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 53
+            initialDelaySeconds: 10
+            periodSeconds: 30
+      volumes:
+        - name: config
+          configMap:
+            name: blocky-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocky-nuc
+  namespace: blocky
+  labels:
+    app: blocky
+    blocky-instance: nuc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blocky
+      blocky-instance: nuc
+  template:
+    metadata:
+      labels:
+        app: blocky
+        blocky-instance: nuc
+    spec:
+      priorityClassName: dns-critical
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       containers:
         - name: blocky
           image: ghcr.io/0xerr0r/blocky:latest

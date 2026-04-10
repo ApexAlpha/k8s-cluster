@@ -6,16 +6,15 @@ GitOps-managed Kubernetes homelab cluster using ArgoCD.
 
 **Domain:** `*.k8s.hu.ls`
 
-**Nodes (geographically distributed, connected via Netbird):**
-- Proxmox VM at home (colocated with bulk storage NAS and gaming Windows VM)
-- Intel NUC at parents' house
-- Dedicated server at Hetzner
+**Nodes (flat LAN, both on home network):**
+- Proxmox VM (colocated with bulk storage NAS and gaming Windows VM)
+- Intel NUC
 
 ## Architecture
 
 - **GitOps:** ArgoCD with automated sync (prune + selfHeal)
-- **Ingress:** Traefik exposed via Netbird VPN
-- **Storage:** SeaweedFS (distributed object storage with S3 API)
+- **Ingress:** Traefik exposed via WireGuard tunnel
+- **Storage:** Garage (S3-compatible object storage) + JuiceFS
 - **Database:** CloudNativePG shared PostgreSQL cluster
 - **Secrets:** Kept out of git (`*secret*.yaml` in .gitignore)
 
@@ -29,7 +28,7 @@ GitOps-managed Kubernetes homelab cluster using ArgoCD.
 
 ## Sync Wave Order
 
-5: Operators (CNPG, Netbird, Kured) → 10: Databases → 14-17: Storage (SeaweedFS) → 20+: Apps → 30: Homepage
+5: Operators (CNPG, Kured) → 10: Databases → 14-18: Storage (Garage, JuiceFS) → 20+: Apps → 30: Homepage
 
 ## Key Applications
 
