@@ -45,6 +45,15 @@ spec:
 
       checkpoint_timeout: "15min"
       max_wal_size: "2GB"
+      min_wal_size: "1GB"
+      # Spread checkpoint writes over 90% of checkpoint_timeout to avoid I/O spikes
+      checkpoint_completion_target: "0.9"
+
+      # NVMe: random I/O is nearly as fast as sequential — planner should prefer index scans
+      random_page_cost: "1.1"
+      # NVMe supports high I/O parallelism; default (1) is tuned for spinning disks
+      effective_io_concurrency: "200"
+      maintenance_io_concurrency: "100"
 
       # Logging
       log_statement: "ddl"
@@ -86,7 +95,8 @@ spec:
   backup:
     barmanObjectStore:
       destinationPath: s3://postgres-backups/
-      endpointURL: http://juicefs-s3-gateway.kube-system.svc.cluster.local:9000
+      # Direct to Garage — removes circular dependency (JuiceFS → PG → JuiceFS backup)
+      endpointURL: http://garage-s3.garage.svc.cluster.local:3900
       s3Credentials:
         accessKeyId:
           name: cnpg-barman-credentials

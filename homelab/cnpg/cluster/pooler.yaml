@@ -1,0 +1,38 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Pooler
+metadata:
+  name: postgres-shared-pooler
+  namespace: database
+spec:
+  cluster:
+    name: postgres-shared
+  instances: 1
+  type: rw
+
+  pgbouncer:
+    # session mode: each client gets a dedicated server connection for its session.
+    # Safer than transaction mode for this app mix — Nextcloud, Authentik, and
+    # Paperless-NGX all use advisory locks (Django/PHP ORM patterns) which break
+    # under transaction pooling.
+    poolMode: session
+    parameters:
+      max_client_conn: "400"
+      default_pool_size: "20"
+      # Release idle server connections after 10 minutes
+      server_idle_timeout: "600"
+      # Keep client connections alive indefinitely (apps reconnect on their own)
+      client_idle_timeout: "0"
+
+  # Keep pooler co-located with the PG primary
+  template:
+    spec:
+      affinity:
+        nodeSelector:
+          kubernetes.io/hostname: k3s-home
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
