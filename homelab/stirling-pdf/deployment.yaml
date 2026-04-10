@@ -50,7 +50,7 @@ spec:
             - name: SYSTEM_DATASOURCE_ENABLECUSTOMDATABASE
               value: "true"
             - name: SYSTEM_DATASOURCE_CUSTOMDATABACKENDURL
-              value: "jdbc:postgresql://postgres-shared-rw.database.svc:5432/stirling"
+              value: "jdbc:postgresql://postgres-shared-pooler.database.svc:5432/stirling"
             - name: SYSTEM_DATASOURCE_USERNAME
               value: "stirling"
             - name: SYSTEM_DATASOURCE_PASSWORD

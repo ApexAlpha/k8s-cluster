@@ -58,7 +58,7 @@ spec:
             - name: POSTGRES_ENABLED
               value: "true"
             - name: POSTGRES_HOST
-              value: "postgres-shared-rw.database.svc"
+              value: "postgres-shared-pooler.database.svc"
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_USERNAME

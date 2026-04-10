@@ -25,7 +25,7 @@ spec:
           #   --from-literal=password=<password>
           env:
             GF_DATABASE_TYPE: postgres
-            GF_DATABASE_HOST: postgres-shared-rw.database.svc:5432
+            GF_DATABASE_HOST: postgres-shared-pooler.database.svc:5432
             GF_DATABASE_NAME: grafana
             GF_DATABASE_USER: app
           envValueFrom:

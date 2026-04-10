@@ -62,7 +62,7 @@ spec:
               value: "DisabledForLocalAddresses"
             # PostgreSQL configuration
             - name: SONARR__POSTGRES__HOST
-              value: "postgres-shared-rw.database.svc"
+              value: "postgres-shared-pooler.database.svc"
             - name: SONARR__POSTGRES__PORT
               value: "5432"
             - name: SONARR__POSTGRES__USER

@@ -17,7 +17,7 @@ spec:
       valuesObject:
         authentik:
           postgresql:
-            host: postgres-shared-rw.database.svc.cluster.local
+            host: postgres-shared-pooler.database.svc.cluster.local
             name: authentik
             user: app
           redis:

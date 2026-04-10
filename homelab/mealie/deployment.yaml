@@ -48,7 +48,7 @@ spec:
             - name: DB_ENGINE
               value: "postgres"
             - name: POSTGRES_SERVER
-              value: "postgres-shared-rw.database.svc"
+              value: "postgres-shared-pooler.database.svc"
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_DB

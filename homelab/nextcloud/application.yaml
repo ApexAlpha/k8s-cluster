@@ -140,7 +140,7 @@ spec:
         externalDatabase:
           enabled: true
           type: postgresql
-          host: postgres-shared-rw.database.svc:5432
+          host: postgres-shared-pooler.database.svc:5432
           database: nextcloud
           user: app
           existingSecret:

@@ -62,7 +62,7 @@ spec:
               value: "DisabledForLocalAddresses"
             # PostgreSQL configuration
             - name: RADARR__POSTGRES__HOST
-              value: "postgres-shared-rw.database.svc"
+              value: "postgres-shared-pooler.database.svc"
             - name: RADARR__POSTGRES__PORT
               value: "5432"
             - name: RADARR__POSTGRES__USER

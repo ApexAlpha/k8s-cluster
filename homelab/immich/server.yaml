@@ -40,7 +40,7 @@ spec:
           env:
             # Database — shared CNPG cluster (same as paperless, vaultwarden)
             - name: DB_HOSTNAME
-              value: "postgres-shared-rw.database.svc"
+              value: "postgres-shared-pooler.database.svc"
             - name: DB_PORT
               value: "5432"
             - name: DB_DATABASE_NAME
