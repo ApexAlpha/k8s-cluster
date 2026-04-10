@@ -25,7 +25,7 @@ data:
         ads:
           - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
           - https://adaway.org/hosts.txt
-          - https://v.firebog.net/hosts/EasyList.txt
+          - https://v.firebog.net/hosts/Easylist.txt
           - https://v.firebog.net/hosts/Easyprivacy.txt
         malware:
           - https://v.firebog.net/hosts/Prigent-Malware.txt
