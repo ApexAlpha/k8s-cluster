@@ -10,9 +10,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://spegel-org.github.io/spegel
+    repoURL: oci://ghcr.io/spegel-org/helm-charts
     chart: spegel
-    targetRevision: v0.0.30
+    targetRevision: 0.6.0
     helm:
       valuesObject:
         # k3s containerd socket and registry config paths
