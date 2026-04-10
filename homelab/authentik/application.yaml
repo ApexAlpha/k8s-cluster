@@ -20,6 +20,7 @@ spec:
             host: postgres-shared-rw.database.svc.cluster.local
             name: authentik
             user: app
+            conn_max_age: 0
           redis:
             host: authentik-redis-master
 
