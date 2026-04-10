@@ -18,8 +18,8 @@ spec:
               image: rclone/rclone:latest
               args:
                 - sync
-                - garage:
-                - nas:/i-data/71a461ba/nfs/NFS_NAS/backup_k3s_cluster_garage
+                - "garage:"
+                - "nas:/i-data/71a461ba/nfs/NFS_NAS/backup_k3s_cluster_garage"
                 - --config=/config/rclone.conf
                 - --transfers=2
                 - --checkers=4
