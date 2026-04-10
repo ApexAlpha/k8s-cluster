@@ -10,7 +10,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: oci://ghcr.io/spegel-org/helm-charts/spegel
+    repoURL: oci://ghcr.io/spegel-org/helm-charts
+    chart: spegel
     targetRevision: 0.6.0
     helm:
       valuesObject:
