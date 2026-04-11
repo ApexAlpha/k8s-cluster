@@ -13,7 +13,6 @@ resources:
 
   # Operators - Wave 5
   - cnpg/operator.yaml
-  - spegel/application.yaml
 
   # Databases - Wave 10 (after operators)
   - cnpg/cluster-app.yaml
