@@ -21,4 +21,8 @@ parameters:
   # Data cache is less critical on LAN but kept for burst performance
   # cache-size=512: Garage is local LAN so large data cache wastes RAM with little benefit.
   # buffer-size=128: reduced from 256, sufficient for homelab workloads.
-  juicefs/mount-options: "cache-size=512,writeback,prefetch=1,buffer-size=128,max-uploads=10,attr-cache=300,entry-cache=300,dir-entry-cache=300,open-cache=300"
+  # cache-size=10: Garage runs on localhost (hostNetwork), sub-ms latency makes large block
+  # caches pointless. 10MB keeps hot metadata blocks without wasting RAM.
+  # buffer-size=32: reduced from 128 — sufficient for homelab I/O on local LAN.
+  # Saves ~150-175MB per mount pod (~2.5GB total across 17 pods).
+  juicefs/mount-options: "cache-size=10,writeback,prefetch=1,buffer-size=32,max-uploads=10,attr-cache=300,entry-cache=300,dir-entry-cache=300,open-cache=300"

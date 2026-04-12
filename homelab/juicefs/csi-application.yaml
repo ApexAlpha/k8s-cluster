@@ -45,10 +45,10 @@ spec:
             - resources:
                 requests:
                   cpu: 50m
-                  memory: 256Mi
+                  memory: 128Mi
                 limits:
                   cpu: 1000m
-                  memory: 1Gi
+                  memory: 384Mi
 
         # StorageClass managed separately in juicefs/storageclass.yaml
         storageClasses: []
