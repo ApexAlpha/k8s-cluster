@@ -30,6 +30,7 @@ spec:
           # cross-node. Garage is leaderless so hitting local is always valid
           # and saves a WAN hop on every S3 operation.
           hostNetwork: true
+          mountTimeout: 120
           resources:
             requests:
               cpu: 50m
