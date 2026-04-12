@@ -17,6 +17,13 @@ spec:
 
   primaryUpdateStrategy: unsupervised
 
+  # Give PostgreSQL time to complete WAL recovery / pg_upgrade before the
+  # liveness probe fires. Default startDelay is 3600 but livenessProbeTimeout
+  # defaults to 5s which is too tight during heavy I/O migrations.
+  startDelay: 300
+  stopDelay: 300
+  livenessProbeTimeout: 30
+
   # Spread primary and replica across nodes for zero-downtime rolling restarts
   affinity:
     podAntiAffinityType: required

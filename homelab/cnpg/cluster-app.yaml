@@ -17,6 +17,15 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: database
+  ignoreDifferences:
+    # CNPG mutates the Cluster spec during rolling updates (e.g. image digest,
+    # currentPrimary). Without this, selfHeal re-applies the manifest mid-operation,
+    # which CNPG interprets as a new desired state and restarts pods again.
+    - group: postgresql.cnpg.io
+      kind: Cluster
+      jsonPointers:
+        - /status
+        - /spec/imageName
   syncPolicy:
     automated:
       prune: true
@@ -24,3 +33,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+      - PruneLast=true
