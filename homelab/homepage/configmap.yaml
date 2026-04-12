@@ -72,7 +72,7 @@ data:
     - Media:
         - Audiobookshelf:
             icon: audiobookshelf
-            href: https://abs.k8s.hu.ls
+            href: https://abs.k8s.hu.ls/audiobookshelf/
             description: Audiobooks
             widget:
               type: audiobookshelf
