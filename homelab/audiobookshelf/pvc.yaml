@@ -11,4 +11,4 @@ spec:
   storageClassName: juicefs
   resources:
     requests:
-      storage: 110Gi
+      storage: 10Gi

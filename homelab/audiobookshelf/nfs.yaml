@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-audiobooks
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-audiobooks
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+    - intr
+    - rsize=1048576
+    - wsize=1048576
+  nfs:
+    server: 192.168.1.192
+    path: /mnt/HDD_ZFS/nas_backup/data/audiobooks
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: audiobookshelf-audiobooks
+  namespace: audiobookshelf
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-audiobooks
+  resources:
+    requests:
+      storage: 10Ti

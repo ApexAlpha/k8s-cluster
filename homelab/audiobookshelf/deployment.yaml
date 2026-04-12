@@ -44,9 +44,8 @@ spec:
             - name: data
               mountPath: /metadata
               subPath: metadata
-            - name: data
+            - name: audiobooks
               mountPath: /audiobooks
-              subPath: audiobooks
           resources:
             requests:
               cpu: 100m
@@ -73,3 +72,6 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: audiobookshelf-data
+        - name: audiobooks
+          persistentVolumeClaim:
+            claimName: audiobookshelf-audiobooks
