@@ -80,11 +80,11 @@ data:
               key: "{{HOMEPAGE_VAR_ABS_KEY}}"
         - Plex:
             icon: plex
-            href: http://100.73.28.98:32400/web
+            href: http://192.168.1.230:32400/web
             description: Stream Movies & TV
             widget:
               type: plex
-              url: http://100.73.28.98:32400
+              url: http://192.168.1.230:32400
               key: "{{HOMEPAGE_VAR_PLEX_KEY}}"
         - Sonarr:
             icon: sonarr
