@@ -132,14 +132,19 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /usr/src/paperless/data
-            - name: media
+              subPath: data
+            - name: data
               mountPath: /usr/src/paperless/media
-            - name: export
+              subPath: media
+            - name: data
               mountPath: /usr/src/paperless/export
-            - name: consume
+              subPath: export
+            - name: data
               mountPath: /usr/src/paperless/consume
-            - name: paperless-index
+              subPath: consume
+            - name: data
               mountPath: /usr/src/paperless/index
+              subPath: index
           
           resources:
             requests:
@@ -167,17 +172,5 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: paperless-data
-        - name: media
-          persistentVolumeClaim:
-            claimName: paperless-media
-        - name: export
-          persistentVolumeClaim:
-            claimName: paperless-export
-        - name: consume
-          persistentVolumeClaim:
-            claimName: paperless-consume
-        - name: paperless-index
-          persistentVolumeClaim:
-            claimName: paperless-index
+            claimName: paperless-storage
 

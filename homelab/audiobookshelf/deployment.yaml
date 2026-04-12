@@ -40,12 +40,15 @@ spec:
             - name: ROUTER_BASE_PATH
               value: "/"
           volumeMounts:
-            - name: config
+            - name: data
               mountPath: /config
-            - name: metadata
+              subPath: config
+            - name: data
               mountPath: /metadata
-            - name: audiobooks
+              subPath: metadata
+            - name: data
               mountPath: /audiobooks
+              subPath: audiobooks
           resources:
             requests:
               cpu: 100m
@@ -69,12 +72,6 @@ spec:
             failureThreshold: 10
 
       volumes:
-        - name: config
+        - name: data
           persistentVolumeClaim:
-            claimName: audiobookshelf-config
-        - name: metadata
-          persistentVolumeClaim:
-            claimName: audiobookshelf-metadata
-        - name: audiobooks
-          persistentVolumeClaim:
-            claimName: audiobookshelf-audiobooks
+            claimName: audiobookshelf-data

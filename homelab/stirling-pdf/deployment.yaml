@@ -59,10 +59,12 @@ spec:
                   name: stirling-db-credentials
                   key: password
           volumeMounts:
-            - name: configs
-              mountPath: /configs        # settings.yml + user/auth database
-            - name: custom
-              mountPath: /customFiles    # branding, CSS, JS overrides
+            - name: data
+              mountPath: /configs
+              subPath: configs
+            - name: data
+              mountPath: /customFiles
+              subPath: customFiles
           resources:
             requests:
               cpu: 50m
@@ -83,9 +85,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
       volumes:
-        - name: configs
+        - name: data
           persistentVolumeClaim:
-            claimName: stirling-pdf-configs
-        - name: custom
-          persistentVolumeClaim:
-            claimName: stirling-pdf-custom
+            claimName: stirling-pdf-data

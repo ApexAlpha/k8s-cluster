@@ -1,9 +1,7 @@
----
-# Data: thumbnails, classification models, misc app data
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-data
+  name: paperless-storage
   namespace: paperless
   annotations:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
@@ -13,69 +11,4 @@ spec:
   storageClassName: juicefs
   resources:
     requests:
-      storage: 10Gi
----
-# Media: actual document files (PDFs, images, etc)
-# JuiceFS provides compression and encryption over Garage S3 backend
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-media
-  namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 50Gi
----
-# Export: for bulk exports (temporary data)
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-export
-  namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 10Gi
----
-# Consume: watch folder for auto-import (temporary landing zone)
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-consume
-  namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 5Gi
----
-# Index: Whoosh search index (heavy fsync)
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-index
-  namespace: paperless
-  annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 2Gi
+      storage: 80Gi
