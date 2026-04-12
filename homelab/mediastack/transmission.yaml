@@ -101,9 +101,11 @@ spec:
               containerPort: 9091
             - name: peer-tcp
               containerPort: 51413
+              hostPort: 51413
               protocol: TCP
             - name: peer-udp
               containerPort: 51413
+              hostPort: 51413
               protocol: UDP
           env:
             - name: PUID
@@ -187,24 +189,3 @@ spec:
                 name: transmission
                 port:
                   number: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: transmission-peer
-  namespace: media
-spec:
-  type: NodePort
-  selector:
-    app: transmission
-  ports:
-    - name: peer-tcp
-      port: 51413
-      targetPort: 51413
-      nodePort: 31413
-      protocol: TCP
-    - name: peer-udp
-      port: 51413
-      targetPort: 51413
-      nodePort: 31413
-      protocol: UDP
