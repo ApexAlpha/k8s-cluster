@@ -5,6 +5,10 @@ metadata:
   namespace: frigate
 data:
   config.yml: |
+    # Disable Frigate's built-in TLS — Traefik handles TLS termination
+    tls:
+      enabled: false
+
     # MQTT — enable when Home Assistant is set up
     mqtt:
       enabled: false
