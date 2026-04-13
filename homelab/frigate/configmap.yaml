@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frigate-config
+  namespace: frigate
+data:
+  config.yml: |
+    # MQTT — enable when Home Assistant is set up
+    mqtt:
+      enabled: false
+
+    # Intel OpenVINO detector using NUC iGPU
+    detectors:
+      ov:
+        type: openvino
+        device: GPU
+        # Fall back to CPU if iGPU is unstable:
+        # device: CPU
+
+    model:
+      width: 300
+      height: 300
+      input_tensor: nhwc
+      input_pixel_format: bgr
+      path: /openvino-model/ssdlite_mobilenet_v2.xml
+
+    # Intel QuickSync hardware acceleration for ffmpeg
+    ffmpeg:
+      hwaccel_args: preset-intel-qsv-h264
+
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+      events:
+        retain:
+          default: 14
+          mode: active_objects
+
+    snapshots:
+      enabled: true
+      retain:
+        default: 14
+
+    # Camera definitions — add once Pi RTSP stream is running
+    # mediamtx on the Pi publishes: rtsp://<pi-ip>:8554/cam
+    cameras: {}
+    # cameras:
+    #   raspberry_pi:
+    #     ffmpeg:
+    #       inputs:
+    #         - path: rtsp://192.168.1.x:8554/cam
+    #           roles:
+    #             - detect
+    #             - record
+    #     detect:
+    #       width: 1920
+    #       height: 1080
+    #       fps: 5
