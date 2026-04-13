@@ -9,6 +9,10 @@ data:
     tls:
       enabled: false
 
+    # TEMPORARY: remove after grabbing new password from logs
+    auth:
+      reset_admin_password: true
+
     # MQTT — enable when Home Assistant is set up
     mqtt:
       enabled: false
