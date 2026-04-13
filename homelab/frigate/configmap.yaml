@@ -34,7 +34,9 @@ data:
 
     record:
       enabled: true
-      retain:
+      continuous:
+        days: 0
+      motion:
         days: 7
       alerts:
         retain:

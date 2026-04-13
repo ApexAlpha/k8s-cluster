@@ -59,9 +59,9 @@ spec:
             storageSpec:
               volumeClaimTemplate:
                 spec:
-                  storageClassName: juicefs
+                  storageClassName: local-path
                   accessModes:
-                    - ReadWriteMany
+                    - ReadWriteOnce
                   resources:
                     requests:
                       storage: 20Gi
