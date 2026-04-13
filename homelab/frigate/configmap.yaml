@@ -17,9 +17,7 @@ data:
     detectors:
       ov:
         type: openvino
-        device: GPU
-        # Fall back to CPU if iGPU is unstable:
-        # device: CPU
+        device: AUTO
 
     model:
       width: 300
