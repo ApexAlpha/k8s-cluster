@@ -54,6 +54,7 @@ resources:
   - mealie/application.yaml
   - audiobookshelf/application.yaml
   - nextcloud/
+  - frigate/application.yaml
   - homepage/application.yaml
 
   # Backup - Wave 25 (after storage)
