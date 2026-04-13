@@ -20,6 +20,7 @@ metadata:
   namespace: audiobookshelf
   annotations:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
+    argocd.argoproj.io/sync-wave: "25"
 spec:
   accessModes:
     - ReadWriteOnce
