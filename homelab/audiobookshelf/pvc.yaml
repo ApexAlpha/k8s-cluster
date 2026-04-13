@@ -18,6 +18,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: audiobookshelf-data-local
   namespace: audiobookshelf
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
     - ReadWriteOnce
