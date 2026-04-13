@@ -19,6 +19,8 @@ spec:
       labels:
         app: immich-machine-learning
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -83,4 +85,4 @@ spec:
       volumes:
         - name: ml-cache
           persistentVolumeClaim:
-            claimName: immich-ml-cache
+            claimName: immich-ml-cache-local

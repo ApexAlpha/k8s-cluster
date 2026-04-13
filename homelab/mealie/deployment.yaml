@@ -19,6 +19,8 @@ spec:
       labels:
         app: mealie
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -112,4 +114,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: mealie-data
+            claimName: mealie-data-local

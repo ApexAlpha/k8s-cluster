@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-config
+  namespace: immich
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
+      containers:
+        - name: migrate
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              echo "==> immich-library"
+              cp -av /library-old/. /library-new/
+              echo "==> immich-ml-cache"
+              cp -av /ml-cache-old/. /ml-cache-new/
+              echo "==> Done"
+          volumeMounts:
+            - name: library-old
+              mountPath: /library-old
+            - name: library-new
+              mountPath: /library-new
+            - name: ml-cache-old
+              mountPath: /ml-cache-old
+            - name: ml-cache-new
+              mountPath: /ml-cache-new
+      volumes:
+        - name: library-old
+          persistentVolumeClaim:
+            claimName: immich-library
+        - name: library-new
+          persistentVolumeClaim:
+            claimName: immich-library-local
+        - name: ml-cache-old
+          persistentVolumeClaim:
+            claimName: immich-ml-cache
+        - name: ml-cache-new
+          persistentVolumeClaim:
+            claimName: immich-ml-cache-local

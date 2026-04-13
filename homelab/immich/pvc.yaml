@@ -1,6 +1,5 @@
 ---
 # Library: all uploaded photos, videos, thumbnails, and encoded videos.
-# SeaweedFS gives you replication across geo-distributed nodes.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -16,8 +15,22 @@ spec:
     requests:
       storage: 200Gi
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-library-local
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 200Gi
+---
 # ML model cache: CLIP, facial recognition models etc.
-# juicefs for node failover - models are large and slow to re-download.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -29,6 +42,21 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: juicefs
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-ml-cache-local
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
   resources:
     requests:
       storage: 10Gi

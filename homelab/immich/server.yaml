@@ -19,6 +19,8 @@ spec:
       labels:
         app: immich-server
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -110,4 +112,4 @@ spec:
       volumes:
         - name: library
           persistentVolumeClaim:
-            claimName: immich-library
+            claimName: immich-library-local

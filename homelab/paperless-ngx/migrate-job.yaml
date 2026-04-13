@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-config
+  namespace: paperless
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
+      containers:
+        - name: migrate
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              echo "==> paperless-storage"
+              cp -av /old/. /new/
+              echo "==> Done"
+          volumeMounts:
+            - name: old
+              mountPath: /old
+            - name: new
+              mountPath: /new
+      volumes:
+        - name: old
+          persistentVolumeClaim:
+            claimName: paperless-storage
+        - name: new
+          persistentVolumeClaim:
+            claimName: paperless-storage-local

@@ -19,6 +19,8 @@ spec:
       labels:
         app: vaultwarden
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -89,4 +91,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: vaultwarden-data
+            claimName: vaultwarden-data-local
