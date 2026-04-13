@@ -14,6 +14,21 @@ spec:
     requests:
       storage: 1Gi
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-config-local
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -72,6 +87,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: config-old
+              mountPath: /config-old
             - name: media
               mountPath: /data
           resources:
@@ -98,6 +115,9 @@ spec:
             failureThreshold: 3
       volumes:
         - name: config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-local
+        - name: config-old
           persistentVolumeClaim:
             claimName: qbittorrent-config
         - name: media

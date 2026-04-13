@@ -15,6 +15,21 @@ spec:
       storage: 1Gi
 ---
 apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: transmission-config-local
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: transmission-scripts
@@ -117,6 +132,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: config-old
+              mountPath: /config-old
             - name: media
               mountPath: /data
           resources:
@@ -146,6 +163,9 @@ spec:
             failureThreshold: 3
       volumes:
         - name: config
+          persistentVolumeClaim:
+            claimName: transmission-config-local
+        - name: config-old
           persistentVolumeClaim:
             claimName: transmission-config
         - name: media

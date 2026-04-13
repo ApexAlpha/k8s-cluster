@@ -13,6 +13,21 @@ spec:
     requests:
       storage: 2Gi
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bazarr-config-local
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -32,6 +47,8 @@ spec:
       labels:
         app: bazarr
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -73,6 +90,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: config-old
+              mountPath: /config-old
             - name: media
               mountPath: /data
           resources:
@@ -99,6 +118,9 @@ spec:
             failureThreshold: 3
       volumes:
         - name: config
+          persistentVolumeClaim:
+            claimName: bazarr-config-local
+        - name: config-old
           persistentVolumeClaim:
             claimName: bazarr-config
         - name: media
