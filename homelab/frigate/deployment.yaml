@@ -41,6 +41,8 @@ spec:
           ports:
             - name: http
               containerPort: 8971
+            - name: api
+              containerPort: 5000
             - name: rtsp
               containerPort: 8554
             - name: webrtc-tcp
@@ -78,19 +80,19 @@ spec:
           startupProbe:
             httpGet:
               path: /api/version
-              port: http
+              port: api
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/version
-              port: http
+              port: api
             periodSeconds: 30
             failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /api/version
-              port: http
+              port: api
             periodSeconds: 10
             failureThreshold: 3
       volumes:
