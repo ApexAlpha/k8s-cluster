@@ -19,6 +19,8 @@ spec:
       labels:
         app: audiobookshelf
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -75,7 +77,7 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: audiobookshelf-data
+            claimName: audiobookshelf-data-local
         - name: audiobooks
           persistentVolumeClaim:
             claimName: audiobookshelf-audiobooks
