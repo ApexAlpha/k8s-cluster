@@ -2,21 +2,6 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: qbittorrent-config
-  namespace: media
-  annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: qbittorrent-config-local
   namespace: media
   annotations:
@@ -87,8 +72,6 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: config-old
-              mountPath: /config-old
             - name: media
               mountPath: /data
           resources:
@@ -117,9 +100,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: qbittorrent-config-local
-        - name: config-old
-          persistentVolumeClaim:
-            claimName: qbittorrent-config
         - name: media
           persistentVolumeClaim:
             claimName: media-data
