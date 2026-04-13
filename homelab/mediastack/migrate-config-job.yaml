@@ -1,0 +1,119 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-config
+  namespace: media
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: Never
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
+      containers:
+        - name: migrate
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              echo "==> sonarr"
+              cp -av /sonarr-old/. /sonarr-new/
+              echo "==> sonarr-4k"
+              cp -av /sonarr-4k-old/. /sonarr-4k-new/
+              echo "==> radarr"
+              cp -av /radarr-old/. /radarr-new/
+              echo "==> radarr-4k"
+              cp -av /radarr-4k-old/. /radarr-4k-new/
+              echo "==> bazarr"
+              cp -av /bazarr-old/. /bazarr-new/
+              echo "==> prowlarr"
+              cp -av /prowlarr-old/. /prowlarr-new/
+              echo "==> qbittorrent"
+              cp -av /qbittorrent-old/. /qbittorrent-new/
+              echo "==> transmission"
+              cp -av /transmission-old/. /transmission-new/
+              echo "==> All done"
+          volumeMounts:
+            - name: sonarr-old
+              mountPath: /sonarr-old
+            - name: sonarr-new
+              mountPath: /sonarr-new
+            - name: sonarr-4k-old
+              mountPath: /sonarr-4k-old
+            - name: sonarr-4k-new
+              mountPath: /sonarr-4k-new
+            - name: radarr-old
+              mountPath: /radarr-old
+            - name: radarr-new
+              mountPath: /radarr-new
+            - name: radarr-4k-old
+              mountPath: /radarr-4k-old
+            - name: radarr-4k-new
+              mountPath: /radarr-4k-new
+            - name: bazarr-old
+              mountPath: /bazarr-old
+            - name: bazarr-new
+              mountPath: /bazarr-new
+            - name: prowlarr-old
+              mountPath: /prowlarr-old
+            - name: prowlarr-new
+              mountPath: /prowlarr-new
+            - name: qbittorrent-old
+              mountPath: /qbittorrent-old
+            - name: qbittorrent-new
+              mountPath: /qbittorrent-new
+            - name: transmission-old
+              mountPath: /transmission-old
+            - name: transmission-new
+              mountPath: /transmission-new
+      volumes:
+        - name: sonarr-old
+          persistentVolumeClaim:
+            claimName: sonarr-config
+        - name: sonarr-new
+          persistentVolumeClaim:
+            claimName: sonarr-config-local
+        - name: sonarr-4k-old
+          persistentVolumeClaim:
+            claimName: sonarr-4k-config
+        - name: sonarr-4k-new
+          persistentVolumeClaim:
+            claimName: sonarr-4k-config-local
+        - name: radarr-old
+          persistentVolumeClaim:
+            claimName: radarr-config
+        - name: radarr-new
+          persistentVolumeClaim:
+            claimName: radarr-config-local
+        - name: radarr-4k-old
+          persistentVolumeClaim:
+            claimName: radarr-4k-config
+        - name: radarr-4k-new
+          persistentVolumeClaim:
+            claimName: radarr-4k-config-local
+        - name: bazarr-old
+          persistentVolumeClaim:
+            claimName: bazarr-config
+        - name: bazarr-new
+          persistentVolumeClaim:
+            claimName: bazarr-config-local
+        - name: prowlarr-old
+          persistentVolumeClaim:
+            claimName: prowlarr-config
+        - name: prowlarr-new
+          persistentVolumeClaim:
+            claimName: prowlarr-config-local
+        - name: qbittorrent-old
+          persistentVolumeClaim:
+            claimName: qbittorrent-config
+        - name: qbittorrent-new
+          persistentVolumeClaim:
+            claimName: qbittorrent-config-local
+        - name: transmission-old
+          persistentVolumeClaim:
+            claimName: transmission-config
+        - name: transmission-new
+          persistentVolumeClaim:
+            claimName: transmission-config-local
