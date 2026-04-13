@@ -90,18 +90,24 @@ spec:
               cpu: "1"
               memory: 1Gi
 
+          startupProbe:
+            httpGet:
+              path: /api/app/about
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/app/about
               port: http
-            initialDelaySeconds: 30
             periodSeconds: 30
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /api/app/about
               port: http
-            initialDelaySeconds: 15
             periodSeconds: 10
+            failureThreshold: 3
 
       volumes:
         - name: data

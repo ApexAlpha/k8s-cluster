@@ -72,18 +72,24 @@ spec:
             limits:
               cpu: "2"
               memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /api/v1/info/status
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /api/v1/info/status
               port: http
-            initialDelaySeconds: 20
             periodSeconds: 30
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /api/v1/info/status
               port: http
-            initialDelaySeconds: 10
             periodSeconds: 10
+            failureThreshold: 3
       volumes:
         - name: data
           persistentVolumeClaim:

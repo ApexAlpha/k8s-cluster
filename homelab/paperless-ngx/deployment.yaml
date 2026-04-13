@@ -154,19 +154,26 @@ spec:
               cpu: 2000m
               memory: 2Gi
           
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
           livenessProbe:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 60
             periodSeconds: 30
+            failureThreshold: 3
             timeoutSeconds: 10
           readinessProbe:
             httpGet:
               path: /
               port: http
-            initialDelaySeconds: 30
             periodSeconds: 10
+            failureThreshold: 3
             timeoutSeconds: 5
       
       volumes:

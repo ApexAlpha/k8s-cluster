@@ -52,18 +52,24 @@ spec:
               containerPort: 4466
           args:
             - "-in-cluster"
+          startupProbe:
+            httpGet:
+              path: /
+              port: 4466
+            failureThreshold: 15
+            periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /
               port: 4466
-            initialDelaySeconds: 30
             periodSeconds: 10
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /
               port: 4466
-            initialDelaySeconds: 5
             periodSeconds: 5
+            failureThreshold: 3
           resources:
             requests:
               cpu: 10m

@@ -73,16 +73,21 @@ spec:
             limits:
               cpu: 500m
               memory: 256Mi
+          startupProbe:
+            tcpSocket:
+              port: http
+            failureThreshold: 15
+            periodSeconds: 5
           livenessProbe:
             tcpSocket:
               port: http
-            initialDelaySeconds: 30
             periodSeconds: 30
+            failureThreshold: 3
           readinessProbe:
             tcpSocket:
               port: http
-            initialDelaySeconds: 10
             periodSeconds: 10
+            failureThreshold: 3
       volumes:
         # Read-only ConfigMap source — only used by the initContainer
         - name: configmap
