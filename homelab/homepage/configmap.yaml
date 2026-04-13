@@ -22,7 +22,7 @@ data:
       Media:
         icon: mdi-filmstrip
         style: row
-        columns: 4
+        columns: 5
       Downloads:
         icon: mdi-download
         style: row
@@ -70,6 +70,13 @@ data:
             description: Data Encoding & Analysis
 
     - Media:
+        - Frigate:
+            icon: frigate
+            href: https://frigate.k8s.hu.ls
+            description: Camera NVR
+            widget:
+              type: frigate
+              url: http://frigate.frigate.svc
         - Audiobookshelf:
             icon: audiobookshelf
             href: https://abs.k8s.hu.ls/audiobookshelf/
