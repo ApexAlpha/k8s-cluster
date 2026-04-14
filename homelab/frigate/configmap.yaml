@@ -9,6 +9,10 @@ data:
     tls:
       enabled: false
 
+    # Auth handled by Authentik via Traefik forwardAuth middleware
+    auth:
+      enabled: false
+
     # MQTT — enable when Home Assistant is set up
     mqtt:
       enabled: false

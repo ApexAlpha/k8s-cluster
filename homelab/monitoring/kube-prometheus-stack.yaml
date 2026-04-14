@@ -65,6 +65,17 @@ spec:
                   resources:
                     requests:
                       storage: 20Gi
+            # WAL replay can take >5min on large datasets; give it time before probes kill the pod
+            startupProbe:
+              httpGet:
+                path: /-/ready
+                port: http-web
+                scheme: HTTP
+              initialDelaySeconds: 0
+              periodSeconds: 15
+              failureThreshold: 60
+              timeoutSeconds: 3
+
             # Discover ServiceMonitors/PodMonitors in all namespaces
             serviceMonitorSelectorNilUsesHelmValues: false
             podMonitorSelectorNilUsesHelmValues: false
