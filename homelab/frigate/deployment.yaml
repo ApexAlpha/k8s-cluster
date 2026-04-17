@@ -35,6 +35,25 @@ spec:
           operator: "Exists"
           effect: "NoExecute"
           tolerationSeconds: 30
+      initContainers:
+        - name: seed-config
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /config/config.yml ]; then
+                cp /configmap/config.yml /config/config.yml
+                echo "Seeded config.yml from ConfigMap"
+              else
+                echo "config.yml already exists, skipping seed"
+              fi
+          volumeMounts:
+            - name: data
+              mountPath: /config
+            - name: config
+              mountPath: /configmap/config.yml
+              subPath: config.yml
       containers:
         - name: frigate
           image: ghcr.io/blakeblackshear/frigate:stable@sha256:1724960349dad0bd2ae8ec884171a6fd5755a4dc242a0e66cadbda9c0e85c99b
@@ -57,9 +76,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /config
-            - name: config
-              mountPath: /config/config.yml
-              subPath: config.yml
             - name: media
               mountPath: /media
             - name: shm
