@@ -12,10 +12,11 @@ data:
     # Auth handled by Authentik via Traefik forwardAuth middleware
     auth:
       enabled: false
-      proxy:
-        header_map:
-          user: x-forwarded-user
-        default_role: admin
+
+    proxy:
+      header_map:
+        user: x-forwarded-user
+      default_role: admin
 
     # MQTT — enable when Home Assistant is set up
     mqtt:
