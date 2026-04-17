@@ -42,8 +42,12 @@ spec:
             - sh
             - -c
             - |
-              cp /configmap/config.yml /config/config.yml
-              echo "Seeded config.yml from ConfigMap"
+              if [ ! -f /config/config.yml ]; then
+                cp /configmap/config.yml /config/config.yml
+                echo "Seeded config.yml from ConfigMap"
+              else
+                echo "config.yml already exists, skipping seed"
+              fi
           volumeMounts:
             - name: data
               mountPath: /config
