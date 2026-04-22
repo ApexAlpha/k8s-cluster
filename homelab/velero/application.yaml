@@ -22,8 +22,8 @@ spec:
 
         kubectl:
           image:
-            repository: bitnami/kubectl
-            tag: "1.27"
+            repository: registry.k8s.io/kubectl
+            tag: "1.32.3"
 
         credentials:
           useSecret: true
