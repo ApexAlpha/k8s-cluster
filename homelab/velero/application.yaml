@@ -22,8 +22,8 @@ spec:
 
         kubectl:
           image:
-            repository: rancher/kubectl
-            tag: "v1.32.3"
+            repository: alpine/k8s
+            tag: "1.32.3"
 
         credentials:
           useSecret: true
