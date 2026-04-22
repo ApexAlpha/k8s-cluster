@@ -6,6 +6,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "14"
 spec:
+  ipFamilyPolicy: SingleStack
+  ipFamilies: [IPv4]
   selector:
     app: garage
   ports:
@@ -23,6 +25,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "14"
 spec:
+  ipFamilyPolicy: SingleStack
+  ipFamilies: [IPv4]
   selector:
     app: garage
   ports:
