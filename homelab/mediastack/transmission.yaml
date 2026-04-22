@@ -65,8 +65,6 @@ spec:
       labels:
         app: transmission
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home  # Same location as NFS server
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

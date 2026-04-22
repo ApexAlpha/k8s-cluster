@@ -20,8 +20,6 @@ spec:
       labels:
         app: stirling-pdf
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

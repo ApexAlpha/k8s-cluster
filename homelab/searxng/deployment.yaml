@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: it-tools
-  namespace: it-tools
+  name: searxng
+  namespace: searxng
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   labels:
-    app: it-tools
+    app: searxng
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: it-tools
+      app: searxng
   template:
     metadata:
       labels:
-        app: it-tools
+        app: searxng
     spec:
       tolerations:
         - key: "node.kubernetes.io/unreachable"
@@ -27,27 +27,38 @@ spec:
           effect: "NoExecute"
           tolerationSeconds: 30
       containers:
-        - name: it-tools
-          image: corentinth/it-tools:latest@sha256:8b8128748339583ca951af03dfe02a9a4d7363f61a216226fc28030731a5a61f
+        - name: searxng
+          image: searxng/searxng:latest
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
+          env:
+            - name: SEARXNG_SETTINGS_PATH
+              value: /etc/searxng/settings.yml
+          volumeMounts:
+            - name: settings
+              mountPath: /etc/searxng
+              readOnly: true
           resources:
             requests:
-              cpu: 10m
-              memory: 32Mi
-            limits:
-              cpu: 200m
+              cpu: 50m
               memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 30
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
             initialDelaySeconds: 5
             periodSeconds: 10
+      volumes:
+        - name: settings
+          configMap:
+            name: searxng-settings

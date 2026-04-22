@@ -33,8 +33,6 @@ spec:
       labels:
         app: qbittorrent
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

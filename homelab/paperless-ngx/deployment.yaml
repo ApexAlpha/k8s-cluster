@@ -19,8 +19,6 @@ spec:
       labels:
         app: paperless
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: k3s-nuc
       securityContext:
         fsGroup: 1000
   #     runAsUser: 1000

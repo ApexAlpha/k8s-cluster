@@ -3,10 +3,7 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-  - pv.yaml
-  - pvc.yaml
   - configmap.yaml
-  - rpc-secret-sealed.yaml
   - deployment.yaml
-  - services.yaml
+  - service.yaml
   - ingress.yaml

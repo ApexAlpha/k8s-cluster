@@ -13,6 +13,7 @@ resources:
 
   # Operators - Wave 5
   - cnpg/operator.yaml
+  - velero/
 
   # Databases - Wave 10 (after operators)
   - cnpg/cluster-app.yaml
@@ -51,6 +52,7 @@ resources:
   - stirling-pdf/application.yaml
   - it-tools/application.yaml
   - cyberchef/application.yaml
+  - searxng/application.yaml
   - mealie/application.yaml
   - audiobookshelf/application.yaml
   - nextcloud/

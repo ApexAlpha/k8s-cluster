@@ -1,0 +1,90 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: default
+  source:
+    repoURL: https://vmware-tanzu.github.io/helm-charts
+    chart: velero
+    targetRevision: 7.2.1
+    helm:
+      values: |
+        initContainers:
+          - name: velero-plugin-for-aws
+            image: velero/velero-plugin-for-aws:v1.10.1
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
+
+        credentials:
+          useSecret: true
+          existingSecret: velero-credentials
+
+        configuration:
+          uploaderType: kopia
+          defaultVolumesToFsBackup: true
+          backupStorageLocation:
+            - name: default
+              provider: aws
+              bucket: velero-backups
+              config:
+                region: garage
+                s3ForcePathStyle: "true"
+                s3Url: http://garage-s3.garage.svc.cluster.local:3900
+                checksumAlgorithm: ""
+
+        deployNodeAgent: true
+
+        nodeAgent:
+          # k3s stores pod volumes here, not the standard /var/lib/kubelet/pods
+          podVolumePath: /var/lib/rancher/k3s/agent/kubelet/pods
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            memory: 512Mi
+
+        schedules:
+          nightly:
+            disabled: false
+            schedule: "0 3 * * *"
+            useOwnerReferencesInBackup: false
+            template:
+              ttl: "168h0m0s"
+              storageLocation: default
+              defaultVolumesToFsBackup: true
+              # Exclude namespaces that don't need backing up
+              excludedNamespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: velero
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

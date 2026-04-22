@@ -17,6 +17,15 @@ spec:
       labels:
         app: cyberchef
     spec:
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
       containers:
         - name: cyberchef
           image: ghcr.io/gchq/cyberchef:latest@sha256:9f9205cfc20368bd9a4152f7708a9e7626525d8f4eadb1a25e5079708c5c4304

@@ -32,6 +32,8 @@ spec:
     metadata:
       labels:
         app: plex
+      annotations:
+        backup.velero.io/backup-volumes-excludes: media
     spec:
       # Pin to NUC — Intel QuickSync is on this node
       # Verify hostname with: kubectl get nodes --show-labels
