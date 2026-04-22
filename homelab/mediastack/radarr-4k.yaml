@@ -155,3 +155,29 @@ spec:
                 name: radarr-4k
                 port:
                   number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: radarr-4k-api
+  namespace: media
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - radarr-4k.k8s.hu.ls
+      secretName: wildcard-k8s-hu-ls-tls
+  rules:
+    - host: radarr-4k.k8s.hu.ls
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: radarr-4k
+                port:
+                  number: 80

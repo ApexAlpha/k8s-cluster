@@ -155,3 +155,29 @@ spec:
                 name: sonarr-4k
                 port:
                   number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sonarr-4k-api
+  namespace: media
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - sonarr-4k.k8s.hu.ls
+      secretName: wildcard-k8s-hu-ls-tls
+  rules:
+    - host: sonarr-4k.k8s.hu.ls
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: sonarr-4k
+                port:
+                  number: 80

@@ -11,7 +11,7 @@ data:
 
     server:
       # Generate with: openssl rand -hex 32
-      secret_key: "CHANGE_ME_REPLACE_WITH_RANDOM_32_BYTE_HEX_STRING"
+      secret_key: "38e96cfdf35b09f196fb9e2ef34c5a7b13dc0c523b8296a1ce0e9fa52fd42b69"
       base_url: "https://search.k8s.hu.ls/"
       bind_address: "0.0.0.0"
       port: 8080
