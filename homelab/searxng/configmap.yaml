@@ -15,6 +15,7 @@ data:
       base_url: "https://search.k8s.hu.ls/"
       bind_address: "0.0.0.0"
       port: 8080
+      limiter: false
 
     search:
       safe_search: 0
@@ -33,10 +34,6 @@ data:
     ui:
       static_use_hash: true
       default_theme: simple
-
-    # Disable bot detection — breaks programmatic API access
-    server:
-      limiter: false
 
     # openclaw API: https://search.k8s.hu.ls/search?format=json&q=<query>
     # Returns: results[].url, results[].title, results[].content
