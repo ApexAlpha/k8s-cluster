@@ -20,6 +20,10 @@ spec:
               - mountPath: /target
                 name: plugins
 
+        kubectl:
+          image:
+            tag: "1.32"
+
         credentials:
           useSecret: true
           existingSecret: velero-credentials

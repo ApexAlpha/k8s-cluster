@@ -26,19 +26,25 @@ spec:
           operator: "Exists"
           effect: "NoExecute"
           tolerationSeconds: 30
+      enableServiceLinks: false
+      initContainers:
+        - name: copy-settings
+          image: busybox:1.37@sha256:1487d0af5f52b4ba31c7e465126ee2123fe3f2305d638e7827681e7cf6c83d5e
+          command: ["cp", "/cm/settings.yml", "/etc/searxng/settings.yml"]
+          volumeMounts:
+            - name: settings-cm
+              mountPath: /cm
+            - name: settings-dir
+              mountPath: /etc/searxng
       containers:
         - name: searxng
           image: searxng/searxng:latest
           ports:
             - name: http
               containerPort: 8080
-          env:
-            - name: SEARXNG_SETTINGS_PATH
-              value: /etc/searxng/settings.yml
           volumeMounts:
-            - name: settings
+            - name: settings-dir
               mountPath: /etc/searxng
-              readOnly: true
           resources:
             requests:
               cpu: 50m
@@ -59,6 +65,8 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
       volumes:
-        - name: settings
+        - name: settings-cm
           configMap:
             name: searxng-settings
+        - name: settings-dir
+          emptyDir: {}
