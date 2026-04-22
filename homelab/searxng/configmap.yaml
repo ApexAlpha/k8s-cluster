@@ -19,12 +19,24 @@ data:
     search:
       safe_search: 0
       autocomplete: ""
-      default_lang: "auto"
+      default_lang: "en"
+      formats:
+        - html
+        - json
+
+    outgoing:
+      request_timeout: 10.0
+      max_request_timeout: 30.0
+      pool_connections: 100
+      pool_maxsize: 20
 
     ui:
       static_use_hash: true
       default_theme: simple
 
-    # JSON API enabled by default — openclaw can query:
-    # https://search.k8s.hu.ls/search?format=json&q=<query>
-    # or in-cluster via http://searxng.searxng.svc.cluster.local:8080
+    # Disable bot detection — breaks programmatic API access
+    server:
+      limiter: false
+
+    # openclaw API: https://search.k8s.hu.ls/search?format=json&q=<query>
+    # Returns: results[].url, results[].title, results[].content
