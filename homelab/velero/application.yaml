@@ -22,7 +22,7 @@ spec:
 
         kubectl:
           image:
-            tag: "1.32"
+            tag: "latest"
 
         credentials:
           useSecret: true
