@@ -47,7 +47,7 @@ spec:
 
         nodeAgent:
           # k3s stores pod volumes here, not the standard /var/lib/kubelet/pods
-          podVolumePath: /var/lib/rancher/k3s/agent/kubelet/pods
+          podVolumePath: /var/lib/kubelet/pods
           resources:
             requests:
               cpu: 50m
