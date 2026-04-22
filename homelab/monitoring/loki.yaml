@@ -34,7 +34,7 @@ spec:
           persistence:
             enabled: true
             size: 20Gi
-            storageClass: juicefs
+            storageClass: local-path
         # Disable microservice components (using SingleBinary mode)
         read:
           replicas: 0
