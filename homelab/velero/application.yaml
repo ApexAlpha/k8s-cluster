@@ -29,6 +29,8 @@ spec:
           useSecret: true
           existingSecret: velero-credentials
 
+        snapshotsEnabled: false
+
         configuration:
           uploaderType: kopia
           defaultVolumesToFsBackup: true
