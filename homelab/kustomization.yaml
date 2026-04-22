@@ -64,4 +64,5 @@ resources:
 
   # Admin - Wave 25
   - headlamp/application.yaml
+  - openclaw/application.yaml
   # - apps/plex.yaml
