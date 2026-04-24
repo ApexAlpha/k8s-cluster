@@ -40,6 +40,11 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: k3s-nuc
 
+      # Host networking gives Plex direct access to the LAN, which is required
+      # for GDM multicast discovery to work (UDP 32410-32414).
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
