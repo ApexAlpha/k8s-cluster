@@ -63,6 +63,24 @@ spec:
               containerPort: 32400
               hostPort: 32400
               protocol: TCP
+            # GDM discovery — required for Plex server to see clients (e.g. Shield)
+            # on the LAN. Multicast UDP won't cross the k8s network boundary without these.
+            - name: gdm1
+              containerPort: 32410
+              hostPort: 32410
+              protocol: UDP
+            - name: gdm2
+              containerPort: 32412
+              hostPort: 32412
+              protocol: UDP
+            - name: gdm3
+              containerPort: 32413
+              hostPort: 32413
+              protocol: UDP
+            - name: gdm4
+              containerPort: 32414
+              hostPort: 32414
+              protocol: UDP
           env:
             - name: PUID
               value: "1000"
