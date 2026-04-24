@@ -30,7 +30,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: garage
-          image: dxflrs/garage:v1.0.0
+          image: dxflrs/garage:v1.3.1@sha256:58e68794286868230708803e50495bfe7d1d1c7b696e0c2dee99b03c524fc960
           ports:
             - name: s3
               containerPort: 3900
