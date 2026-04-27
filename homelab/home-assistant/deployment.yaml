@@ -35,7 +35,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: home-assistant
-          image: ghcr.io/home-assistant/home-assistant:stable
+          image: ghcr.io/home-assistant/home-assistant:stable@sha256:c1e5f0147f4cb51ccb05bb30b62a1269cc1bd48a6274792d3b38a77ab274dfd2
           ports:
             - name: http
               containerPort: 8123
