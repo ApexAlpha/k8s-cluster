@@ -57,6 +57,7 @@ resources:
   - audiobookshelf/application.yaml
   - nextcloud/
   - frigate/application.yaml
+  - home-assistant/application.yaml
   - homepage/application.yaml
 
   # Backup - Wave 25 (after storage)
