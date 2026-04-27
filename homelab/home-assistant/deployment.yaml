@@ -40,6 +40,11 @@ spec:
             - name: http
               containerPort: 8123
               protocol: TCP
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
           env:
             - name: TZ
               value: "Europe/Amsterdam"
