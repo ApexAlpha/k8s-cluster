@@ -28,7 +28,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: cyberchef
-          image: ghcr.io/gchq/cyberchef:latest@sha256:58d2bcefe3f32b066eafca07353aae31b961ca7765fe4bcb913aba6bb8b8dd81
+          image: ghcr.io/gchq/cyberchef:latest@sha256:45082a0ac41d6beeea2daeb192d8b20c66520362854542f4fe340aab37635f66
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
