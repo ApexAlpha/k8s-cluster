@@ -93,7 +93,7 @@ spec:
               mountPath: /scripts
       containers:
         - name: transmission
-          image: lscr.io/linuxserver/transmission:latest@sha256:dd888c17f97eca1a2dda4aa7986c9080fe1b69a61aef845440f1bd9285aa3708
+          image: lscr.io/linuxserver/transmission:latest@sha256:bf92decd1387527be35139dc03e2d8c2c078a727f927ab474aef0f21f684107a
           ports:
             - name: http
               containerPort: 9091
