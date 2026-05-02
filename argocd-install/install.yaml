@@ -25262,7 +25262,7 @@ spec:
               key: applicationsetcontroller.status.max.resources.count
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         imagePullPolicy: Always
         name: argocd-applicationset-controller
         ports:
@@ -25415,7 +25415,7 @@ spec:
         - -n
         - /usr/local/bin/argocd
         - /shared/argocd-dex
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         imagePullPolicy: Always
         name: copyutil
         securityContext:
@@ -25512,7 +25512,7 @@ spec:
               key: notificationscontroller.repo.server.plaintext
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         imagePullPolicy: Always
         livenessProbe:
           tcpSocket:
@@ -25614,7 +25614,7 @@ spec:
         - argocd
         - admin
         - redis-initial-password
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         imagePullPolicy: IfNotPresent
         name: secret-init
         securityContext:
@@ -25911,7 +25911,7 @@ spec:
           value: /helm-working-dir
         - name: HELM_DATA_HOME
           value: /helm-working-dir
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -25963,7 +25963,7 @@ spec:
         - -n
         - /usr/local/bin/argocd
         - /var/run/argocd/argocd-cmp-server
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         name: copyutil
         securityContext:
           allowPrivilegeEscalation: false
@@ -26335,7 +26335,7 @@ spec:
               key: server.sync.replace.allowed
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -26719,7 +26719,7 @@ spec:
               optional: true
         - name: KUBECACHEDIR
           value: /tmp/kubecache
-        image: quay.io/argoproj/argocd:v3.3.8@sha256:5d45dc6db21db32a0638ac9128462c6d9956a90fc81760146dada5a243ff7516
+        image: quay.io/argoproj/argocd:v3.3.9@sha256:fd8a938f3ec64bfa272d17c20a56b548a97711b92bd5b0a80a485e81bc724969
         imagePullPolicy: Always
         name: argocd-application-controller
         ports:
