@@ -5,6 +5,7 @@ metadata:
   namespace: wyoming
   annotations:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
+    argocd.argoproj.io/sync-wave: "25"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -20,6 +21,7 @@ metadata:
   namespace: wyoming
   annotations:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
+    argocd.argoproj.io/sync-wave: "25"
 spec:
   accessModes:
     - ReadWriteOnce
