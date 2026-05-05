@@ -23,8 +23,6 @@ spec:
         - name: piper
           image: rhasspy/wyoming-piper:2.2.2
           args:
-            - --piper
-            - /usr/local/bin/piper
             # Dutch (primary) — Pim is the most natural standard Dutch voice
             - --voice
             - nl_NL-pim-medium
