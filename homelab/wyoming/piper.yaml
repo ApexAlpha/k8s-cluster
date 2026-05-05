@@ -21,7 +21,7 @@ spec:
         kubernetes.io/hostname: k3s-nuc
       containers:
         - name: piper
-          image: rhasspy/wyoming-piper:v2.2.2
+          image: rhasspy/wyoming-piper:2.2.2
           args:
             - --piper
             - /usr/local/bin/piper
