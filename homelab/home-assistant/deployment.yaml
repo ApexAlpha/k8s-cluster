@@ -33,6 +33,22 @@ spec:
           operator: "Exists"
           effect: "NoExecute"
           tolerationSeconds: 30
+      initContainers:
+        - name: hacs-install
+          image: alpine:3.21
+          command:
+            - sh
+            - -c
+            - |
+              if [ -d /config/custom_components/hacs ]; then
+                echo "HACS already installed, skipping"
+                exit 0
+              fi
+              apk add --no-cache bash wget unzip
+              wget -O - https://get.hacs.xyz | bash -
+          volumeMounts:
+            - name: config
+              mountPath: /config
       containers:
         - name: home-assistant
           image: ghcr.io/home-assistant/home-assistant:stable@sha256:c1e5f0147f4cb51ccb05bb30b62a1269cc1bd48a6274792d3b38a77ab274dfd2
