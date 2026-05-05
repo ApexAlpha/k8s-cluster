@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wyoming-piper
+  namespace: wyoming
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wyoming-piper
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wyoming-piper
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
+      containers:
+        - name: piper
+          image: rhasspy/wyoming-piper:latest
+          args:
+            - --piper
+            - /usr/local/bin/piper
+            # Dutch (primary) — Pim is the most natural standard Dutch voice
+            - --voice
+            - nl_NL-pim-medium
+            # English fallback
+            - --voice
+            - en_US-ryan-high
+            - --uri
+            - tcp://0.0.0.0:10200
+            - --data-dir
+            - /data
+            - --download-dir
+            - /data
+          ports:
+            - name: wyoming
+              containerPort: 10200
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "2"
+              memory: 512Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: piper-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wyoming-piper
+  namespace: wyoming
+spec:
+  selector:
+    app: wyoming-piper
+  ports:
+    - name: wyoming
+      port: 10200
+      targetPort: 10200

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wyoming-whisper
+  namespace: wyoming
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wyoming-whisper
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wyoming-whisper
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
+      containers:
+        - name: whisper
+          image: rhasspy/wyoming-faster-whisper:latest
+          args:
+            - --model
+            - medium-int8
+            # Dutch primary; HA sends per-request language overrides for English
+            - --language
+            - nl
+            - --device
+            - cpu
+            - --uri
+            - tcp://0.0.0.0:10300
+            - --data-dir
+            - /data
+          ports:
+            - name: wyoming
+              containerPort: 10300
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "4"
+              memory: 3Gi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: whisper-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wyoming-whisper
+  namespace: wyoming
+spec:
+  selector:
+    app: wyoming-whisper
+  ports:
+    - name: wyoming
+      port: 10300
+      targetPort: 10300
