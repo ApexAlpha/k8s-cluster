@@ -162,6 +162,8 @@ spec:
               storageClass: local-path
               accessMode: ReadWriteOnce
               size: 1Gi
+              annotations:
+                argocd.argoproj.io/skip-health-check: "true"
             resources:
               requests:
                 cpu: 25m
@@ -197,6 +199,8 @@ spec:
           storageClass: local-path
           accessMode: ReadWriteOnce
           size: 100Gi
+          annotations:
+            argocd.argoproj.io/skip-health-check: "true"
 
         # ─── Cron (sidecar) ───────────────────────────────────────────
         cronjob:
