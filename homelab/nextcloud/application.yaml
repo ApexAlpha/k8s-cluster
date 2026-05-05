@@ -31,6 +31,8 @@ spec:
         extraEnv:
           - name: APACHE_SERVER_NAME
             value: office.k8s.hu.ls
+          - name: TRUSTED_PROXIES
+            value: "10.0.0.0/8"
 
         strategy:
           type: Recreate
