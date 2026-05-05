@@ -159,8 +159,8 @@ spec:
           master:
             persistence:
               enabled: true
-              storageClass: juicefs
-              accessMode: ReadWriteMany
+              storageClass: local-path
+              accessMode: ReadWriteOnce
               size: 1Gi
             resources:
               requests:
@@ -194,8 +194,8 @@ spec:
         # JuiceFS provides compression & encryption over Garage S3 backend
         persistence:
           enabled: true
-          storageClass: juicefs
-          accessMode: ReadWriteMany
+          storageClass: local-path
+          accessMode: ReadWriteOnce
           size: 100Gi
 
         # ─── Cron (sidecar) ───────────────────────────────────────────

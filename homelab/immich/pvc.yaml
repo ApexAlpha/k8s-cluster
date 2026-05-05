@@ -3,21 +3,6 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: immich-library
-  namespace: immich
-  annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 200Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: immich-library-local
   namespace: immich
   annotations:
@@ -31,21 +16,6 @@ spec:
       storage: 200Gi
 ---
 # ML model cache: CLIP, facial recognition models etc.
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: immich-ml-cache
-  namespace: immich
-  annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: juicefs
-  resources:
-    requests:
-      storage: 10Gi
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

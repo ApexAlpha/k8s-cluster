@@ -20,8 +20,6 @@ resources:
 
   # Storage - Wave 14-17 (after databases)
   - garage/application.yaml         # Wave 14: Garage namespace, services, ingress
-  - juicefs/csi-application.yaml    # Wave 16: JuiceFS CSI driver (Helm)
-  - juicefs/config-application.yaml # Wave 17: JuiceFS StorageClass
   
   #Ingress
   - traefik/
