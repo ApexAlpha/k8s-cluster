@@ -41,16 +41,21 @@ spec:
               containerPort: 8123
               protocol: TCP
           securityContext:
+            privileged: true
             capabilities:
               add:
                 - NET_ADMIN
                 - NET_RAW
+                - SYS_ADMIN
           env:
             - name: TZ
               value: "Europe/Amsterdam"
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: dbus
+              mountPath: /run/dbus
+              readOnly: true
           resources:
             requests:
               cpu: 100m
@@ -80,3 +85,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: home-assistant-config
+        - name: dbus
+          hostPath:
+            path: /run/dbus

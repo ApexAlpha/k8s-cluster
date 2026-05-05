@@ -18,7 +18,7 @@ data:
       Tools:
         icon: mdi-toolbox
         style: row
-        columns: 3
+        columns: 4
       Media:
         icon: mdi-filmstrip
         style: row
@@ -30,7 +30,7 @@ data:
       Network & Admin:
         icon: mdi-server
         style: row
-        columns: 3
+        columns: 4
 
   services.yaml: |
     - Documents & Security:
@@ -68,6 +68,10 @@ data:
             icon: cyberchef
             href: https://cyberchef.k8s.hu.ls
             description: Data Encoding & Analysis
+        - SearXNG:
+            icon: searxng
+            href: https://search.k8s.hu.ls
+            description: Private Search Engine
 
     - Media:
         - Frigate:
@@ -159,10 +163,30 @@ data:
               key: "{{HOMEPAGE_VAR_BAZARR_KEY}}"
 
     - Network & Admin:
+        - Home Assistant:
+            icon: home-assistant
+            href: https://ha.k8s.hu.ls
+            description: Home Automation
+        - OpenClaw:
+            icon: mdi-paw
+            href: https://openclaw.k8s.hu.ls
+            description: Home Automation
         - UniFi:
             icon: unifi
             href: https://unifi.k8s.hu.ls
             description: Network Controller
+        - Blocky:
+            icon: blocky
+            href: https://blocky.k8s.hu.ls
+            description: DNS Ad Blocker
+        - Headlamp:
+            icon: headlamp
+            href: https://admin.k8s.hu.ls
+            description: Kubernetes Dashboard
+        - Garage:
+            icon: garage
+            href: https://garage.k8s.hu.ls
+            description: S3 Object Storage
         - ArgoCD:
             icon: argo-cd
             href: https://argo.k8s.hu.ls

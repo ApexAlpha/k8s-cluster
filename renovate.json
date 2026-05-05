@@ -66,6 +66,16 @@
       ]
     },
     {
+      "description": "Automerge non-major updates after stability delay",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest"
+      ],
+      "automerge": true
+    },
+    {
       "description": "Don't automerge ArgoCD install changes",
       "matchFileNames": [
         "argocd-install/**"
@@ -83,7 +93,9 @@
     }
   ],
   "vulnerabilityAlerts": {
-    "enabled": true
+    "enabled": true,
+    "automerge": true,
+    "minimumReleaseAge": "0 days"
   },
   "labels": [
     "dependencies",
