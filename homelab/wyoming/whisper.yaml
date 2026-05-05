@@ -21,7 +21,7 @@ spec:
         kubernetes.io/hostname: k3s-nuc
       containers:
         - name: whisper
-          image: rhasspy/wyoming-faster-whisper:latest
+          image: rhasspy/wyoming-whisper:v3.1.0
           args:
             - --model
             - medium-int8
