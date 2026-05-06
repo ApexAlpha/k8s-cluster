@@ -160,12 +160,7 @@ spec:
           architecture: standalone
           master:
             persistence:
-              enabled: true
-              storageClass: local-path
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              annotations:
-                argocd.argoproj.io/skip-health-check: "true"
+              enabled: false
             resources:
               requests:
                 cpu: 25m
