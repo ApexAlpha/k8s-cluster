@@ -85,7 +85,7 @@
     {
       "description": "Schedule updates for weekends",
       "schedule": [
-        "after 11pm every day"
+        "after 11pm"
       ],
       "matchPackageNames": [
         "*"
