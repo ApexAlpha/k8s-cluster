@@ -71,6 +71,7 @@
         "minor",
         "patch",
         "pin",
+        "digest",
         "pinDigest"
       ],
       "automerge": true
