@@ -32,7 +32,7 @@ spec:
             - name: WYOMING_LOG_LEVEL
               value: "INFO"
             - name: WYOMING_LANGUAGES
-              value: "en"
+              value: "en,nl"
             - name: TTS_OPENAI_URL
               value: "http://192.168.1.240:1234/v1"
             - name: TTS_MODELS
