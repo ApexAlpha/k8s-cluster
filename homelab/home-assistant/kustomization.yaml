@@ -7,3 +7,5 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - wyoming-chatterbox-deployment.yaml
+  - wyoming-chatterbox-service.yaml

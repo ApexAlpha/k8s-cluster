@@ -74,6 +74,7 @@
         "digest",
         "pinDigest"
       ],
+      "prCreation": "not-pending",
       "automerge": true
     },
     {
