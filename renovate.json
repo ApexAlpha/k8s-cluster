@@ -74,7 +74,6 @@
         "digest",
         "pinDigest"
       ],
-      "prCreation": "not-pending",
       "automerge": true
     },
     {
@@ -85,7 +84,7 @@
       "automerge": false
     },
     {
-      "description": "Schedule updates for weekends",
+      "description": "Schedule updates nightly after 11pm",
       "schedule": [
         "after 11pm"
       ],
