@@ -7,5 +7,3 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
-  - firefly-db-sealed.yaml
-  - firefly-secret-sealed.yaml
