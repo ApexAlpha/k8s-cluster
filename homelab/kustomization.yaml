@@ -52,6 +52,7 @@ resources:
   - cyberchef/application.yaml
   - searxng/application.yaml
   - mealie/application.yaml
+  - firefly/application.yaml
   - audiobookshelf/application.yaml
   - nextcloud/
   - frigate/application.yaml

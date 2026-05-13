@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: firefly
+  namespace: firefly
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - firefly.k8s.hu.ls
+      secretName: wildcard-k8s-hu-ls-tls
+  rules:
+    - host: firefly.k8s.hu.ls
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: firefly
+                port:
+                  number: 80
