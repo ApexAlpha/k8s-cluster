@@ -44,7 +44,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:latest@sha256:2e0148428b6769e2ee1eb6781246b6fca4b70cd680edfcb16e7113d9d6cb1631
+          image: lscr.io/linuxserver/qbittorrent:latest@sha256:f76c4363cce0834df43b097682928d217f9f0e0fa1d13781c0934848d543e4ab
           ports:
             - name: http
               containerPort: 8080
