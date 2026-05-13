@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: firefly-db
+  namespace: firefly
+spec:
+  encryptedData:
+    password: AgBFuc0a885hluPctUTtRH9YN8mTYj3FjrlnhfxIL6kMRLD3xizyuRUegn/H4ofh1mZlcmArWvV1zImNBR38nq3DkCiQ7CGq65kECHAieVqTbMv7dEFg4E19xxJhNuJIqT1KZ3pwHeTOkmJ6HJHDAdoG7cq3AJEU0/jxUbvI9hOwG8bxUN4T8N0nP+8exQPHOvyWUURb3AVgnoV0rzhdGwmIhEMXDmvoQZMYIevJYSWpcJ4gHDgceJ3woQqwpWLSs8v/rdLo2S/axKMQspQ33QLHEt+1mD1QOTG+b3r73NuHOy9qAvSjcrlgNqFf3dKdt/Egcm4yLnMRoLilsQWqeeWFBFOqea3oI/z9wuCJTsmypEtFOYR0iyi+BTkBPvUqHRjhjhK5gvGXUajxGVh7i5l8Yv2H+TcEDvonORwHqtnLoY9WCYxo2RJv7LhP5B+KHd7Ms4tRZrIpeMH1EBm21LMQ8TMU+9Fku2GxcAG3Q2KgeBA3gxvTr1KcapBSCf1iMjriGfKoNBScwnC97xOY7UgaGRovGaw9wjGoaEbvXgyWHSToA2hJeevxvohKQL9aWyuPySjjAkhjN0EULRmwuKpFkwKyGKi76DV83NN2yQDnMjg+yxXkR6AsfjWzDPzYuhO28MSXFyIBOwMcXzRm3bemG0u1AJnwDVWxfVL1MDsoxj/5cQQBWRc3OowkUEfe1XRp5PlnUOCdDlw65f7n7lmdSqgk/xaXoCWcdtvGoh/SJiel5m26mSKCEZre0qQHv+wR4UikGnnY3yPemD21qQoX
+  template:
+    metadata:
+      name: firefly-db
+      namespace: firefly
