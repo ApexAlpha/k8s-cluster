@@ -30,7 +30,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: firefly
-          image: fireflyiii/core:latest
+          image: fireflyiii/core:latest@sha256:783676cad3a9aed58539ae270d6849f15abefc4300175f1526b3f46b74ad96ce
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
