@@ -30,7 +30,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: firefly-importer
-          image: fireflyiii/data-importer:latest
+          image: fireflyiii/data-importer:latest@sha256:4e2cbcb0d95c34850534a3772f1732c00f6412077db33b1863703a1b628bdc12
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
