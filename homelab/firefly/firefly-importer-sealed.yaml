@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: firefly-importer
+  namespace: firefly
+spec:
+  encryptedData:
+    access_token: AgB6mXzpaG6yRxFExsb9saBIPa2uCR4TpIyWSLCx1EXkNVUyFMROdZuWgR1p4EAdY8O39/bxC83DoXTSkkmGQeDc4A4GGww0qlp8/JiC0NCKDhEbuZ4Vy3n6Yk0N1TDDCQclaOYsTmrggm5F/veK5dpVL+Y/0Y2gWVCgS3HP+hKEYHlgHtQ15kuZLY8SY6iNnX6gcEnpKXuSty8g1g9NFZ3+38z0+oZvvN8oD4znqqXOOPYgXDPSw1a2TJhREjXqw56aHDOQUGxTZNrAHEVb/kjgJzCOLxSVubrp3iuSrDGXOffOQ1rSZByLlSzlkK8ONo5v+m5SF2OLIgmRxTk1NGlqCx18ixjEbRX9FJxgGdNYMCV+wX73EJRn/JM/39KdHWJgKXyD4v7rzWPM3hW0NuKeLrNxjs3tmxtzWIBVtc3bdBCxjQ+ArX0jFAbGO0rbICczBvaHLRgG4bA0Zf+N8kkKFgcrCElnqS46IXpiDipoMp5gfE57XzQdpifhlgmnivYG28DW/bsmbMDvto06ItCnWCW6lKhAvjPg+ZVMYhFG0JMx1vSeYBYJSVsOpRq75hg+ZU4S1crJxhL1Gl9RN+sjDyU7asXlR3FD1wInKF/VgQaz+ZyvwOKcxHbT84u1RzZ4fGyF4TgPR1GewQ8phKiG9dXiur/hZ77uuLx6toropx3spmbERnTxq3gNPWzS2QNqlpdRowCKTQGC/u3p0m+uyPE8q1CuMxr9BWguzxBAAg==
+  template:
+    metadata:
+      name: firefly-importer
+      namespace: firefly
