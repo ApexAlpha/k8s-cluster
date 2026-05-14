@@ -7,3 +7,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - deployment-importer.yaml
+  - service-importer.yaml
+  - ingress-importer.yaml
+  - firefly-importer-sealed.yaml
