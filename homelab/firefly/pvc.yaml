@@ -4,6 +4,7 @@ metadata:
   name: firefly-uploads-local
   namespace: firefly
   annotations:
+    argocd.argoproj.io/sync-wave: "2"
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
 spec:
   accessModes:
