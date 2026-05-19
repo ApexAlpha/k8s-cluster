@@ -8,3 +8,4 @@ resources:
   - promtail.yaml
   - grafana-admin-sealed.yaml
   - grafana-db-sealed.yaml
+  - homelab-rules.yaml
