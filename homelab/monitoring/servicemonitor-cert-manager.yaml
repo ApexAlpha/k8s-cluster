@@ -1,17 +1,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"monitoring.coreos.com/v1","kind":"ServiceMonitor","metadata":{"annotations":{},"labels":{"release":"kube-prometheus-stack"},"name":"cert-manager","namespace":"monitoring"},"spec":{"endpoints":[{"interval":"30s","port":"metrics"}],"namespaceSelector":{"matchNames":["cert-manager"]},"selector":{"matchLabels":{"app.kubernetes.io/name":"cert-manager"}}}}
-  creationTimestamp: "2026-05-20T17:18:42Z"
-  generation: 2
+  annotations: {}
   labels:
     release: kube-prometheus-stack
   name: cert-manager
   namespace: monitoring
-  resourceVersion: "8102519"
-  uid: e9264696-66c5-4a9f-91c7-2e9430f8f89c
 spec:
   endpoints:
   - interval: 30s

@@ -1,17 +1,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"monitoring.coreos.com/v1","kind":"ServiceMonitor","metadata":{"annotations":{},"labels":{"release":"kube-prometheus-stack"},"name":"cnpg","namespace":"monitoring"},"spec":{"endpoints":[{"interval":"30s","path":"/metrics","port":"metrics"}],"namespaceSelector":{"matchNames":["cnpg-system"]},"selector":{"matchLabels":{"app.kubernetes.io/name":"cloudnative-pg"}}}}
-  creationTimestamp: "2026-05-20T17:18:42Z"
-  generation: 3
+  annotations: {}
   labels:
     release: kube-prometheus-stack
   name: cnpg
   namespace: monitoring
-  resourceVersion: "8102520"
-  uid: 89b95194-8607-40d7-9777-c61e913c0c4d
 spec:
   endpoints:
   - interval: 30s
