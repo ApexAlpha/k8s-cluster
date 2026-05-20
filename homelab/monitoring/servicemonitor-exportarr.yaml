@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"monitoring.coreos.com/v1","kind":"ServiceMonitor","metadata":{"annotations":{},"labels":{"release":"kube-prometheus-stack"},"name":"exportarr","namespace":"monitoring"},"spec":{"endpoints":[{"interval":"30s","path":"/metrics","port":"metrics"}],"namespaceSelector":{"matchNames":["media"]},"selector":{"matchLabels":{"app.kubernetes.io/name":"exportarr"}}}}
+  creationTimestamp: "2026-05-20T17:16:35Z"
+  generation: 1
+  labels:
+    release: kube-prometheus-stack
+  name: exportarr
+  namespace: monitoring
+  resourceVersion: "8101906"
+  uid: 795f09a0-4d72-4e87-aa25-ad01b7f60bd3
+spec:
+  endpoints:
+  - interval: 30s
+    path: /metrics
+    port: metrics
+  namespaceSelector:
+    matchNames:
+    - media
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: exportarr

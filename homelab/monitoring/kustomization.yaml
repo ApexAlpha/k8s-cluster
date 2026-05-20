@@ -1,11 +1,26 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 resources:
-  - namespace.yaml
-  - kube-prometheus-stack.yaml
-  - loki.yaml
-  - promtail.yaml
-  - grafana-admin-sealed.yaml
-  - grafana-db-sealed.yaml
-  - homelab-rules.yaml
+- namespace.yaml
+- kube-prometheus-stack.yaml
+- loki.yaml
+- promtail.yaml
+- grafana-admin-sealed.yaml
+- grafana-db-sealed.yaml
+- homelab-rules.yaml
+- servicemonitor-argocd.yaml
+- servicemonitor-immich.yaml
+- servicemonitor-home-assistant.yaml
+- servicemonitor-exportarr.yaml
+- servicemonitor-blocky.yaml
+- servicemonitor-cert-manager.yaml
+- servicemonitor-cnpg.yaml
+- grafana-dashboard-argocd.yaml
+- grafana-dashboard-immich.yaml
+- grafana-dashboard-ha.yaml
+- grafana-dashboard-scraparr.yaml
+- grafana-dashboard-blocky.yaml
+- grafana-dashboard-certmanager.yaml
+- grafana-dashboard-cnpg.yaml
+- ha-metrics.yaml
+- secret-ha-prometheus-token.yaml

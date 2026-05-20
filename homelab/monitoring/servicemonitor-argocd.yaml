@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"monitoring.coreos.com/v1","kind":"ServiceMonitor","metadata":{"annotations":{},"labels":{"release":"kube-prometheus-stack"},"name":"argocd","namespace":"monitoring"},"spec":{"endpoints":[{"interval":"30s","port":"metrics"}],"namespaceSelector":{"matchNames":["argocd"]},"selector":{"matchLabels":{"app.kubernetes.io/part-of":"argocd"}}}}
+  creationTimestamp: "2026-05-20T16:32:55Z"
+  generation: 1
+  labels:
+    release: kube-prometheus-stack
+  name: argocd
+  namespace: monitoring
+  resourceVersion: "8097517"
+  uid: 1d2e44a0-6c29-410e-b854-c86cc4f5b095
+spec:
+  endpoints:
+  - interval: 30s
+    port: metrics
+  namespaceSelector:
+    matchNames:
+    - argocd
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: argocd

@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"monitoring.coreos.com/v1","kind":"ServiceMonitor","metadata":{"annotations":{},"labels":{"release":"kube-prometheus-stack"},"name":"immich","namespace":"monitoring"},"spec":{"endpoints":[{"interval":"30s","path":"/metrics","port":"metrics"}],"namespaceSelector":{"matchNames":["immich"]},"selector":{"matchLabels":{"app.kubernetes.io/name":"immich-server"}}}}
+  creationTimestamp: "2026-05-20T16:34:11Z"
+  generation: 1
+  labels:
+    release: kube-prometheus-stack
+  name: immich
+  namespace: monitoring
+  resourceVersion: "8097649"
+  uid: 2ad90fe3-25e5-4449-bc2a-40e43147e429
+spec:
+  endpoints:
+  - interval: 30s
+    path: /metrics
+    port: metrics
+  namespaceSelector:
+    matchNames:
+    - immich
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: immich-server
