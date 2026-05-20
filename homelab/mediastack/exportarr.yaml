@@ -1,0 +1,416 @@
+# Exportarr — Prometheus exporter for *arr apps
+# API keys secret must be created manually:
+#   kubectl create secret generic exportarr-api-keys -n media \
+#     --from-literal=sonarr=<key> \
+#     --from-literal=sonarr-4k=<key> \
+#     --from-literal=radarr=<key> \
+#     --from-literal=radarr-4k=<key> \
+#     --from-literal=prowlarr=<key> \
+#     --from-literal=bazarr=<key>
+#   kubeseal --kubeconfig /etc/rancher/k3s/k3s.yaml --format yaml \
+#     < exportarr-api-keys.yaml > exportarr-api-keys-sealed.yaml
+---
+# sonarr exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exportarr-sonarr
+  namespace: media
+  labels:
+    app: exportarr-sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exportarr-sonarr
+  template:
+    metadata:
+      labels:
+        app: exportarr-sonarr
+    spec:
+      containers:
+        - name: exportarr
+          image: ghcr.io/onedr0p/exportarr:v2
+          args: ["sonarr"]
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://sonarr.media.svc"
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: exportarr-api-keys
+                  key: sonarr
+          ports:
+            - name: metrics
+              containerPort: 9707
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            periodSeconds: 30
+            failureThreshold: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exportarr-sonarr
+  namespace: media
+  labels:
+    app: exportarr-sonarr
+    monitoring: exportarr
+spec:
+  selector:
+    app: exportarr-sonarr
+  ports:
+    - name: metrics
+      port: 9707
+      targetPort: metrics
+---
+# sonarr-4k exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exportarr-sonarr-4k
+  namespace: media
+  labels:
+    app: exportarr-sonarr-4k
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exportarr-sonarr-4k
+  template:
+    metadata:
+      labels:
+        app: exportarr-sonarr-4k
+    spec:
+      containers:
+        - name: exportarr
+          image: ghcr.io/onedr0p/exportarr:v2
+          args: ["sonarr"]
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://sonarr-4k.media.svc"
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: exportarr-api-keys
+                  key: sonarr-4k
+          ports:
+            - name: metrics
+              containerPort: 9707
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            periodSeconds: 30
+            failureThreshold: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exportarr-sonarr-4k
+  namespace: media
+  labels:
+    app: exportarr-sonarr-4k
+    monitoring: exportarr
+spec:
+  selector:
+    app: exportarr-sonarr-4k
+  ports:
+    - name: metrics
+      port: 9707
+      targetPort: metrics
+---
+# radarr exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exportarr-radarr
+  namespace: media
+  labels:
+    app: exportarr-radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exportarr-radarr
+  template:
+    metadata:
+      labels:
+        app: exportarr-radarr
+    spec:
+      containers:
+        - name: exportarr
+          image: ghcr.io/onedr0p/exportarr:v2
+          args: ["radarr"]
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://radarr.media.svc"
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: exportarr-api-keys
+                  key: radarr
+          ports:
+            - name: metrics
+              containerPort: 9707
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            periodSeconds: 30
+            failureThreshold: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exportarr-radarr
+  namespace: media
+  labels:
+    app: exportarr-radarr
+    monitoring: exportarr
+spec:
+  selector:
+    app: exportarr-radarr
+  ports:
+    - name: metrics
+      port: 9707
+      targetPort: metrics
+---
+# radarr-4k exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exportarr-radarr-4k
+  namespace: media
+  labels:
+    app: exportarr-radarr-4k
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exportarr-radarr-4k
+  template:
+    metadata:
+      labels:
+        app: exportarr-radarr-4k
+    spec:
+      containers:
+        - name: exportarr
+          image: ghcr.io/onedr0p/exportarr:v2
+          args: ["radarr"]
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://radarr-4k.media.svc"
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: exportarr-api-keys
+                  key: radarr-4k
+          ports:
+            - name: metrics
+              containerPort: 9707
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            periodSeconds: 30
+            failureThreshold: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exportarr-radarr-4k
+  namespace: media
+  labels:
+    app: exportarr-radarr-4k
+    monitoring: exportarr
+spec:
+  selector:
+    app: exportarr-radarr-4k
+  ports:
+    - name: metrics
+      port: 9707
+      targetPort: metrics
+---
+# prowlarr exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exportarr-prowlarr
+  namespace: media
+  labels:
+    app: exportarr-prowlarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exportarr-prowlarr
+  template:
+    metadata:
+      labels:
+        app: exportarr-prowlarr
+    spec:
+      containers:
+        - name: exportarr
+          image: ghcr.io/onedr0p/exportarr:v2
+          args: ["prowlarr"]
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://prowlarr.media.svc"
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: exportarr-api-keys
+                  key: prowlarr
+          ports:
+            - name: metrics
+              containerPort: 9707
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            periodSeconds: 30
+            failureThreshold: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exportarr-prowlarr
+  namespace: media
+  labels:
+    app: exportarr-prowlarr
+    monitoring: exportarr
+spec:
+  selector:
+    app: exportarr-prowlarr
+  ports:
+    - name: metrics
+      port: 9707
+      targetPort: metrics
+---
+# bazarr exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exportarr-bazarr
+  namespace: media
+  labels:
+    app: exportarr-bazarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exportarr-bazarr
+  template:
+    metadata:
+      labels:
+        app: exportarr-bazarr
+    spec:
+      containers:
+        - name: exportarr
+          image: ghcr.io/onedr0p/exportarr:v2
+          args: ["bazarr"]
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://bazarr.media.svc"
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: exportarr-api-keys
+                  key: bazarr
+          ports:
+            - name: metrics
+              containerPort: 9707
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: metrics
+            periodSeconds: 30
+            failureThreshold: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exportarr-bazarr
+  namespace: media
+  labels:
+    app: exportarr-bazarr
+    monitoring: exportarr
+spec:
+  selector:
+    app: exportarr-bazarr
+  ports:
+    - name: metrics
+      port: 9707
+      targetPort: metrics
+---
+# Single ServiceMonitor covering all exportarr services
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: exportarr
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      monitoring: exportarr
+  endpoints:
+    - port: metrics
+      interval: 4m
+      scrapeTimeout: 90s

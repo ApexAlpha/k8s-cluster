@@ -12,6 +12,8 @@ resources:
   - radarr.yaml
   - radarr-4k.yaml
   - bazarr.yaml
+  - exportarr.yaml
+  - exportarr-api-keys-sealed.yaml
   - bazarr-db-credentials-sealed.yaml
   - prowlarr-db-credentials-sealed.yaml
   - radarr-4k-db-credentials-sealed.yaml
