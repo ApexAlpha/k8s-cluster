@@ -94,9 +94,9 @@ spec:
               value: "2"
             
             # Remote user auth — trust Authelia's Remote-User header, skip Paperless login
-            - name: PAPERLESS_ENABLE_HTTP_X_AUTHENTIK_USERNAME
+            - name: PAPERLESS_ENABLE_HTTP_REMOTE_USER
               value: "true"
-            - name: PAPERLESS_HTTP_X_AUTHENTIK_USERNAME_HEADER_NAME
+            - name: PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME
               value: "HTTP_X_AUTHENTIK_USERNAME"
             - name: PAPERLESS_LOGOUT_REDIRECT_URL
               value: "https://auth.k8s.hu.ls/logout"
