@@ -15,10 +15,10 @@ spec:
     targetRevision: 9.1.0
     helm:
       valuesObject:
-        # ─── Apache mode (simpler than FPM+nginx) ─────────────────────
+        # ─── FPM + Nginx sidecar ────────────────────────────────────
         image:
-          flavor: apache
-          tag: 33.0.1-apache
+          flavor: fpm-alpine
+          tag: 33.0.1-fpm-alpine
           pullPolicy: IfNotPresent
 
         replicaCount: 1
@@ -29,8 +29,6 @@ spec:
 
         # Suppress Apache ServerName warning
         extraEnv:
-          - name: APACHE_SERVER_NAME
-            value: office.k8s.hu.ls
           - name: TRUSTED_PROXIES
             value: "10.0.0.0/8"
 
@@ -47,7 +45,7 @@ spec:
             - php /var/www/html/occ maintenance:mode --off || true
 
         nginx:
-          enabled: false
+          enabled: true
 
         # ─── Nextcloud core settings ───────────────────────────────────
         nextcloud:
@@ -120,10 +118,12 @@ spec:
               max_input_time=3600
               opcache.enable=1
               opcache.memory_consumption=256
-              opcache.interned_strings_buffer=16
-              opcache.max_accelerated_files=10000
-              opcache.revalidate_freq=60
+              opcache.interned_strings_buffer=32
+              opcache.max_accelerated_files=20000
+              opcache.revalidate_freq=2
               opcache.save_comments=1
+              opcache.jit=1255
+              opcache.jit_buffer_size=64M
 
           # File storage via JuiceFS (provides compression & encryption over Garage S3)
           objectStore:
@@ -206,13 +206,16 @@ spec:
 
         # ─── Probes (disabled during first install, re-enable after) ───
         startupProbe:
-          enabled: false
+          enabled: true
+          port: 8080
 
         livenessProbe:
-          enabled: false
+          enabled: true
+          port: 8080
 
         readinessProbe:
-          enabled: false
+          enabled: true
+          port: 8080
 
         # ─── Resources ────────────────────────────────────────────────
         resources:
@@ -220,6 +223,7 @@ spec:
             cpu: 200m
             memory: 512Mi
           limits:
+            cpu: 2
             memory: 2Gi
 
   destination:
