@@ -77,6 +77,8 @@ spec:
           value: "strict"
         - name: KUBECONFIG
           value: /home/appuser/.kube/config
+        - name: FORWARDED_ALLOW_IPS
+          value: "*"
         volumeMounts:
         - name: kubeconfig
           mountPath: /home/appuser/.kube
