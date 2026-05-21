@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: exportarr
-          image: ghcr.io/onedr0p/exportarr:v2
+          image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
           args: ["sonarr"]
           env:
             - name: PORT
@@ -95,7 +95,7 @@ spec:
     spec:
       containers:
         - name: exportarr
-          image: ghcr.io/onedr0p/exportarr:v2
+          image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
           args: ["sonarr"]
           env:
             - name: PORT
@@ -160,7 +160,7 @@ spec:
     spec:
       containers:
         - name: exportarr
-          image: ghcr.io/onedr0p/exportarr:v2
+          image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
           args: ["radarr"]
           env:
             - name: PORT
@@ -225,7 +225,7 @@ spec:
     spec:
       containers:
         - name: exportarr
-          image: ghcr.io/onedr0p/exportarr:v2
+          image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
           args: ["radarr"]
           env:
             - name: PORT
@@ -290,7 +290,7 @@ spec:
     spec:
       containers:
         - name: exportarr
-          image: ghcr.io/onedr0p/exportarr:v2
+          image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
           args: ["prowlarr"]
           env:
             - name: PORT
@@ -355,7 +355,7 @@ spec:
     spec:
       containers:
         - name: exportarr
-          image: ghcr.io/onedr0p/exportarr:v2
+          image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
           args: ["bazarr"]
           env:
             - name: PORT
