@@ -21,7 +21,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: kubeconfig-init
-        image: bitnami/kubectl:latest
+        image: bitnami/kubectl:latest@sha256:e2b97dde9666986c61c56d49aae85a714b89b69392baa531438e74ec34096fb4
         command:
         - /bin/sh
         - -c
@@ -55,7 +55,7 @@ spec:
           mountPath: /kubeconfig
       containers:
       - name: server
-        image: ghcr.io/alexei-led/k8s-mcp-server:latest
+        image: ghcr.io/alexei-led/k8s-mcp-server:latest@sha256:bf181191c6ea6833784ca8443b49c00b90654ff192412ffed04fdc7022c089a0
         imagePullPolicy: IfNotPresent
         securityContext:
           runAsUser: 0
