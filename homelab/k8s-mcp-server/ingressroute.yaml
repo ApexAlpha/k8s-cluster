@@ -1,0 +1,19 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: k8s-mcp-server
+  namespace: mcp
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`mcp.k8s.hu.ls`)
+    middlewares:
+    - name: mcp-basicauth
+      namespace: mcp
+    services:
+    - name: k8s-mcp-server
+      port: 8000
+  tls:
+    certResolver: letsencrypt

@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-mcp-server
+  namespace: mcp
+  labels:
+    app: k8s-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-mcp-server
+  template:
+    metadata:
+      labels:
+        app: k8s-mcp-server
+    spec:
+      serviceAccountName: k8s-mcp-reader
+      volumes:
+      - name: kubeconfig
+        emptyDir: {}
+      initContainers:
+      - name: kubeconfig-init
+        image: bitnami/kubectl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          TOKEN=*** /var/run/secrets/kubernetes.io/serviceaccount/token)
+          CA=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | base64 -w0)
+          SERVER="${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT_HTTPS:-443}"
+          cat > /kubeconfig/kubeconfig <<EOF
+          apiVersion: v1
+          kind: Config
+          current-context: default
+          contexts:
+          - context:
+              cluster: default
+              user: k8s-mcp-reader
+            name: default
+          clusters:
+          - cluster:
+              certificate-authority-data: ${CA}
+              server: https://${SERVER}
+            name: default
+          users:
+          - name: k8s-mcp-reader
+            user:
+              token: ${TOKEN}
+          EOF
+          chmod 644 /kubeconfig/kubeconfig
+          echo "kubeconfig generated"
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /kubeconfig
+      containers:
+      - name: server
+        image: ghcr.io/alexei-led/k8s-mcp-server:latest
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 0
+        command:
+        - /bin/sh
+        - -c
+        - |
+          touch /.dockerenv
+          exec python -m k8s_mcp_server
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+        - name: K8S_MCP_TRANSPORT
+          value: streamable-http
+        - name: K8S_MCP_TIMEOUT
+          value: "600"
+        - name: K8S_MCP_SECURITY_MODE
+          value: "strict"
+        - name: KUBECONFIG
+          value: /home/appuser/.kube/config
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /home/appuser/.kube
+          readOnly: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+        startupProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 12
+        livenessProbe:
+          tcpSocket:
+            port: 8000
+          periodSeconds: 15
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+          periodSeconds: 10
