@@ -63,6 +63,9 @@ resources:
   # Backup - Wave 25 (after storage)
   - cluster-backup/application.yaml
 
+  # Network
+  - wireguard/application.yaml
+
   # Admin - Wave 25
   - headlamp/application.yaml
   - openclaw/application.yaml

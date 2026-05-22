@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wg-easy
+  namespace: wireguard
+spec:
+  ports:
+    - port: 51821
+      targetPort: 51821
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: wg-easy
+  namespace: wireguard
+subsets:
+  - addresses:
+      - ip: 192.168.1.232
+    ports:
+      - port: 51821
