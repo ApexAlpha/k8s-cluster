@@ -31,6 +31,12 @@ spec:
                   period: 24h
         singleBinary:
           replicas: 1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              memory: 2Gi
           persistence:
             enabled: true
             size: 20Gi

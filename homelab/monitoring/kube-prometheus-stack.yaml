@@ -86,6 +86,14 @@ spec:
                   resources:
                     requests:
                       storage: 20Gi
+            # Resource requests/limits for Prometheus and its sidecars
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                memory: 4Gi
+
             # WAL replay can take >5min on large datasets; give it time before probes kill the pod
             startupProbe:
               httpGet:
