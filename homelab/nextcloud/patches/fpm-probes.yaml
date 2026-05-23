@@ -25,3 +25,22 @@ spec:
             periodSeconds: 15
             timeoutSeconds: 5
             failureThreshold: 2
+        - name: nextcloud-cron
+          livenessProbe:
+            httpGet:
+              path: /status.php
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /status.php
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 2

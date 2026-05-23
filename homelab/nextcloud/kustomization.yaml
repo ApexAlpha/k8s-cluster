@@ -5,13 +5,9 @@ resources:
   - nextcloud-credentials-sealed.yaml
   - nextcloud-db-credentials-sealed.yaml
 patches:
-  # Add liveness + readiness probes to the FPM main container (Helm chart only probes nginx sidecar)
+  # Add liveness + readiness probes to the FPM main container and cron sidecar.
+  # The Helm chart only probes the nginx sidecar; we patch both remaining containers.
   - path: patches/fpm-probes.yaml
     target:
       kind: Deployment
       name: nextcloud
-  # Add liveness + readiness probes to the cron sidecar container
-  - path: patches/cron-probes.yaml
-    target:
-      kind: Deployment
-      name: nextcloud-cron
