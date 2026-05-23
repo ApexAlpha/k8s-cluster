@@ -49,6 +49,18 @@ spec:
             limits:
               cpu: "2"
               memory: 512Mi
+          livenessProbe:
+            tcpSocket:
+              port: 10200
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 10200
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 2
       volumes:
         - name: data
           persistentVolumeClaim:
