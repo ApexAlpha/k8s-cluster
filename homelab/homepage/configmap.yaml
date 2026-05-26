@@ -171,6 +171,10 @@ data:
             icon: mdi-paw
             href: https://openclaw.k8s.hu.ls
             description: Home Automation
+        - Hermes:
+            icon: mdi-robot
+            href: https://hermes.k8s.hu.ls
+            description: AI Agent Gateway
         - UniFi:
             icon: unifi
             href: https://unifi.k8s.hu.ls
