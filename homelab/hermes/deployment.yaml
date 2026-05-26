@@ -32,8 +32,6 @@ spec:
         - name: hermes
           image: nousresearch/hermes-agent:latest@sha256:02475b70b176b92f046120301de05afe63434971426c9feeb7a91ac4e73fd54a
           imagePullPolicy: IfNotPresent
-          command:
-            - hermes
           args:
             - gateway
             - run
