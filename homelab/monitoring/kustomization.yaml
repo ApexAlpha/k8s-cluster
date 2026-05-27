@@ -13,6 +13,8 @@ resources:
 - servicemonitor-home-assistant.yaml
 - servicemonitor-exportarr.yaml
 - servicemonitor-blocky.yaml
+- servicemonitor-authentik.yaml
+- servicemonitor-frigate.yaml
 - servicemonitor-cert-manager.yaml
 - servicemonitor-cnpg.yaml
 - grafana-dashboard-argocd.yaml

@@ -4,16 +4,16 @@ metadata:
   annotations: {}
   labels:
     release: kube-prometheus-stack
-  name: home-assistant
+  name: frigate
   namespace: monitoring
 spec:
   endpoints:
-  - bearerTokenSecret:
-      key: bearerToken
-      name: ha-prometheus-token-real
-    interval: 60s
-    path: /api/prometheus
-    port: metrics
+  - interval: 30s
+    path: /api/metrics
+    port: http
+  namespaceSelector:
+    matchNames:
+    - frigate
   selector:
     matchLabels:
-      app: ha-metrics
+      app: frigate

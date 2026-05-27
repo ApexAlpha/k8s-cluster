@@ -4,16 +4,16 @@ metadata:
   annotations: {}
   labels:
     release: kube-prometheus-stack
-  name: home-assistant
+  name: authentik
   namespace: monitoring
 spec:
   endpoints:
-  - bearerTokenSecret:
-      key: bearerToken
-      name: ha-prometheus-token-real
-    interval: 60s
-    path: /api/prometheus
+  - interval: 30s
+    path: /metrics
     port: metrics
+  namespaceSelector:
+    matchNames:
+    - authentik
   selector:
     matchLabels:
-      app: ha-metrics
+      app.kubernetes.io/name: authentik-server-metrics
