@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: hermes
+  name: k8s-mcp-server
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "25"
+    argocd.argoproj.io/sync-wave: "20"
 spec:
   project: default
   source:
     repoURL: https://github.com/ApexAlpha/k8s-cluster.git
     targetRevision: HEAD
-    path: homelab/hermes
+    path: homelab/k8s-mcp-server
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
