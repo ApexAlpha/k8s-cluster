@@ -12,6 +12,9 @@ resources:
 - middleware-basicauth.yaml
 - ingressroute.yaml
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 secretGenerator:
 - name: mcp-auth-secret
   namespace: mcp
