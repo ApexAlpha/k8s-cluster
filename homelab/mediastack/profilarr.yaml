@@ -55,6 +55,8 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
+            - name: ORIGIN
+              value: "https://profilarr.k8s.hu.ls"
           volumeMounts:
             - name: config
               mountPath: /config
