@@ -47,8 +47,12 @@ spec:
           image: ghcr.io/dictionarry-hub/profilarr:latest
           ports:
             - name: http
-              containerPort: 7474
+              containerPort: 6868
           env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
           volumeMounts:
@@ -57,10 +61,10 @@ spec:
           resources:
             requests:
               cpu: 50m
-              memory: 128Mi
+              memory: 256Mi
             limits:
               cpu: 500m
-              memory: 512Mi
+              memory: 768Mi
           startupProbe:
             httpGet:
               path: /
@@ -97,7 +101,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 7474
+      targetPort: 6868
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
