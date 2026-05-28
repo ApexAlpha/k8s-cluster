@@ -9,17 +9,7 @@ resources:
 - clusterrolebinding.yaml
 - deployment.yaml
 - service.yaml
-- middleware-basicauth.yaml
 - ingressroute.yaml
-
-generatorOptions:
-  disableNameSuffixHash: true
-
-secretGenerator:
-- name: mcp-auth-secret
-  namespace: mcp
-  files:
-  - users=secrets/users
 
 labels:
 - pairs:

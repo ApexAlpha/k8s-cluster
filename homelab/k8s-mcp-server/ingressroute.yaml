@@ -9,9 +9,8 @@ spec:
   routes:
   - kind: Rule
     match: Host(`mcp.k8s.hu.ls`)
-
     services:
     - name: k8s-mcp-server
-      port: 8000
+      port: 8080
   tls:
     certResolver: letsencrypt

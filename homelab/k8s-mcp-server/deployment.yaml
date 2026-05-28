@@ -18,48 +18,36 @@ spec:
       serviceAccountName: k8s-mcp-reader
       containers:
       - name: server
-        image: ghcr.io/alexei-led/k8s-mcp-server:latest@sha256:bf181191c6ea6833784ca8443b49c00b90654ff192412ffed04fdc7022c089a0
-        imagePullPolicy: IfNotPresent
-        securityContext:
-          runAsUser: 0
-        command:
-        - /bin/sh
-        - -c
-        - |
-          touch /.dockerenv
-          exec python -m k8s_mcp_server
+        image: ghcr.io/containers/kubernetes-mcp-server:latest@sha256:b79aeb41d5f685772c45f48bac9dc86e9c65ed81680b07959574781546a984de
+        args:
+        - --port
+        - "8080"
+        - --cluster-provider
+        - in-cluster
         ports:
-        - containerPort: 8000
+        - containerPort: 8080
           name: http
-        env:
-        - name: K8S_MCP_TRANSPORT
-          value: streamable-http
-        - name: K8S_MCP_TIMEOUT
-          value: "600"
-        - name: K8S_MCP_SECURITY_MODE
-          value: "strict"
-        - name: FORWARDED_ALLOW_IPS
-          value: "*"
-        - name: MCP_ALLOWED_HOSTS
-          value: '["mcp.k8s.hu.ls","mcp.k8s.hu.ls:443","localhost","127.0.0.1"]'
         resources:
           requests:
             cpu: 50m
-            memory: 128Mi
+            memory: 64Mi
           limits:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 200m
+            memory: 256Mi
         startupProbe:
-          tcpSocket:
-            port: 8000
-          initialDelaySeconds: 10
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 12
         livenessProbe:
-          tcpSocket:
-            port: 8000
+          httpGet:
+            path: /healthz
+            port: 8080
           periodSeconds: 15
         readinessProbe:
-          tcpSocket:
-            port: 8000
+          httpGet:
+            path: /healthz
+            port: 8080
           periodSeconds: 10
