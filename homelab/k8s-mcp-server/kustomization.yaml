@@ -10,7 +10,6 @@ resources:
 - deployment.yaml
 - service.yaml
 - middleware-basicauth.yaml
-- middleware-rewrite-host.yaml
 - ingressroute.yaml
 
 generatorOptions:
