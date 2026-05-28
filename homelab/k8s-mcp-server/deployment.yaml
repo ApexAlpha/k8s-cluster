@@ -16,55 +16,10 @@ spec:
         app: k8s-mcp-server
     spec:
       serviceAccountName: k8s-mcp-reader
-      volumes:
-      - name: kubeconfig
-        emptyDir: {}
-      initContainers:
-      - name: kubeconfig-init
-        image: bitnami/kubectl:latest@sha256:e2b97dde9666986c61c56d49aae85a714b89b69392baa531438e74ec34096fb4
-        command:
-        - /bin/sh
-        - -c
-        - |
-          TOKEN=*** /var/run/secrets/kubernetes.io/serviceaccount/token)
-          CA=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | base64 -w0)
-          SERVER="${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT_HTTPS:-443}"
-          cat > /kubeconfig/kubeconfig <<EOF
-          apiVersion: v1
-          kind: Config
-          current-context: default
-          contexts:
-          - context:
-              cluster: default
-              user: k8s-mcp-reader
-            name: default
-          clusters:
-          - cluster:
-              certificate-authority-data: ${CA}
-              server: https://${SERVER}
-            name: default
-          users:
-          - name: k8s-mcp-reader
-            user:
-              token: ${TOKEN}
-          EOF
-          chmod 644 /kubeconfig/kubeconfig
-          echo "kubeconfig generated"
-        volumeMounts:
-        - name: kubeconfig
-          mountPath: /kubeconfig
       containers:
       - name: server
         image: ghcr.io/alexei-led/k8s-mcp-server:latest@sha256:bf181191c6ea6833784ca8443b49c00b90654ff192412ffed04fdc7022c089a0
         imagePullPolicy: IfNotPresent
-        securityContext:
-          runAsUser: 0
-        command:
-        - /bin/sh
-        - -c
-        - |
-          touch /.dockerenv
-          exec python -m k8s_mcp_server
         ports:
         - containerPort: 8000
           name: http
@@ -75,14 +30,8 @@ spec:
           value: "600"
         - name: K8S_MCP_SECURITY_MODE
           value: "strict"
-        - name: KUBECONFIG
-          value: /home/appuser/.kube/kubeconfig
         - name: FORWARDED_ALLOW_IPS
           value: "*"
-        volumeMounts:
-        - name: kubeconfig
-          mountPath: /home/appuser/.kube
-          readOnly: true
         resources:
           requests:
             cpu: 50m
