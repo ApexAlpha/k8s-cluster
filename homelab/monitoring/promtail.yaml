@@ -16,6 +16,23 @@ spec:
         config:
           clients:
             - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+          snippets:
+            extraScrapeConfigs: |
+              - job_name: k3s-audit
+                static_configs:
+                  - targets: [localhost]
+                    labels:
+                      job: k3s-audit
+                      __path__: /var/log/k3s/audit.log
+        extraVolumes:
+          - name: k3s-audit
+            hostPath:
+              path: /var/log/k3s
+              type: DirectoryOrCreate
+        extraVolumeMounts:
+          - name: k3s-audit
+            mountPath: /var/log/k3s
+            readOnly: true
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
