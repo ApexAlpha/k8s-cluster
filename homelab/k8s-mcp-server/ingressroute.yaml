@@ -12,6 +12,8 @@ spec:
     middlewares:
     - name: mcp-basicauth
       namespace: mcp
+    - name: mcp-rewrite-host
+      namespace: mcp
     services:
     - name: k8s-mcp-server
       port: 8000
