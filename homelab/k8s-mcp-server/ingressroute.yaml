@@ -9,7 +9,7 @@ spec:
   routes:
   - kind: Rule
     match: Host(`mcp.k8s.hu.ls`)
-    services:
+services:
     - name: k8s-mcp-server
       port: 8080
   tls:
