@@ -76,7 +76,7 @@ spec:
         - name: K8S_MCP_SECURITY_MODE
           value: "strict"
         - name: KUBECONFIG
-          value: /home/appuser/.kube/config
+          value: /home/appuser/.kube/kubeconfig
         - name: FORWARDED_ALLOW_IPS
           value: "*"
         volumeMounts:
@@ -86,10 +86,10 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 64Mi
+            memory: 128Mi
           limits:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 500m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 8000
