@@ -40,8 +40,8 @@ spec:
           value: "strict"
         - name: FORWARDED_ALLOW_IPS
           value: "*"
-        - name: FASTMCP_TRANSPORT_SECURITY
-          value: '{"enable_dns_rebinding_protection":true,"allowed_hosts":["mcp.k8s.hu.ls","mcp.k8s.hu.ls:*","localhost","localhost:*","127.0.0.1","127.0.0.1:*"],"allowed_origins":[]}'
+        - name: MCP_ALLOWED_HOSTS
+          value: '["mcp.k8s.hu.ls","mcp.k8s.hu.ls:443","localhost","127.0.0.1"]'
         resources:
           requests:
             cpu: 50m
