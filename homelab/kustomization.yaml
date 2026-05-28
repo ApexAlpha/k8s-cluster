@@ -69,6 +69,5 @@ resources:
   # Admin - Wave 25
   - headlamp/application.yaml
   - openclaw/application.yaml
-  - hermes/application.yaml
   - k8s-mcp-server/application.yaml
   # - apps/plex.yaml
