@@ -22,6 +22,8 @@ secretGenerator:
   files:
   - users=secrets/users
 
-commonLabels:
-  app.kubernetes.io/name: k8s-mcp-server
-  app.kubernetes.io/part-of: infrastructure
+labels:
+- pairs:
+    app.kubernetes.io/name: k8s-mcp-server
+    app.kubernetes.io/part-of: infrastructure
+  includeSelectors: false
