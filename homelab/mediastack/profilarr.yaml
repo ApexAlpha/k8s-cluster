@@ -44,7 +44,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: profilarr
-          image: ghcr.io/dictionarry-hub/profilarr:latest@sha256:33cd7175872a28511d661904de05da822374df116fce3e2e7e65c1823ca211e2
+          image: ghcr.io/dictionarry-hub/profilarr:latest@sha256:9b49da18dd896dbe4b6c797e39cb8b0787ab166f5e5956df647295f23ae496cc
           ports:
             - name: http
               containerPort: 6868
