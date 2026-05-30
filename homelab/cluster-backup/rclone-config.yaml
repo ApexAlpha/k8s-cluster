@@ -18,8 +18,3 @@ data:
     port = 22022
     key_file = /secrets/ssh-private-key
     known_hosts_file = /secrets/known-hosts
-    # OpenSSH 6.7 only supports ssh-rsa/ssh-dss host keys and legacy algorithms
-    use_insecure_cipher = false
-    key_exchange = diffie-hellman-group14-sha1,diffie-hellman-group1-sha1,diffie-hellman-group-exchange-sha1
-    ciphers = aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,aes192-cbc,aes256-cbc,3des-cbc
-    macs = hmac-sha2-256,hmac-sha1
