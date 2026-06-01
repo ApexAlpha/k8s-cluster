@@ -7,6 +7,9 @@ resources:
   # GHCR pull secret propagation - Wave 3
   - ghcr-secret/
 
+  # NetPols - Wave 6 (baseline network policies, before operators)
+  - netpols/
+
   # MetalLB - Wave 4-5 (L2 LoadBalancer for LAN)
   - metallb/
 
