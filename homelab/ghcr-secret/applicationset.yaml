@@ -9,14 +9,18 @@ spec:
         elements:
           - namespace: audiobookshelf
           - namespace: blocky
+          - namespace: cnpg-system
           - namespace: cyberchef
           - namespace: database
           - namespace: frigate
           - namespace: headlamp
           - namespace: home-assistant
+          - namespace: homepage
           - namespace: immich
+          - namespace: kube-system
           - namespace: mealie
           - namespace: paperless
+          - namespace: profilarr
           - namespace: authentik
           - namespace: mcp
           - namespace: media
