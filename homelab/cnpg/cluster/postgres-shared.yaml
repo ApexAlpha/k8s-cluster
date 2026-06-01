@@ -110,14 +110,14 @@ spec:
         secretAccessKey:
           name: cnpg-barman-credentials
           key: secret-key
+        region:
+          name: cnpg-barman-credentials
+          key: region
       wal:
         compression: gzip
       data:
         compression: gzip
     retentionPolicy: "7d"
-
-  env:
-  - name: AWS_REGION
     value: garage
   resources:
     requests:
