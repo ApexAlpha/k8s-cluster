@@ -62,7 +62,7 @@ spec:
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_USERNAME
-              value: "app"
+              value: "bazarr_user"
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
