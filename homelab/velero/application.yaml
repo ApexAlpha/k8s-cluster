@@ -27,7 +27,8 @@ spec:
 
         rbac:
           create: true
-          clusterAdmin: false
+          # Use scoped ClusterRole instead of cluster-admin
+          clusterAdministrator: false
 
         credentials:
           useSecret: true
