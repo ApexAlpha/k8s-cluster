@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   # Sealed Secrets - Wave 3 (early, needed by all apps)
   - sealed-secrets/application.yaml
+  # GHCR pull secret propagation - Wave 3
+  - ghcr-secret/
 
   # MetalLB - Wave 4-5 (L2 LoadBalancer for LAN)
   - metallb/

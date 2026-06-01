@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ghcr-secret-propagation
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - namespace: audiobookshelf
+          - namespace: blocky
+          - namespace: cyberchef
+          - namespace: database
+          - namespace: frigate
+          - namespace: headlamp
+          - namespace: home-assistant
+          - namespace: immich
+          - namespace: mealie
+          - namespace: paperless
+          - namespace: authentik
+          - namespace: mcp
+          - namespace: media
+  template:
+    metadata:
+      name: "ghcr-secret-<namespace>"
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/ApexAlpha/k8s-cluster.git
+        targetRevision: main
+        path: homelab/ghcr-secret
+        helm:
+          releaseName: "ghcr-secret-<namespace>"
+          valueFiles:
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "<namespace>"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

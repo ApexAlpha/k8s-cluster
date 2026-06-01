@@ -1,0 +1,4 @@
+apiVersion: v2
+name: ghcr-secret-template
+description: Template for GitHub Container Registry pull secret
+version: 0.1.0
