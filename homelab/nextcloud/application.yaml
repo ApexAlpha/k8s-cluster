@@ -138,7 +138,7 @@ spec:
           type: postgresql
           host: postgres-shared-rw.database.svc:5432
           database: nextcloud
-          user: app
+          user: nextcloud_user
           existingSecret:
             enabled: true
             secretName: nextcloud-db-credentials
