@@ -22,3 +22,4 @@ resources:
 - grafana-user-password-sealed.yaml
 - firefly-user-password-sealed.yaml
 - stirling-user-password-sealed.yaml
+- postgres-shared-secret-reader.yaml
