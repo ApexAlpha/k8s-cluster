@@ -22,7 +22,7 @@ spec:
           - namespace: media
   template:
     metadata:
-      name: ghcr-secret-<namespace>
+      name: ghcr-secret-{{namespace}}
       namespace: argocd
     spec:
       project: default
@@ -31,10 +31,10 @@ spec:
         targetRevision: main
         path: homelab/ghcr-secret
         helm:
-          releaseName: ghcr-secret-<namespace>
+          releaseName: ghcr-secret-{{namespace}}
       destination:
         server: https://kubernetes.default.svc
-        namespace: <namespace>
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true
