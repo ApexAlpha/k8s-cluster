@@ -118,7 +118,6 @@ spec:
       data:
         compression: gzip
     retentionPolicy: "7d"
-    value: garage
   resources:
     requests:
       cpu: 100m
