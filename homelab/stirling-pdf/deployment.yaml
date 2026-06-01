@@ -52,7 +52,7 @@ spec:
             - name: SYSTEM_DATASOURCE_CUSTOMDATABACKENDURL
               value: "jdbc:postgresql://postgres-shared-pooler.database.svc:5432/stirling"
             - name: SYSTEM_DATASOURCE_USERNAME
-              value: "stirling"
+              value: "stirling_user"
             - name: SYSTEM_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
