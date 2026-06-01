@@ -25,10 +25,9 @@ spec:
             repository: bitnamilegacy/kubectl
             tag: "1.29"
 
-        rbac:
-          create: true
-          # Use scoped ClusterRole instead of cluster-admin
-          clusterAdministrator: false
+        # Velero needs cluster-wide permissions for backup/restore
+        # Using default (clusterAdministrator: true) for now in single-tenant homelab
+        # TODO: Create scoped ClusterRole for velero when multi-tenant
 
         credentials:
           useSecret: true
