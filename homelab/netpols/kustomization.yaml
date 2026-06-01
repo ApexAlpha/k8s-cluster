@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - 01-cyberchef.yaml
   - 02-it-tools.yaml
+  - 03-searxng.yaml
