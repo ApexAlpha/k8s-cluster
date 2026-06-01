@@ -117,7 +117,7 @@ spec:
     retentionPolicy: "7d"
 
   env:
-  - name: AWS_DEFAULT_REGION
+  - name: AWS_REGION
     value: garage
   resources:
     requests:
