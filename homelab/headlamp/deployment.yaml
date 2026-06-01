@@ -7,6 +7,50 @@ metadata:
   namespace: kube-system
   annotations:
     argocd.argoproj.io/sync-wave: "25"
+---# Narrow ClusterRole for Headlamp - view + exec/log access for dashboard
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: headlamp-role
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log", "pods/exec", "services", "endpoints", "configmaps", "secrets", "events", "namespaces", "nodes", "persistentvolumeclaims", "persistentvolumes", "replicationcontrollers", "resourcequotas", "serviceaccounts"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["daemonsets", "deployments", "replicasets", "statefulsets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["batch"]
+  resources: ["cronjobs", "jobs"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses", "networkpolicies"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["clusterroles", "clusterrolebindings", "roles", "rolebindings"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["autoscaling"]
+  resources: ["horizontalpodautoscalers"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses", "volumeattachments"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["monitoring.coreos.com"]
+  resources: ["prometheuses", "servicemonitors", "podmonitors", "probes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["argoproj.io"]
+  resources: ["applications", "appprojects"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["cert-manager.io"]
+  resources: ["certificates", "issuers", "clusterissuers"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["velero.io"]
+  resources: ["backups", "restores", "schedules", "backupstoragelocations", "volumesnapshotlocations"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["cnpg.io"]
+  resources: ["clusters", "backups", "schedules"]
+  verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -17,7 +61,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: headlamp-role
 subjects:
   - kind: ServiceAccount
     name: headlamp-admin
