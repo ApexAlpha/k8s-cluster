@@ -103,6 +103,7 @@ spec:
       destinationPath: s3://postgres-backups/
       # Direct to Garage — removes circular dependency (JuiceFS → PG → JuiceFS backup)
       endpointURL: http://garage-s3.garage.svc.cluster.local:3900
+      region: garage
       s3Credentials:
         accessKeyId:
           name: cnpg-barman-credentials
