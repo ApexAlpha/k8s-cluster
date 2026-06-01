@@ -59,7 +59,7 @@ spec:
             - name: PAPERLESS_DBNAME
               value: "paperless"
             - name: PAPERLESS_DBUSER
-              value: "app"
+              value: "paperless_user"
             - name: PAPERLESS_DBPASS
               valueFrom:
                 secretKeyRef:

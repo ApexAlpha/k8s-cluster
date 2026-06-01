@@ -54,7 +54,7 @@ spec:
             - name: POSTGRES_DB
               value: "mealie"
             - name: POSTGRES_USER
-              value: "app"
+              value: "mealie_user"
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

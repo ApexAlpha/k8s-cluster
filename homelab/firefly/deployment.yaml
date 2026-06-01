@@ -64,7 +64,7 @@ spec:
             - name: DB_DATABASE
               value: "firefly"
             - name: DB_USERNAME
-              value: "app"
+              value: "firefly_user"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
