@@ -2,320 +2,416 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: argocd
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: audiobookshelf
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: authentik
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: blocky
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: cert-manager
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: cnpg-system
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: cyberchef
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: database
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: default
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: firefly
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: frigate
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: garage
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: headlamp
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: hermes
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: home-assistant
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: homepage
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: immich
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: it-tools
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: mcp
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: mealie
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: media
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: nextcloud
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: openclaw
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: paperless
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: profilarr
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: searxng
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: stirling-pdf
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: unifi
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: vaultwarden
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: velero
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: wireguard
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress
+  name: allow-intra-namespace
   namespace: wyoming
 spec:
   podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
   policyTypes:
   - Ingress
 ---
