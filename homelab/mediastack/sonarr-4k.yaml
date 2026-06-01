@@ -66,7 +66,7 @@ spec:
             - name: SONARR__POSTGRES__PORT
               value: "5432"
             - name: SONARR__POSTGRES__USER
-              value: "app"
+              value: "sonarr4k_user"
             - name: SONARR__POSTGRES__PASSWORD
               valueFrom:
                 secretKeyRef:
