@@ -1,3 +1,0 @@
-# Extracted from: kubectl get secret ghcr-pull-secret -n media -o jsonpath='{.data.\.dockerconfigjson}'
-dockerConfigJson: >-
-  eyJhdX...19fQ==
