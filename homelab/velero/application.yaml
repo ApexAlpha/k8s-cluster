@@ -25,6 +25,10 @@ spec:
             repository: bitnamilegacy/kubectl
             tag: "1.29"
 
+        rbac:
+          create: true
+          clusterAdmin: false
+
         credentials:
           useSecret: true
           existingSecret: velero-credentials
