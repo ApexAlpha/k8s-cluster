@@ -15,6 +15,9 @@ spec:
     targetRevision: 2026.5.2
     helm:
       valuesObject:
+        global:
+          imagePullSecrets:
+            - name: ghcr-pull-secret
         authentik:
           postgresql:
             host: postgres-shared-rw.database.svc.cluster.local

@@ -42,6 +42,8 @@ spec:
           operator: "Exists"
           effect: "NoExecute"
           tolerationSeconds: 30
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: profilarr
           image: ghcr.io/dictionarry-hub/profilarr:latest@sha256:9b49da18dd896dbe4b6c797e39cb8b0787ab166f5e5956df647295f23ae496cc

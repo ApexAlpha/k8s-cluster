@@ -15,6 +15,8 @@ spec:
       labels:
         app: k8s-mcp-server
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       serviceAccountName: k8s-mcp-reader
       containers:
       - name: server
