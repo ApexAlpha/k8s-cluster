@@ -1,11 +1,24 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: database
-
 resources:
-  - priority-class.yaml
-  - postgres-shared.yaml
-  - pooler.yaml
-  - scheduled-backup.yaml
-  - cnpg-barman-credentials-sealed.yaml
+- priority-class.yaml
+- postgres-shared.yaml
+- pooler.yaml
+- scheduled-backup.yaml
+- cnpg-barman-credentials-sealed.yaml
+- sonarr-user-password-sealed.yaml
+- sonarr4k-user-password-sealed.yaml
+- radarr-user-password-sealed.yaml
+- radarr4k-user-password-sealed.yaml
+- prowlarr-user-password-sealed.yaml
+- bazarr-user-password-sealed.yaml
+- immich-user-password-sealed.yaml
+- nextcloud-user-password-sealed.yaml
+- mealie-user-password-sealed.yaml
+- paperless-user-password-sealed.yaml
+- vaultwarden-user-password-sealed.yaml
+- authentik-user-password-sealed.yaml
+- grafana-user-password-sealed.yaml
+- firefly-user-password-sealed.yaml
+- stirling-user-password-sealed.yaml

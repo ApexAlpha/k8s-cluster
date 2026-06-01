@@ -6,6 +6,69 @@ metadata:
 spec:
   description: "Shared PostgreSQL cluster for homelab services"
 
+  managed:
+    roles:
+    - login: true
+      name: sonarr_user
+      passwordSecret:
+        name: sonarr-user-password
+    - login: true
+      name: sonarr4k_user
+      passwordSecret:
+        name: sonarr4k-user-password
+    - login: true
+      name: radarr_user
+      passwordSecret:
+        name: radarr-user-password
+    - login: true
+      name: radarr4k_user
+      passwordSecret:
+        name: radarr4k-user-password
+    - login: true
+      name: prowlarr_user
+      passwordSecret:
+        name: prowlarr-user-password
+    - login: true
+      name: bazarr_user
+      passwordSecret:
+        name: bazarr-user-password
+    - login: true
+      name: immich_user
+      passwordSecret:
+        name: immich-user-password
+    - login: true
+      name: nextcloud_user
+      passwordSecret:
+        name: nextcloud-user-password
+    - login: true
+      name: mealie_user
+      passwordSecret:
+        name: mealie-user-password
+    - login: true
+      name: paperless_user
+      passwordSecret:
+        name: paperless-user-password
+    - login: true
+      name: vaultwarden_user
+      passwordSecret:
+        name: vaultwarden-user-password
+    - login: true
+      name: authentik_user
+      passwordSecret:
+        name: authentik-user-password
+    - login: true
+      name: grafana_user
+      passwordSecret:
+        name: grafana-user-password
+    - login: true
+      name: firefly_user
+      passwordSecret:
+        name: firefly-user-password
+    - login: true
+      name: stirling_user
+      passwordSecret:
+        name: stirling-user-password
+
   # High priority ensures postgres pods preempt app pods when resources are tight
   priorityClassName: database-critical
 
