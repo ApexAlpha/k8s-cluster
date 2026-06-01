@@ -46,7 +46,7 @@ spec:
             - name: DB_DATABASE_NAME
               value: "immich"
             - name: DB_USERNAME
-              value: "app"
+              value: "immich_user"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:

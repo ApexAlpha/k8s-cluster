@@ -26,8 +26,9 @@ spec:
           env:
             GF_DATABASE_TYPE: postgres
             GF_DATABASE_HOST: postgres-shared-pooler.database.svc:5432
+            GF_DATABASE_USER: grafana_user
             GF_DATABASE_NAME: grafana
-            GF_DATABASE_USER: app
+            
             # OIDC / Authentik SSO
             GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
             GF_AUTH_GENERIC_OAUTH_NAME: Authentik
