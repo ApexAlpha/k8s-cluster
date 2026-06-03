@@ -87,6 +87,7 @@ spec:
                 - kube-system
                 - kube-public
                 - kube-node-lease
+                - velero
 
   destination:
     server: https://kubernetes.default.svc
