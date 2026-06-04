@@ -79,7 +79,7 @@ spec:
             schedule: "0 3 * * *"
             useOwnerReferencesInBackup: false
             template:
-              ttl: "168h0m0s"
+              ttl: "72h0m0s"
               storageLocation: default
               defaultVolumesToFsBackup: true
               # Exclude namespaces that don't need backing up
@@ -88,6 +88,7 @@ spec:
                 - kube-public
                 - kube-node-lease
                 - velero
+                - garage
 
   destination:
     server: https://kubernetes.default.svc
