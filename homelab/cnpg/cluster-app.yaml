@@ -4,7 +4,7 @@ metadata:
   name: postgres-shared
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: 10
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -64,6 +64,51 @@ spec:
         - /spec/postgresql/parameters/wal_log_hints
         - /spec/postgresql/parameters/wal_receiver_timeout
         - /spec/postgresql/parameters/wal_sender_timeout
+        - /spec/managed/roles/0/connectionLimit
+        - /spec/managed/roles/0/ensure
+        - /spec/managed/roles/0/inherit
+        - /spec/managed/roles/1/connectionLimit
+        - /spec/managed/roles/1/ensure
+        - /spec/managed/roles/1/inherit
+        - /spec/managed/roles/2/connectionLimit
+        - /spec/managed/roles/2/ensure
+        - /spec/managed/roles/2/inherit
+        - /spec/managed/roles/3/connectionLimit
+        - /spec/managed/roles/3/ensure
+        - /spec/managed/roles/3/inherit
+        - /spec/managed/roles/4/connectionLimit
+        - /spec/managed/roles/4/ensure
+        - /spec/managed/roles/4/inherit
+        - /spec/managed/roles/5/connectionLimit
+        - /spec/managed/roles/5/ensure
+        - /spec/managed/roles/5/inherit
+        - /spec/managed/roles/6/connectionLimit
+        - /spec/managed/roles/6/ensure
+        - /spec/managed/roles/6/inherit
+        - /spec/managed/roles/7/connectionLimit
+        - /spec/managed/roles/7/ensure
+        - /spec/managed/roles/7/inherit
+        - /spec/managed/roles/8/connectionLimit
+        - /spec/managed/roles/8/ensure
+        - /spec/managed/roles/8/inherit
+        - /spec/managed/roles/9/connectionLimit
+        - /spec/managed/roles/9/ensure
+        - /spec/managed/roles/9/inherit
+        - /spec/managed/roles/10/connectionLimit
+        - /spec/managed/roles/10/ensure
+        - /spec/managed/roles/10/inherit
+        - /spec/managed/roles/11/connectionLimit
+        - /spec/managed/roles/11/ensure
+        - /spec/managed/roles/11/inherit
+        - /spec/managed/roles/12/connectionLimit
+        - /spec/managed/roles/12/ensure
+        - /spec/managed/roles/12/inherit
+        - /spec/managed/roles/13/connectionLimit
+        - /spec/managed/roles/13/ensure
+        - /spec/managed/roles/13/inherit
+        - /spec/managed/roles/14/connectionLimit
+        - /spec/managed/roles/14/ensure
+        - /spec/managed/roles/14/inherit
   syncPolicy:
     automated:
       prune: true
