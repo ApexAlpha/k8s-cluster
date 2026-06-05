@@ -46,7 +46,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: profilarr
-          image: ghcr.io/dictionarry-hub/profilarr:latest@sha256:9b49da18dd896dbe4b6c797e39cb8b0787ab166f5e5956df647295f23ae496cc
+          image: ghcr.io/dictionarry-hub/profilarr:latest@sha256:bcec9c579358163004145105c2747d3513ae75a56cd8b6c3ac759a0166d5b4af
           ports:
             - name: http
               containerPort: 6868
