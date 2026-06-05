@@ -4,7 +4,6 @@ metadata:
   name: postgres-shared
   namespace: argocd
   annotations:
-    # Ensure operator is ready before creating cluster
     argocd.argoproj.io/sync-wave: "10"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -18,14 +17,53 @@ spec:
     server: https://kubernetes.default.svc
     namespace: database
   ignoreDifferences:
-    # CNPG mutates the Cluster spec during rolling updates (e.g. image digest,
-    # currentPrimary). Without this, selfHeal re-applies the manifest mid-operation,
-    # which CNPG interprets as a new desired state and restarts pods again.
     - group: postgresql.cnpg.io
       kind: Cluster
       jsonPointers:
         - /status
         - /spec/imageName
+        - /spec/enablePDB
+        - /spec/enableSuperuserAccess
+        - /spec/failoverDelay
+        - /spec/logLevel
+        - /spec/maxSyncReplicas
+        - /spec/minSyncReplicas
+        - /spec/postgresGID
+        - /spec/postgresUID
+        - /spec/primaryUpdateMethod
+        - /spec/probes
+        - /spec/replicationSlots
+        - /spec/smartShutdownTimeout
+        - /spec/switchoverDelay
+        - /spec/backup/target
+        - /spec/bootstrap/initdb/encoding
+        - /spec/bootstrap/initdb/localeCType
+        - /spec/bootstrap/initdb/localeCollate
+        - /spec/monitoring/customQueriesConfigMap
+        - /spec/monitoring/disableDefaultQueries
+        - /spec/storage/resizeInUseVolumes
+        - /spec/postgresql/syncReplicaElectionConstraint
+        - /spec/postgresql/parameters/archive_mode
+        - /spec/postgresql/parameters/archive_timeout
+        - /spec/postgresql/parameters/dynamic_shared_memory_type
+        - /spec/postgresql/parameters/full_page_writes
+        - /spec/postgresql/parameters/log_destination
+        - /spec/postgresql/parameters/log_directory
+        - /spec/postgresql/parameters/log_filename
+        - /spec/postgresql/parameters/log_rotation_age
+        - /spec/postgresql/parameters/log_rotation_size
+        - /spec/postgresql/parameters/log_truncate_on_rotation
+        - /spec/postgresql/parameters/logging_collector
+        - /spec/postgresql/parameters/max_parallel_workers
+        - /spec/postgresql/parameters/max_worker_processes
+        - /spec/postgresql/parameters/shared_memory_type
+        - /spec/postgresql/parameters/shared_preload_libraries
+        - /spec/postgresql/parameters/ssl_max_protocol_version
+        - /spec/postgresql/parameters/ssl_min_protocol_version
+        - /spec/postgresql/parameters/wal_keep_size
+        - /spec/postgresql/parameters/wal_log_hints
+        - /spec/postgresql/parameters/wal_receiver_timeout
+        - /spec/postgresql/parameters/wal_sender_timeout
   syncPolicy:
     automated:
       prune: true
