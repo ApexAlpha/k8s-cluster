@@ -39,6 +39,8 @@ spec:
           uploaderType: kopia
           defaultVolumesToFsBackup: true
           fsBackupTimeout: 6h
+          clientQPS: 100
+          clientBurst: 150
           backupStorageLocation:
             - name: default
               provider: aws
