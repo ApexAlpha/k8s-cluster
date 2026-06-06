@@ -22,6 +22,8 @@ spec:
             create: false
         
         # Resource limits for the operator itself
+        imagePullSecrets:
+          - name: ghcr-pull-secret
         resources:
           requests:
             cpu: 100m

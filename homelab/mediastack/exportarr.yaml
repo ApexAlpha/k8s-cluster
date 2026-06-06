@@ -28,6 +28,8 @@ spec:
       labels:
         app: exportarr-sonarr
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: exportarr
           image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
@@ -93,6 +95,8 @@ spec:
       labels:
         app: exportarr-sonarr-4k
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: exportarr
           image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
@@ -158,6 +162,8 @@ spec:
       labels:
         app: exportarr-radarr
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: exportarr
           image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
@@ -223,6 +229,8 @@ spec:
       labels:
         app: exportarr-radarr-4k
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: exportarr
           image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
@@ -288,6 +296,8 @@ spec:
       labels:
         app: exportarr-prowlarr
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: exportarr
           image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520
@@ -353,6 +363,8 @@ spec:
       labels:
         app: exportarr-bazarr
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: exportarr
           image: ghcr.io/onedr0p/exportarr:v2@sha256:af535d94061cf97a52e1661945ffba78c03f9443eae7c0da1a80a5a4be56b520

@@ -19,6 +19,8 @@ spec:
       labels:
         app: frigate
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       nodeSelector:
         kubernetes.io/hostname: k3s-nuc
       # video (44) and render (993) group access for /dev/dri

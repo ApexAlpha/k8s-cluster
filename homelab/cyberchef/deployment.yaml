@@ -26,6 +26,8 @@ spec:
           operator: "Exists"
           effect: "NoExecute"
           tolerationSeconds: 30
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: cyberchef
           image: ghcr.io/gchq/cyberchef:latest@sha256:45082a0ac41d6beeea2daeb192d8b20c66520362854542f4fe340aab37635f66

@@ -19,6 +19,8 @@ spec:
       labels:
         app: mealie
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

@@ -19,6 +19,8 @@ spec:
       labels:
         app: paperless
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       securityContext:
         fsGroup: 1000
   #     runAsUser: 1000

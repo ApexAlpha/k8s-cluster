@@ -18,6 +18,8 @@ spec:
         app: blocky
         blocky-instance: home
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       priorityClassName: dns-critical
       nodeSelector:
         kubernetes.io/hostname: k3s-home
@@ -89,6 +91,8 @@ spec:
         app: blocky
         blocky-instance: nuc
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       priorityClassName: dns-critical
       nodeSelector:
         kubernetes.io/hostname: k3s-nuc

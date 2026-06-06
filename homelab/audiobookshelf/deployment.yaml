@@ -21,6 +21,8 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: audiobooks
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

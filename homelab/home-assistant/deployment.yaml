@@ -19,6 +19,8 @@ spec:
       labels:
         app: home-assistant
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       nodeSelector:
         kubernetes.io/hostname: k3s-nuc
       # hostNetwork gives HA access to mDNS, device discovery, and local LAN
