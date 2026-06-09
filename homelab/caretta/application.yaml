@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: caretta
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "24"
+spec:
+  project: default
+  source:
+    repoURL: https://helm.groundcover.com/
+    targetRevision: 0.0.16
+    chart: caretta
+    helm:
+      values: |
+        grafana:
+          enabled: false
+
+        victoria-metrics-single:
+          server:
+            persistentVolume:
+              enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: caretta
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

@@ -76,4 +76,5 @@ resources:
   - openclaw/application.yaml
   - k8s-mcp-server/application.yaml
   - radar/application.yaml
+  - caretta/application.yaml
   # - apps/plex.yaml
