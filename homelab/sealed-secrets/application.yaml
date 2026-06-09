@@ -19,9 +19,17 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: sealed-secrets-controller
+      jsonPointers:
+        - /metadata/annotations/deployment.kubernetes.io~1revision
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
