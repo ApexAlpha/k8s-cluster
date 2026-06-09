@@ -75,4 +75,5 @@ resources:
   - headlamp/application.yaml
   - openclaw/application.yaml
   - k8s-mcp-server/application.yaml
+  - radar/application.yaml
   # - apps/plex.yaml
