@@ -57,6 +57,9 @@ spec:
           limits:
             memory: 256Mi
 
+        imagePullSecrets:
+          - name: ghcr-pull-secret
+
   destination:
     server: https://kubernetes.default.svc
     namespace: radar
