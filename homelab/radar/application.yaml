@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: radar
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+spec:
+  project: default
+  source:
+    repoURL: https://skyhook-io.github.io/helm-charts
+    targetRevision: 1.7.6
+    chart: radar
+    helm:
+      values: |
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
+          hosts:
+            - host: radar.k8s.hu.ls
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: wildcard-k8s-hu-ls-tls
+              hosts:
+                - radar.k8s.hu.ls
+
+        rbac:
+          podLogs: true
+          podExec: true
+          portForward: false
+          secrets: false
+          helm: false
+          viewRBAC: false
+
+        mcp:
+          enabled: true
+
+        timeline:
+          storage: sqlite
+          retention: 168h
+          maxSize: 800Mi
+
+        persistence:
+          enabled: true
+          size: 1Gi
+
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: radar
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
