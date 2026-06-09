@@ -24,6 +24,7 @@ spec:
           - namespace: authentik
           - namespace: mcp
           - namespace: media
+          - namespace: radar
   template:
     metadata:
       name: ghcr-secret-{{namespace}}
