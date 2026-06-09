@@ -24772,6 +24772,34 @@ data:
       - /metadata
       - /endpoints
       - /ports
+  resource.customizations.health.postgresql.cnpg.io_Cluster: |
+    hs = {}
+    hs.status = "Healthy"
+    hs.message = "CNPG Cluster is healthy"
+    if obj.status == nil then
+      hs.status = "Missing"
+      return hs
+    end
+    if obj.status.conditions == nil then
+      hs.status = "Progressing"
+      return hs
+    end
+    for i, condition in ipairs(obj.status.conditions) do
+      if condition.type == "Ready" then
+        if condition.status == "True" then
+          hs.status = "Healthy"
+          hs.message = condition.message or ""
+        elseif condition.status == "False" then
+          hs.status = "Degraded"
+          hs.message = condition.message or "Cluster not ready"
+        else
+          hs.status = "Progressing"
+          hs.message = condition.message or ""
+        end
+      end
+    end
+    return hs
+
   resource.exclusions: |
     ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter
     - apiGroups:
