@@ -13,6 +13,10 @@ spec:
     chart: caretta
     helm:
       values: |
+        rbac:
+          pspEnabled: false
+          sccEnabled: false
+
         grafana:
           enabled: false
 
