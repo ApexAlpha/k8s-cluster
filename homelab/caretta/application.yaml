@@ -21,6 +21,8 @@ spec:
           enabled: false
 
         victoria-metrics-single:
+          rbac:
+            pspEnabled: false
           server:
             persistentVolume:
               enabled: false
