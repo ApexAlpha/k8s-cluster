@@ -6,6 +6,7 @@
     "docker:pinDigests",
     ":disableRateLimiting"
   ],
+  "platformAutomerge": true,
   "hostRules": [
     {
       "matchHost": "juicedata.github.io",
@@ -30,7 +31,7 @@
         "/\\.ya?ml$/"
       ],
       "matchStrings": [
-        "repoURL:\\s*(?<registryUrl>https?://[^\\s]+)\\s+chart:\\s*(?<depName>[^\\s]+)\\s+targetRevision:\\s*(?<currentValue>\\d+\\.\\d+\\.\\d+[^\\s]*)"
+        "repoURL:\\\\s*(?<registryUrl>https?://[^\\\\s]+)\\\\s+chart:\\\\s*(?<depName>[^\\\\s]+)\\\\s+targetRevision:\\\\s*(?<currentValue>\\\\d+\\\\.\\\\d+\\\\.\\\\d+[^\\\\s]*)"
       ],
       "datasourceTemplate": "helm"
     }
@@ -105,5 +106,5 @@
   ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
-  "minimumReleaseAge": "3 days"
+  "minimumReleaseAge": "1 day"
 }
