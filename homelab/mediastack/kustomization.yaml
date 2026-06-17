@@ -13,6 +13,7 @@ resources:
   - radarr-4k.yaml
   - bazarr.yaml
   - profilarr.yaml
+  - profilarr-v2.yaml
   - exportarr.yaml
   - exportarr-api-keys-sealed.yaml
   - bazarr-db-credentials-sealed.yaml
