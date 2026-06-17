@@ -159,6 +159,7 @@ spec:
         - CREATE DATABASE "prowlarr-main" OWNER app;
         - CREATE DATABASE "prowlarr-log" OWNER app;
         - CREATE DATABASE bazarr OWNER app;
+        - CREATE DATABASE firefly OWNER firefly_user;
 
 
   backup:
