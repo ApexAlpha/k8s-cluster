@@ -140,25 +140,28 @@ spec:
         - CREATE EXTENSION IF NOT EXISTS vector CASCADE;
         - CREATE EXTENSION IF NOT EXISTS cube;
         - CREATE EXTENSION IF NOT EXISTS earthdistance;
+      # Elke database krijgt zijn eigen per-app user als OWNER.
+      # In PostgreSQL 18 heeft alleen pg_database_owner CREATE op schema public,
+      # en die rol erven database-eigenaren automatisch — geen aparte schema GRANTs nodig.
       postInitSQL:
-        - CREATE DATABASE vaultwarden OWNER app;
-        - CREATE DATABASE immich OWNER app;
-        - CREATE DATABASE nextcloud OWNER app;
-        - CREATE DATABASE mealie OWNER app;
-        - CREATE DATABASE grafana OWNER app;
-        - CREATE DATABASE authentik OWNER app;
-        - CREATE DATABASE paperless OWNER app;
-        - CREATE DATABASE "sonarr-main" OWNER app;
-        - CREATE DATABASE "sonarr-log" OWNER app;
-        - CREATE DATABASE "sonarr4k-main" OWNER app;
-        - CREATE DATABASE "sonarr4k-log" OWNER app;
-        - CREATE DATABASE "radarr-main" OWNER app;
-        - CREATE DATABASE "radarr-log" OWNER app;
-        - CREATE DATABASE "radarr4k-main" OWNER app;
-        - CREATE DATABASE "radarr4k-log" OWNER app;
-        - CREATE DATABASE "prowlarr-main" OWNER app;
-        - CREATE DATABASE "prowlarr-log" OWNER app;
-        - CREATE DATABASE bazarr OWNER app;
+        - CREATE DATABASE vaultwarden OWNER vaultwarden_user;
+        - CREATE DATABASE immich OWNER immich_user;
+        - CREATE DATABASE nextcloud OWNER nextcloud_user;
+        - CREATE DATABASE mealie OWNER mealie_user;
+        - CREATE DATABASE grafana OWNER grafana_user;
+        - CREATE DATABASE authentik OWNER authentik_user;
+        - CREATE DATABASE paperless OWNER paperless_user;
+        - CREATE DATABASE "sonarr-main" OWNER sonarr_user;
+        - CREATE DATABASE "sonarr-log" OWNER sonarr_user;
+        - CREATE DATABASE "sonarr4k-main" OWNER sonarr4k_user;
+        - CREATE DATABASE "sonarr4k-log" OWNER sonarr4k_user;
+        - CREATE DATABASE "radarr-main" OWNER radarr_user;
+        - CREATE DATABASE "radarr-log" OWNER radarr_user;
+        - CREATE DATABASE "radarr4k-main" OWNER radarr4k_user;
+        - CREATE DATABASE "radarr4k-log" OWNER radarr4k_user;
+        - CREATE DATABASE "prowlarr-main" OWNER prowlarr_user;
+        - CREATE DATABASE "prowlarr-log" OWNER prowlarr_user;
+        - CREATE DATABASE bazarr OWNER bazarr_user;
         - CREATE DATABASE firefly OWNER firefly_user;
 
 
