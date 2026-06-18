@@ -48,7 +48,7 @@ spec:
             - name: PROWLARR_ENABLED
               value: "true"
             - name: PROWLARR_URL
-              value: "http://prowlarr.media.svc.cluster.local:9696"
+              value: "http://prowlarr.media.svc.cluster.local:80"
             - name: PROWLARR_API_KEY
               value: "f519f0a123e14b8e80403ecfe7111d2a"
             - name: PROWLARR_AUTO_EXPAND
