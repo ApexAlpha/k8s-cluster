@@ -75,6 +75,9 @@ spec:
                 'forwarded_for_headers' => array('HTTP_X_FORWARDED_FOR'),
                 'overwrite.cli.url' => 'https://office.k8s.hu.ls',
                 'overwriteprotocol' => 'https',
+                # OIDC: allow HTTP requests to local/private IPs
+                # (auth.k8s.hu.ls resolves to 192.168.1.245, blocked by DNS pinning)
+                'allow_local_remote_servers' => true,
               );
             
             previews.config.php: |-
