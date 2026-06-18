@@ -130,18 +130,21 @@ spec:
               port: http
             failureThreshold: 30
             periodSeconds: 10
+            timeoutSeconds: 10
           livenessProbe:
             httpGet:
               path: /transmission/web/
               port: http
             periodSeconds: 30
             failureThreshold: 3
+            timeoutSeconds: 10
           readinessProbe:
             httpGet:
               path: /transmission/web/
               port: http
             periodSeconds: 10
             failureThreshold: 3
+            timeoutSeconds: 10
       volumes:
         - name: config
           persistentVolumeClaim:
