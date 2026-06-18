@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-shelfmark-books
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-shelfmark-books
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+    - intr
+    - rsize=1048576
+    - wsize=1048576
+  nfs:
+    server: REPLACE_ME_NFS_SERVER
+    path: /path/to/shelfmark/books

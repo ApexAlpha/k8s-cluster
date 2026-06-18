@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shelfmark
+  namespace: shelfmark
+  labels:
+    app: shelfmark
+spec:
+  selector:
+    app: shelfmark
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8084

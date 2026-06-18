@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shelfmark
+  namespace: shelfmark
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+  labels:
+    app: shelfmark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shelfmark
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: shelfmark
+      annotations:
+        backup.velero.io/backup-volumes-excludes: books
+    spec:
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+      containers:
+        - name: shelfmark
+          image: ghcr.io/calibrain/shelfmark:latest
+          ports:
+            - name: http
+              containerPort: 8084
+          env:
+            - name: TZ
+              value: "Europe/Amsterdam"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: SESSION_COOKIE_SECURE
+              value: "true"
+            - name: PROWLARR_ENABLED
+              value: "true"
+            - name: PROWLARR_URL
+              value: "http://prowlarr.media.svc.cluster.local:9696"
+            - name: PROWLARR_API_KEY
+              value: "f519f0a123e14b8e80403ecfe7111d2a"
+            - name: PROWLARR_AUTO_EXPAND
+              value: "true"
+            - name: AUDIOBOOK_LIBRARY_URL
+              value: "https://abs.k8s.hu.ls"
+            - name: SEARCH_MODE
+              value: "universal"
+            - name: METADATA_PROVIDER
+              value: "openlibrary"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: books
+              mountPath: /books
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            failureThreshold: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: shelfmark-config
+        - name: books
+          persistentVolumeClaim:
+            claimName: shelfmark-books
