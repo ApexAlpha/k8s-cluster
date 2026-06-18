@@ -81,6 +81,10 @@ data:
             widget:
               type: frigate
               url: http://frigate.frigate.svc
+        - ShelfMark:
+            icon: mdi-book-search
+            href: https://shelfmark.k8s.hu.ls
+            description: Book Search & Download
         - Audiobookshelf:
             icon: audiobookshelf
             href: https://abs.k8s.hu.ls/audiobookshelf/
