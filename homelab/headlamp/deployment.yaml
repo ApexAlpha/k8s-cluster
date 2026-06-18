@@ -100,7 +100,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: headlamp
-          image: ghcr.io/headlamp-k8s/headlamp:latest@sha256:c9754bae1d799220da0547e51ceee234f6e66ebadc138518ca73e33ecd331e59
+          image: ghcr.io/headlamp-k8s/headlamp:latest@sha256:5d03caa26df7a715079405df2949907160518750b9b62b6bf4de8d1a6142c541
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
