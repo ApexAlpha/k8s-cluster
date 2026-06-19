@@ -41,6 +41,8 @@ spec:
           fsBackupTimeout: 6h
           clientQPS: 100
           clientBurst: 150
+          uploader:
+            parallelFilesUpload: 10
           backupStorageLocation:
             - name: default
               provider: aws
@@ -56,21 +58,22 @@ spec:
         nodeAgent:
           # k3s stores pod volumes here, not the standard /var/lib/kubelet/pods
           podVolumePath: /var/lib/kubelet/pods
+          podVolumeWorkers: 5
           resources:
             requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
               cpu: 500m
-              memory: 1Gi
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
 
         resources:
           requests:
-            cpu: 200m
-            memory: 256Mi
+            cpu: 500m
+            memory: 512Mi
           limits:
-            cpu: 1000m
-            memory: 1Gi
+            cpu: 2000m
+            memory: 2Gi
 
         metrics:
           enabled: true
