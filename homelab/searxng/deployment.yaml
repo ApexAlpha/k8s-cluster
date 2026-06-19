@@ -29,7 +29,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: searxng
-          image: searxng/searxng:latest@sha256:b93d3f3f4e32da496477e6bc64251b6125b8344e4c3af7bed7714cc701714bd8
+          image: searxng/searxng:latest@sha256:735156112935ab87447d981fba81367fe3fd8861a740dd93e7f26ddfe4f2848a
           ports:
             - name: http
               containerPort: 8080
