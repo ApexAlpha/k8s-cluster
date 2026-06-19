@@ -41,6 +41,8 @@ spec:
           fsBackupTimeout: 6h
           clientQPS: 100
           clientBurst: 150
+          concurrentBackups: 3
+          itemBlockWorkerCount: 5
           uploader:
             parallelFilesUpload: 10
           backupStorageLocation:
@@ -58,8 +60,6 @@ spec:
         nodeAgent:
           # k3s stores pod volumes here, not the standard /var/lib/kubelet/pods
           podVolumePath: /var/lib/kubelet/pods
-          extraArgs:
-            - --pod-volume-backup-workers=5
           resources:
             requests:
               cpu: 500m
