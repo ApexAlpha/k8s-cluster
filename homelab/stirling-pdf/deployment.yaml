@@ -31,7 +31,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: stirling-pdf
-          image: stirlingtools/stirling-pdf:latest@sha256:d5ff678ecacdb26b4b7892534540de64a04458b8aaa0a4f9daf2852221646f71  # Pin with digest — Renovate will manage this
+          image: stirlingtools/stirling-pdf:latest@sha256:a6c5e627ceef6ed323a63da13e0d44ef68503320d1917cbc7ca2fd8e4a827aae  # Pin with digest — Renovate will manage this
           ports:
             - name: http
               containerPort: 8080
