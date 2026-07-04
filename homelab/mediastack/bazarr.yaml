@@ -43,7 +43,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: bazarr
-          image: lscr.io/linuxserver/bazarr:latest@sha256:8e48a2950e3806a2a914fe031fa21b1c0a0f2824eede4ea747e26213e941fbf2
+          image: lscr.io/linuxserver/bazarr:latest@sha256:047222423d6d8556a88581b189175bec57f286f120b52ba29c0390fe6babaa5a
           ports:
             - name: http
               containerPort: 6767
