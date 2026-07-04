@@ -20,7 +20,7 @@ spec:
       serviceAccountName: k8s-mcp-reader
       containers:
       - name: server
-        image: ghcr.io/containers/kubernetes-mcp-server:latest@sha256:9f15b4da34356b57897a4e92347732c7e3243b91d10bb53c7c2a798fab0ca64a
+        image: ghcr.io/containers/kubernetes-mcp-server:latest@sha256:5ce6520e4adb6e10ccc23659db0d7cbd4dae65e034a36362a69337ba537922a9
         imagePullPolicy: IfNotPresent
         args:
         - --port
