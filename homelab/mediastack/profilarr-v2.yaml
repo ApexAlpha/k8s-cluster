@@ -94,7 +94,7 @@ spec:
             failureThreshold: 3
             timeoutSeconds: 5
         - name: parser
-          image: ghcr.io/dictionarry-hub/profilarr-parser:latest@sha256:083a6bcd3234c1eb98cf3a202daa4070cd93fecce08f8cf51e4ab0a035d95a56
+          image: ghcr.io/dictionarry-hub/profilarr-parser:latest@sha256:16b22ef6485e135cc660cd511697c637d44649753d02397c9374e1317cfaaf0e
           ports:
             - name: parser
               containerPort: 5000
