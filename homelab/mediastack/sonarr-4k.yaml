@@ -44,7 +44,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: sonarr
-          image: lscr.io/linuxserver/sonarr:latest@sha256:633e0e66d85ce4e9172608a37d3d24e124b3e485fc0d946f533c3bb5875227e9
+          image: lscr.io/linuxserver/sonarr:latest@sha256:24acea2956a0ccb11f103877d9f4f8576600fb34bff34820ed749c2256dab89f
           ports:
             - name: http
               containerPort: 8989
