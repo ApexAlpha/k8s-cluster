@@ -44,7 +44,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:latest@sha256:3e9bd62ca90c97c5df75b7012e10a29f6926e62807deeddc1dc89e6e2fd141e1
+          image: lscr.io/linuxserver/prowlarr:latest@sha256:4fd7a166c8f46dd3370a871c250ee577d6c2ae97a0dbe0e3614b5ef736205620
           ports:
             - name: http
               containerPort: 9696
