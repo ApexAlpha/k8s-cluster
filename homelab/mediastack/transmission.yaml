@@ -112,6 +112,8 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
+            - name: PEERPORT
+              value: "51413"
           volumeMounts:
             - name: config
               mountPath: /config
