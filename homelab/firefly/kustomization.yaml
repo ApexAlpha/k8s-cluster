@@ -12,3 +12,4 @@ resources:
   - ingress-importer.yaml
   - firefly-importer-sealed.yaml
   - firefly-db-sealed.yaml
+  - firefly-secret-sealed.yaml
