@@ -51,6 +51,7 @@ resources:
   - vaultwarden/application.yaml
   - mediastack/application.yaml
   - paperless-ngx/application.yaml  
+  - unifi-os/application.yaml
   - unifi/application.yaml
   - immich/application.yaml
   - stirling-pdf/application.yaml
