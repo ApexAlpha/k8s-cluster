@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: unifi-os-server
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://chrissnell.github.io/unifi-os-kubernetes
+    chart: unifi-os-server
+    targetRevision: 0.2.2
+    helm:
+      valuesObject:
+        fullnameOverride: unifi-os
+        image:
+          repository: ghcr.io/chrissnell/unifi-os-server
+          pullPolicy: IfNotPresent
+        systemIp: unifi.k8s.hu.ls
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            cpu: "4"
+            memory: 6Gi
+        persistence:
+          data:
+            enabled: true
+            size: 20Gi
+          mongo:
+            enabled: true
+            size: 10Gi
+        cgroupHostPath:
+          enabled: true
+          path: /sys/fs/cgroup
+        service:
+          type: LoadBalancer
+          externalTrafficPolicy: Local
+        ports:
+          webui:            { enabled: true,  port: 443,   targetPort: 443,   protocol: TCP }
+          communication:    { enabled: true,  port: 8080,  targetPort: 8080,  protocol: TCP }
+          stun:             { enabled: true,  port: 3478,  targetPort: 3478,  protocol: UDP }
+          discovery:        { enabled: true,  port: 10003, targetPort: 10003, protocol: UDP }
+        replicaCount: 1
+        strategy:
+          type: Recreate
+        probes:
+          liveness:
+            enabled: true
+            initialDelaySeconds: 180
+            periodSeconds: 60
+          readiness:
+            enabled: true
+            initialDelaySeconds: 60
+            periodSeconds: 15
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: unifi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

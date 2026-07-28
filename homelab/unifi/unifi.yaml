@@ -8,27 +8,27 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: unifi-controller
+  name: unifi-os-webui
   namespace: unifi
 spec:
   type: ClusterIP
   ports:
     - name: https
-      port: 8443
+      port: 443
       targetPort: 8443
       protocol: TCP
 ---
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: unifi-controller
+  name: unifi-os-webui
   namespace: unifi
 subsets:
   - addresses:
       - ip: 192.168.1.228
     ports:
       - name: https
-        port: 8443
+        port: 443
         protocol: TCP
 ---
 # Tell Traefik to skip TLS verification on the self-signed Unifi backend
@@ -69,8 +69,8 @@ spec:
     - match: Host(`unifi.k8s.hu.ls`)
       kind: Rule
       services:
-        - name: unifi-controller
-          port: 8443
+        - name: unifi-os-webui
+          port: 443
           scheme: https
           serversTransport: unifi-transport
   tls:
