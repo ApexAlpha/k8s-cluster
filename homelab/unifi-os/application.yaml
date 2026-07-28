@@ -22,11 +22,11 @@ spec:
         systemIp: unifi.k8s.hu.ls
         resources:
           requests:
-            cpu: 500m
-            memory: 2Gi
+            cpu: 250m
+            memory: 1Gi
           limits:
-            cpu: "4"
-            memory: 6Gi
+            cpu: "2"
+            memory: 4Gi
         persistence:
           data:
             enabled: true
