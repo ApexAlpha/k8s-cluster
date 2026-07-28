@@ -152,6 +152,23 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-to-database
+  namespace: authentik
+spec:
+  podSelector: {}
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: database
+    ports:
+    - port: 5432
+      protocol: TCP
+
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -2419,6 +2436,24 @@ spec:
   policyTypes:
   - Ingress
 
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-authentik
+  namespace: database
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: authentik
+    ports:
+    - port: 5432
+      protocol: TCP
+  policyTypes:
+  - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
