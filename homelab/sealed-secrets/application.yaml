@@ -10,9 +10,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: oci://registry-1.docker.io/bitnamicharts/sealed-secrets
-    chart: sealed-secrets
-    targetRevision: 2.19.1
+    repoURL: https://github.com/bitnami/sealed-secrets.git
+    targetRevision: main
+    path: helm/sealed-secrets
     helm:
       valuesObject:
         fullnameOverride: sealed-secrets-controller
