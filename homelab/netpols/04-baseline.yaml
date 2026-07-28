@@ -46,6 +46,7 @@ metadata:
   namespace: audiobookshelf
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -124,6 +125,7 @@ metadata:
   namespace: authentik
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -152,25 +154,17 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
+
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-to-database
-  namespace: authentik
+  name: default-deny-ingress
+  namespace: blocky
 spec:
   podSelector: {}
-  egress:
-  - to:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: database
-    ports:
-    - port: 5432
-      protocol: TCP
-
-
-
+  policyTypes:
+  - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -210,6 +204,7 @@ metadata:
   namespace: blocky
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -223,22 +218,6 @@ spec:
       protocol: UDP
     - port: 53
       protocol: TCP
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-dns-from-lan
-  namespace: blocky
-spec:
-  podSelector: {}
-  ingress:
-  - ports:
-    - port: 53
-      protocol: UDP
-    - port: 53
-      protocol: TCP
-  policyTypes:
-  - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -304,6 +283,7 @@ metadata:
   namespace: caretta
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -382,6 +362,7 @@ metadata:
   namespace: cyberchef
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -460,6 +441,7 @@ metadata:
   namespace: firefly
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -481,6 +463,7 @@ metadata:
   namespace: firefly
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -554,6 +537,7 @@ metadata:
   namespace: frigate
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -632,6 +616,7 @@ metadata:
   namespace: headlamp
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -710,6 +695,7 @@ metadata:
   namespace: hermes
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -788,6 +774,7 @@ metadata:
   namespace: home-assistant
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -866,6 +853,7 @@ metadata:
   namespace: homepage
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -944,6 +932,7 @@ metadata:
   namespace: immich
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -965,6 +954,7 @@ metadata:
   namespace: immich
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1038,6 +1028,7 @@ metadata:
   namespace: it-tools
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1116,6 +1107,7 @@ metadata:
   namespace: mcp
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1194,6 +1186,7 @@ metadata:
   namespace: mealie
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1215,6 +1208,7 @@ metadata:
   namespace: mealie
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1288,6 +1282,7 @@ metadata:
   namespace: media
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1309,6 +1304,7 @@ metadata:
   namespace: media
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1382,6 +1378,7 @@ metadata:
   namespace: monitoring
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1403,6 +1400,7 @@ metadata:
   namespace: monitoring
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1476,6 +1474,7 @@ metadata:
   namespace: nextcloud
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1497,6 +1496,7 @@ metadata:
   namespace: nextcloud
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1570,6 +1570,7 @@ metadata:
   namespace: openclaw
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1648,6 +1649,7 @@ metadata:
   namespace: paperless
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1669,6 +1671,7 @@ metadata:
   namespace: paperless
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1742,6 +1745,7 @@ metadata:
   namespace: profilarr
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1820,6 +1824,7 @@ metadata:
   namespace: radar
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1898,6 +1903,7 @@ metadata:
   namespace: searxng
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1976,6 +1982,7 @@ metadata:
   namespace: shelfmark
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -1997,6 +2004,7 @@ metadata:
   namespace: shelfmark
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2070,6 +2078,7 @@ metadata:
   namespace: stirling-pdf
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2091,6 +2100,7 @@ metadata:
   namespace: stirling-pdf
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2164,6 +2174,7 @@ metadata:
   namespace: unifi
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2242,6 +2253,7 @@ metadata:
   namespace: vaultwarden
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2263,6 +2275,7 @@ metadata:
   namespace: vaultwarden
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2336,6 +2349,7 @@ metadata:
   namespace: wireguard
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2414,6 +2428,7 @@ metadata:
   namespace: wyoming
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2443,24 +2458,6 @@ spec:
   policyTypes:
   - Ingress
 
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-authentik
-  namespace: database
-spec:
-  podSelector: {}
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: authentik
-    ports:
-    - port: 5432
-      protocol: TCP
-  policyTypes:
-  - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -2640,10 +2637,26 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
+  name: allow-from-monitoring
+  namespace: database
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
   name: allow-dns
   namespace: database
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2665,6 +2678,7 @@ metadata:
   namespace: database
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
@@ -2777,6 +2791,7 @@ metadata:
   namespace: garage
 spec:
   podSelector: {}
+  policyTypes: []
   egress:
   - to:
     - namespaceSelector:
