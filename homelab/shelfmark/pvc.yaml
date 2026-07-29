@@ -19,6 +19,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: shelfmark-books
   namespace: shelfmark
+  annotations:
+    velero.io/exclude-from-backup: "true"
 spec:
   accessModes:
     - ReadWriteMany

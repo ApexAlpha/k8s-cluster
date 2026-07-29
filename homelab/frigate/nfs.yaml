@@ -25,6 +25,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: frigate-media
   namespace: frigate
+  annotations:
+    velero.io/exclude-from-backup: "true"
 spec:
   accessModes:
     - ReadWriteMany

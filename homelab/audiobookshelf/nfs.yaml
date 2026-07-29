@@ -24,6 +24,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: audiobookshelf-audiobooks
   namespace: audiobookshelf
+  annotations:
+    velero.io/exclude-from-backup: "true"
 spec:
   accessModes:
     - ReadWriteMany
