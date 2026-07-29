@@ -25,6 +25,7 @@ spec:
           - namespace: mcp
           - namespace: media
           - namespace: radar
+          - namespace: unifi
   template:
     metadata:
       name: ghcr-secret-{{namespace}}
