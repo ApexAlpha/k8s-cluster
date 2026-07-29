@@ -95,19 +95,6 @@ spec:
                 - kube-node-lease
                 - velero
                 - garage
-          weekly:
-            disabled: true
-            schedule: "0 3 * * 0"
-            useOwnerReferencesInBackup: false
-            template:
-              ttl: "720h0m0s"
-              storageLocation: default
-              defaultVolumesToFsBackup: true
-              excludedNamespaces:
-                - kube-system
-                - kube-public
-                - kube-node-lease
-                - velero
                 - garage
 
   destination:
