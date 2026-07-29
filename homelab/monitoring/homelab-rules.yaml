@@ -17,6 +17,15 @@ spec:
             summary: "Node {{ $labels.node }} is not ready"
             description: "Node {{ $labels.node }} has been not ready for more than 5 minutes."
 
+        - alert: NodeMemoryPressure
+          expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 80
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Node {{ $labels.node }} memory usage >80%"
+            description: "Node {{ $labels.node }} has been above 80% memory usage for more than 10 minutes (current: {{ $value | humanizePercentage }})."
+
     - name: homelab.argocd
       interval: 5m
       rules:
@@ -38,12 +47,21 @@ spec:
             summary: "ArgoCD app {{ $labels.name }} is unhealthy"
             description: "ArgoCD app {{ $labels.name }} has had health_status={{ $labels.health_status }} for more than 15 minutes."
 
+    - name: homelab.pods
+      interval: 5m
+      rules:
+        - alert: PodHighRestarts
+          expr: changes(kube_pod_container_status_restarts_total[24h]) > 10
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod {{ $labels.pod }} has restarted {{ $value }} times in 24h"
+            description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has restarted {{ $value }} times in the last 24 hours. This may indicate a crash loop or memory leak."
+
     - name: homelab.backups
       interval: 1h
       rules:
-        # Fires if last successful Barman base backup is older than 25 hours.
-        # Barman runs nightly at 2 AM; 25h gives a 1h grace window.
-        # Metric: cnpg_collector_last_available_backup_timestamp (Unix seconds, from CNPG PodMonitor)
         - alert: BarmanBackupStale
           expr: (time() - cnpg_collector_last_available_backup_timestamp) > 90000
           for: 1h
@@ -53,8 +71,6 @@ spec:
             summary: "Barman backup stale for {{ $labels.cluster_name }}"
             description: "Last successful Barman backup for {{ $labels.cluster_name }} is more than 25 hours old."
 
-        # Fires if the garage-to-nas rclone CronJob hasn't completed successfully in 25 hours.
-        # rclone runs nightly at 4 AM.
         - alert: RcloneBackupStale
           expr: (time() - kube_cronjob_status_last_successful_time{namespace="cluster-backup",cronjob="garage-to-nas"}) > 90000
           for: 1h
