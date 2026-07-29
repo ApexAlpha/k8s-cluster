@@ -58,7 +58,6 @@ spec:
         deployNodeAgent: true
 
         nodeAgent:
-          # k3s stores pod volumes here, not the standard /var/lib/kubelet/pods
           podVolumePath: /var/lib/kubelet/pods
           resources:
             requests:
@@ -82,15 +81,28 @@ spec:
             enabled: true
 
         schedules:
-          nightly:
+          daily:
             disabled: false
             schedule: "0 3 * * *"
             useOwnerReferencesInBackup: false
             template:
-              ttl: "72h0m0s"
+              ttl: "168h0m0s"
               storageLocation: default
               defaultVolumesToFsBackup: true
-              # Exclude namespaces that don't need backing up
+              excludedNamespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+                - velero
+                - garage
+          weekly:
+            disabled: false
+            schedule: "0 3 * * 0"
+            useOwnerReferencesInBackup: false
+            template:
+              ttl: "720h0m0s"
+              storageLocation: default
+              defaultVolumesToFsBackup: true
               excludedNamespaces:
                 - kube-system
                 - kube-public
