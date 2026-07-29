@@ -96,7 +96,7 @@ spec:
                 - velero
                 - garage
           weekly:
-            disabled: false
+            disabled: true
             schedule: "0 3 * * 0"
             useOwnerReferencesInBackup: false
             template:
