@@ -48,7 +48,7 @@ rules:
 
   # RBAC discovery (needed for Velero to list ClusterRoleBindings during backup)
   - apiGroups: ["rbac.authorization.k8s.io"]
-    resources: ["clusterrolebindings"]
+    resources: ["clusterrolebindings", "clusterroles"]
     verbs: ["get", "list", "watch"]
 ---
 # Binding velero-server SA to the scoped ClusterRole (replaces cluster-admin binding)
