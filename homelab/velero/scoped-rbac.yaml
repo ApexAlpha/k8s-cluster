@@ -19,7 +19,7 @@ rules:
     resources: ["pods", "pods/log", "pods/exec", "services", "endpoints",
                 "persistentvolumes", "persistentvolumeclaims", "persistentvolumeclaims/status",
                 "namespaces", "events", "configmaps", "secrets", "serviceaccounts",
-                "limitranges", "replicationcontrollers"]
+                "limitranges", "replicationcontrollers", "nodes"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 
   # Apps resources (Deployments, StatefulSets, DaemonSets, ReplicaSets)
