@@ -67,7 +67,7 @@
       ]
     },
     {
-      "description": "Automerge non-major updates after stability delay",
+      "description": "Automerge non-major updates between 01:00-05:00",
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -76,6 +76,7 @@
         "pinDigest"
       ],
       "automerge": true,
+      "automergeSchedule": ["01:00", "05:00"],
       "rebaseWhen": "conflicted"
     },
     {
@@ -84,15 +85,6 @@
         "argocd-install/**"
       ],
       "automerge": false
-    },
-    {
-      "description": "Schedule updates nightly after 11pm",
-      "schedule": [
-        "after 11pm"
-      ],
-      "matchPackageNames": [
-        "*"
-      ]
     }
   ],
   "vulnerabilityAlerts": {
