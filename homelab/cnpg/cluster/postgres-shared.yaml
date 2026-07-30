@@ -134,8 +134,6 @@ spec:
 
   bootstrap:
     initdb:
-      database: app
-      owner: app
       postInitTemplateSQL:
         - CREATE EXTENSION IF NOT EXISTS vector CASCADE;
         - CREATE EXTENSION IF NOT EXISTS cube;
