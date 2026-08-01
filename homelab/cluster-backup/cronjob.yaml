@@ -5,6 +5,7 @@ metadata:
   namespace: cluster-backup
 spec:
   schedule: "0 2 * * *"
+  suspend: true
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 3
