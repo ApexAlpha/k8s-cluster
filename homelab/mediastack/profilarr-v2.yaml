@@ -59,6 +59,8 @@ spec:
               value: "Europe/Amsterdam"
             - name: ORIGIN
               value: "https://profilarr.k8s.hu.ls"
+            - name: AUTH
+              value: "on"
             - name: PARSER_HOST
               value: "localhost"
             - name: PARSER_PORT
