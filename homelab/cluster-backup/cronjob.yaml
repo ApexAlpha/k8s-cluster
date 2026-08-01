@@ -25,23 +25,30 @@ spec:
                 - /bin/sh
                 - -ec
                 - |
-                  rclone sync garage:postgres-backups \
-                    nas:/NFS_NAS/backup_k3s_cluster_garage/postgres-backups \
-                    --config /rclone/rclone.conf \
-                    --max-age 8d --transfers 4 --checkers 8 \
-                    --retries 5 --low-level-retries 10 --timeout 60s \
-                    --no-check-certificate --log-level INFO
-                  rclone sync garage:velero-backups \
-                    nas:/NFS_NAS/backup_k3s_cluster_garage/velero-backups \
-                    --config /rclone/rclone.conf \
-                    --max-age 8d --transfers 4 --checkers 8 \
-                    --retries 5 --low-level-retries 10 --timeout 60s \
-                    --no-check-certificate --log-level INFO
-                  echo "BACKUP_SYNC_OK"
+                  set -e
+                  DATE=$(date +%F)
+                  STAGE=/stage
+                  NAS=nas:/NFS_NAS/backup_k3s_cluster_garage
+                  COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --no-check-certificate --log-level INFO"
+
+                  # ---------- postgres (CNPG base backups + WAL), 8-day window ----------
+                  mkdir -p "$STAGE/postgres" "$STAGE/upload"
+                  rclone sync garage:postgres-backups "$STAGE/postgres" \
+                    --config /rclone/rclone.conf --max-age 8d --transfers 8 --checkers 16 --log-level INFO
+                  tar -czf "$STAGE/postgres-backups-$DATE.tar.gz" -C "$STAGE" postgres
+                  (cd "$STAGE" && sha256sum "postgres-backups-$DATE.tar.gz" > "postgres-backups-$DATE.tar.gz.sha256")
+                  mv "$STAGE"/postgres-backups-$DATE.tar.gz* "$STAGE/upload/"
+                  rclone copy "$STAGE/upload" "$NAS/postgres-archives/" $COMMON --transfers 2 --checkers 4
+                  rclone delete --min-age 8d "$NAS/postgres-archives/" $COMMON
+                  rm -rf "$STAGE"
+
+                  echo "POSTGRES_ARCHIVE_OK"
               volumeMounts:
                 - name: rclone-config
                   mountPath: /rclone
                   readOnly: true
+                - name: stage
+                  mountPath: /stage
               resources:
                 requests:
                   cpu: 100m
@@ -53,3 +60,5 @@ spec:
             - name: rclone-config
               secret:
                 secretName: rclone-config
+            - name: stage
+              emptyDir: {}
