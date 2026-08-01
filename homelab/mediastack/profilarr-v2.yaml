@@ -58,7 +58,7 @@ spec:
             - name: TZ
               value: "Europe/Amsterdam"
             - name: ORIGIN
-              value: "https://profilarr-v2.k8s.hu.ls"
+              value: "https://profilarr.k8s.hu.ls"
             - name: PARSER_HOST
               value: "localhost"
             - name: PARSER_PORT
@@ -153,10 +153,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - profilarr-v2.k8s.hu.ls
+        - profilarr.k8s.hu.ls
       secretName: wildcard-k8s-hu-ls-tls
   rules:
-    - host: profilarr-v2.k8s.hu.ls
+    - host: profilarr.k8s.hu.ls
       http:
         paths:
           - path: /
