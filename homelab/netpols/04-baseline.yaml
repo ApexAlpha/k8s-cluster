@@ -1931,3 +1931,21 @@ spec:
           app.kubernetes.io/name: traefik
   policyTypes:
   - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-cluster-backup
+  namespace: garage
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cluster-backup
+      ports:
+        - port: 3900
+          protocol: TCP
+  policyTypes:
+    - Ingress
