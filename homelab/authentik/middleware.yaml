@@ -8,7 +8,7 @@ metadata:
     argocd.argoproj.io/sync-options: ServerSideApply=true
 spec:
   forwardAuth:
-    address: http://authentik-worker.authentik.svc:9000/outpost.goauthentik.io/auth/traefik
+    address: http://ak-outpost-authentik-embedded-outpost.authentik.svc:9000/outpost.goauthentik.io/auth/traefik
     trustForwardHeader: true
     maxResponseBodySize: 10485760
     authResponseHeaders:
