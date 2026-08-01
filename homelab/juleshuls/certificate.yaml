@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: juleshuls-tls
+  namespace: juleshuls
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  secretName: juleshuls-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - jules.hu.ls
+    - juleshuls.nl
+    - juleshuls.com

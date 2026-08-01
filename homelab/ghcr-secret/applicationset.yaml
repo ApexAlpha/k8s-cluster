@@ -26,6 +26,7 @@ spec:
           - namespace: media
           - namespace: radar
           - namespace: unifi
+          - namespace: juleshuls
   template:
     metadata:
       name: ghcr-secret-{{namespace}}

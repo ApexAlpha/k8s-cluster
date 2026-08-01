@@ -67,6 +67,9 @@ resources:
   - wyoming/application.yaml
   - homepage/application.yaml
 
+  # Public personal website (Jules Huls)
+  - juleshuls/application.yaml
+
   # Backup - Wave 25 (after storage)
   - cluster-backup/application.yaml
 

@@ -19,3 +19,6 @@ spec:
         selector:
           dnsZones:
             - "hu.ls"
+      - http01:
+          ingress:
+            ingressClassName: traefik

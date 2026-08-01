@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: juleshuls
+  namespace: juleshuls
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - jules.hu.ls
+        - juleshuls.nl
+        - juleshuls.com
+      secretName: juleshuls-tls
+  rules:
+    - host: jules.hu.ls
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: juleshuls
+                port:
+                  number: 80
+    - host: juleshuls.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: juleshuls
+                port:
+                  number: 80
+    - host: juleshuls.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: juleshuls
+                port:
+                  number: 80
