@@ -26,6 +26,8 @@ spec:
           operator: "Exists"
           effect: "NoExecute"
           tolerationSeconds: 30
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       enableServiceLinks: false
       containers:
         - name: searxng

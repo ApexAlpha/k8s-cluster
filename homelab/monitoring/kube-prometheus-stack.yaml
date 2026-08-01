@@ -14,6 +14,8 @@ spec:
     helm:
       values: |
         grafana:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-nuc
           # kubectl create secret generic grafana-admin -n monitoring \
           #   --from-literal=admin-user=admin \
           #   --from-literal=admin-password=<password>
