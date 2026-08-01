@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: garage-to-nas
+  namespace: cluster-backup
+spec:
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 604800
+      template:
+        spec:
+          restartPolicy: OnFailure
+          imagePullSecrets:
+            - name: ghcr-secret
+          containers:
+            - name: rclone
+              image: rclone/rclone:1.74.4
+              command:
+                - /bin/sh
+                - -ec
+                - |
+                  rclone sync garage:postgres-backups \
+                    nas:/NFS_NAS/backup_k3s_cluster_garage/postgres-backups \
+                    --config /rclone/rclone.conf \
+                    --max-age 8d --transfers 8 --checkers 16 \
+                    --no-check-certificate --log-level INFO
+                  rclone sync garage:velero-backups \
+                    nas:/NFS_NAS/backup_k3s_cluster_garage/velero-backups \
+                    --config /rclone/rclone.conf \
+                    --max-age 8d --transfers 8 --checkers 16 \
+                    --no-check-certificate --log-level INFO
+                  echo "BACKUP_SYNC_OK"
+              volumeMounts:
+                - name: rclone-config
+                  mountPath: /rclone
+                  readOnly: true
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+                limits:
+                  cpu: "1"
+                  memory: 512Mi
+          volumes:
+            - name: rclone-config
+              secret:
+                secretName: rclone-config
