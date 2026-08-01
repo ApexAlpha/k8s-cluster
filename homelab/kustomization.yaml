@@ -68,6 +68,7 @@ resources:
   - homepage/application.yaml
 
   # Backup - Wave 25 (after storage)
+  - cluster-backup/application.yaml
 
   # Network
   - wireguard/application.yaml
