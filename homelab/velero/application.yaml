@@ -37,6 +37,7 @@ spec:
 
         configuration:
           uploaderType: kopia
+          defaultRepoMaintainFrequency: 24h
           defaultVolumesToFsBackup: true
           fsBackupTimeout: 6h
           clientQPS: 100
