@@ -32,17 +32,27 @@ spec:
                   COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --no-check-certificate --log-level INFO"
 
                   # ---------- postgres (CNPG base backups + WAL), 8-day window ----------
-                  mkdir -p "$STAGE/postgres" "$STAGE/upload"
+                  mkdir -p "$STAGE/postgres" "$STAGE/upload-pg"
                   rclone sync garage:postgres-backups "$STAGE/postgres" \
                     --config /rclone/rclone.conf --max-age 8d --transfers 8 --checkers 16 --log-level INFO
                   tar -czf "$STAGE/postgres-backups-$DATE.tar.gz" -C "$STAGE" postgres
                   (cd "$STAGE" && sha256sum "postgres-backups-$DATE.tar.gz" > "postgres-backups-$DATE.tar.gz.sha256")
-                  mv "$STAGE"/postgres-backups-$DATE.tar.gz* "$STAGE/upload/"
-                  rclone copy "$STAGE/upload" "$NAS/postgres-archives/" $COMMON --transfers 2 --checkers 4
+                  mv "$STAGE"/postgres-backups-$DATE.tar.gz* "$STAGE/upload-pg/"
+                  rclone copy "$STAGE/upload-pg" "$NAS/postgres-archives/" $COMMON --transfers 2 --checkers 4
                   rclone delete --min-age 8d "$NAS/postgres-archives/" $COMMON
-                  rm -rf "$STAGE"
 
-                  echo "POSTGRES_ARCHIVE_OK"
+                  # ---------- velero (kopia repos) — full repo, kopia needs full history ----------
+                  mkdir -p "$STAGE/velero" "$STAGE/upload-velero"
+                  rclone sync garage:velero-backups "$STAGE/velero" \
+                    --config /rclone/rclone.conf --transfers 8 --checkers 16 --log-level INFO
+                  tar -czf "$STAGE/velero-backups-$DATE.tar.gz" -C "$STAGE" velero
+                  (cd "$STAGE" && sha256sum "velero-backups-$DATE.tar.gz" > "velero-backups-$DATE.tar.gz.sha256")
+                  mv "$STAGE"/velero-backups-$DATE.tar.gz* "$STAGE/upload-velero/"
+                  rclone copy "$STAGE/upload-velero" "$NAS/velero-archives/" $COMMON --transfers 2 --checkers 4
+                  rclone delete --min-age 8d "$NAS/velero-archives/" $COMMON
+
+                  rm -rf "$STAGE"
+                  echo "POSTGRES_AND_VELERO_ARCHIVES_OK"
               volumeMounts:
                 - name: rclone-config
                   mountPath: /rclone
