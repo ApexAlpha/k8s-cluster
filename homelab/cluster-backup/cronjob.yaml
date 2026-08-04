@@ -29,7 +29,7 @@ spec:
                   DATE=$(date +%F)
                   STAGE=/stage
                   NAS=nas:/NFS_NAS/backup_k3s_cluster_garage
-                  COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --no-check-certificate --log-level INFO --webdav-chunk-size 256M"
+                  COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --no-check-certificate --log-level INFO"
 
                   # ---------- postgres (CNPG base backups + WAL), 8-day window ----------
                   mkdir -p "$STAGE/postgres" "$STAGE/upload-pg"
@@ -46,8 +46,15 @@ spec:
                   rclone sync garage:velero-backups "$STAGE/velero" \
                     --config /rclone/rclone.conf --transfers 8 --checkers 16 --log-level INFO
                   tar -czf "$STAGE/velero-backups-$DATE.tar.gz" -C "$STAGE" velero
-                  (cd "$STAGE" && sha256sum "velero-backups-$DATE.tar.gz" > "velero-backups-$DATE.tar.gz.sha256")
-                  mv "$STAGE"/velero-backups-$DATE.tar.gz* "$STAGE/upload-velero/"
+                  # The tunnel to the NAS resets long-lived connections (~3-4 min), so a single
+                  # multi-GB PUT never completes. Split into 512M parts: each part uploads
+                  # independently and persists on the NAS; retries only redo failed parts.
+                  # Restore: cat velero-backups-$DATE.tar.gz.part-* > velero-backups-$DATE.tar.gz
+                  cd "$STAGE"
+                  split -b 512M "velero-backups-$DATE.tar.gz" "velero-backups-$DATE.tar.gz.part-"
+                  sha256sum velero-backups-$DATE.tar.gz.part-* > "velero-backups-$DATE.tar.gz.parts.sha256"
+                  rm "velero-backups-$DATE.tar.gz"
+                  mv velero-backups-$DATE.tar.gz.part-* velero-backups-$DATE.tar.gz.parts.sha256 "$STAGE/upload-velero/"
                   rclone copy "$STAGE/upload-velero" "$NAS/velero-archives/" $COMMON --transfers 2 --checkers 4
                   rclone delete --min-age 8d "$NAS/velero-archives/" $COMMON
 
