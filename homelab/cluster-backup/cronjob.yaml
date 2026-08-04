@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: garage-to-nas
+  name: garage-to-hetzner
   namespace: cluster-backup
 spec:
   schedule: "0 4 * * *"
@@ -26,46 +26,27 @@ spec:
                 - -ec
                 - |
                   set -e
-                  DATE=$(date +%F)
-                  STAGE=/stage
-                  NAS=nas:/NFS_NAS/backup_k3s_cluster_garage
-                  COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --no-check-certificate --log-level INFO"
+                  COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --log-level INFO"
 
-                  # ---------- postgres (CNPG base backups + WAL), 8-day window ----------
-                  mkdir -p "$STAGE/postgres" "$STAGE/upload-pg"
-                  rclone sync garage:postgres-backups "$STAGE/postgres" \
-                    --config /rclone/rclone.conf --max-age 8d --transfers 8 --checkers 16 --log-level INFO
-                  tar -czf "$STAGE/postgres-backups-$DATE.tar.gz" -C "$STAGE" postgres
-                  (cd "$STAGE" && sha256sum "postgres-backups-$DATE.tar.gz" > "postgres-backups-$DATE.tar.gz.sha256")
-                  mv "$STAGE"/postgres-backups-$DATE.tar.gz* "$STAGE/upload-pg/"
-                  rclone copy "$STAGE/upload-pg" "$NAS/postgres-archives/" $COMMON --transfers 2 --checkers 4
-                  rclone delete --min-age 8d "$NAS/postgres-archives/" $COMMON
+                  # Nightly: mirror garage -> encrypted Hetzner.
+                  # rclone sync (with delete) keeps Hetzner exactly mirroring garage,
+                  # so both hold the same 7-day window (velero TTL 7d / barman retention 7d).
+                  rclone sync garage:postgres-backups hcrypt-postgres: $COMMON --transfers 8 --checkers 16
+                  rclone sync garage:velero-backups hcrypt-velero: $COMMON --transfers 8 --checkers 16
 
-                  # ---------- velero (kopia repos) — full repo, kopia needs full history ----------
-                  mkdir -p "$STAGE/velero" "$STAGE/upload-velero"
-                  rclone sync garage:velero-backups "$STAGE/velero" \
-                    --config /rclone/rclone.conf --transfers 8 --checkers 16 --log-level INFO
-                  tar -czf "$STAGE/velero-backups-$DATE.tar.gz" -C "$STAGE" velero
-                  # The tunnel to the NAS resets long-lived connections (~3-4 min), so a single
-                  # multi-GB PUT never completes. Split into 512M parts: each part uploads
-                  # independently and persists on the NAS; retries only redo failed parts.
-                  # Restore: cat velero-backups-$DATE.tar.gz.part-* > velero-backups-$DATE.tar.gz
-                  cd "$STAGE"
-                  split -b 512M "velero-backups-$DATE.tar.gz" "velero-backups-$DATE.tar.gz.part-"
-                  sha256sum velero-backups-$DATE.tar.gz.part-* > "velero-backups-$DATE.tar.gz.parts.sha256"
-                  rm "velero-backups-$DATE.tar.gz"
-                  mv velero-backups-$DATE.tar.gz.part-* velero-backups-$DATE.tar.gz.parts.sha256 "$STAGE/upload-velero/"
-                  rclone copy "$STAGE/upload-velero" "$NAS/velero-archives/" $COMMON --transfers 2 --checkers 4
-                  rclone delete --min-age 8d "$NAS/velero-archives/" $COMMON
+                  # Monthly snapshot on the 1st (poison-attack protection).
+                  # Copied into a separate monthly/ prefix never touched by the sync.
+                  if [ "$(date +%d)" = "01" ]; then
+                    M=$(date +%Y-%m)
+                    rclone copy hcrypt-postgres: hcrypt-postgres-monthly:$M/ $COMMON --transfers 8 --checkers 16
+                    rclone copy hcrypt-velero: hcrypt-velero-monthly:$M/ $COMMON --transfers 8 --checkers 16
+                  fi
 
-                  rm -rf "$STAGE"
-                  echo "POSTGRES_AND_VELERO_ARCHIVES_OK"
+                  echo "HETZNER_ENCRYPTED_SYNC_OK"
               volumeMounts:
                 - name: rclone-config
                   mountPath: /rclone
                   readOnly: true
-                - name: stage
-                  mountPath: /stage
               resources:
                 requests:
                   cpu: 100m
@@ -77,5 +58,3 @@ spec:
             - name: rclone-config
               secret:
                 secretName: rclone-config
-            - name: stage
-              emptyDir: {}
