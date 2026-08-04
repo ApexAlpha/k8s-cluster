@@ -183,6 +183,9 @@ spec:
       data:
         compression: gzip
     retentionPolicy: "7d"
+  inheritedMetadata:
+    annotations:
+      backup.velero.io/backup-volumes-excludes: pgdata
   resources:
     requests:
       cpu: 100m
