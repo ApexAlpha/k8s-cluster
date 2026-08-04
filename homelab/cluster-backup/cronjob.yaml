@@ -29,7 +29,7 @@ spec:
                   DATE=$(date +%F)
                   STAGE=/stage
                   NAS=nas:/NFS_NAS/backup_k3s_cluster_garage
-                  COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --no-check-certificate --log-level INFO"
+                  COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --no-check-certificate --log-level INFO --webdav-chunk-size 256M"
 
                   # ---------- postgres (CNPG base backups + WAL), 8-day window ----------
                   mkdir -p "$STAGE/postgres" "$STAGE/upload-pg"
