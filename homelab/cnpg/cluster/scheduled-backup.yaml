@@ -1,15 +1,4 @@
-# Daily backup at 02:00 — keeps 7 days of full backups + WAL for PITR
-apiVersion: postgresql.cnpg.io/v1
-kind: ScheduledBackup
-metadata:
-  name: postgres-shared-daily
-  namespace: database
-spec:
-  schedule: "0 0 2 * * *"
-  backupOwnerReference: self
-  cluster:
-    name: postgres-shared
----
+
 # Weekly backup Sunday at 03:00 — longer-term safety copy
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
