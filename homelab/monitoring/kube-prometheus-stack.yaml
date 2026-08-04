@@ -79,6 +79,9 @@ spec:
 
         prometheus:
           prometheusSpec:
+            podMetadata:
+              annotations:
+                backup.velero.io/backup-volumes-excludes: "prometheus-kube-prometheus-stack-prometheus-db"
             retention: 30d
             storageSpec:
               volumeClaimTemplate:
