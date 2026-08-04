@@ -13,8 +13,6 @@ spec:
     targetRevision: 7.2.0
     helm:
       values: |
-        podAnnotations:
-          backup.velero.io/backup-volumes-excludes: "storage"
         deploymentMode: SingleBinary
         loki:
           auth_enabled: false
@@ -32,6 +30,8 @@ spec:
                   prefix: loki_index_
                   period: 24h
         singleBinary:
+          podAnnotations:
+            backup.velero.io/backup-volumes-excludes: "storage"
           replicas: 1
           resources:
             requests:
@@ -43,8 +43,6 @@ spec:
             enabled: true
             size: 20Gi
             storageClass: local-path
-            annotations:
-              velero.io/exclude-from-backup: "true"
         # Disable microservice components (using SingleBinary mode)
         read:
           replicas: 0
