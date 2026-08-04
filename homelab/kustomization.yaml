@@ -82,4 +82,5 @@ resources:
   - k8s-mcp-server/application.yaml
   - radar/application.yaml
   - caretta/application.yaml
+  - hermes/application.yaml
   # - apps/plex.yaml

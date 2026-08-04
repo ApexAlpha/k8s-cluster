@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hermes
+  namespace: hermes
+  labels:
+    app: hermes
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  clusterIP: None
+  ports:
+    - name: api
+      port: 8642
+      protocol: TCP
+      targetPort: 8642
+    - name: dashboard
+      port: 9119
+      protocol: TCP
+      targetPort: 9119

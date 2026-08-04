@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hermes
+  namespace: hermes
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # NOTE: No Authentik forwardAuth middleware here on purpose.
+    # The Hermes dashboard uses APP-LEVEL OIDC (self-hosted provider against
+    # auth.k8s.hu.ls). Combining forwardAuth + app-level OIDC breaks the
+    # redirect/callback (per k8s-mcp authentik-integration-patterns).
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - hermes.k8s.hu.ls
+      secretName: wildcard-k8s-hu-ls-tls
+  rules:
+    - host: hermes.k8s.hu.ls
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hermes
+                port:
+                  number: 9119
