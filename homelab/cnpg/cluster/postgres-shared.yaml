@@ -193,3 +193,8 @@ spec:
 
   monitoring:
     enablePodMonitor: false
+
+  podTemplate:
+    metadata:
+      annotations:
+        backup.velero.io/backup-volumes-excludes: pgdata
