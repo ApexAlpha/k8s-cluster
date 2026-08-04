@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - pv.yaml
   - pvc.yaml
+  - garage-meta-nvme.yaml
   - configmap.yaml
   - rpc-secret-sealed.yaml
   - deployment.yaml

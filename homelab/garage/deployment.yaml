@@ -8,7 +8,7 @@ metadata:
   labels:
     app: garage
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -19,6 +19,8 @@ spec:
       labels:
         app: garage
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -55,9 +57,8 @@ spec:
             - name: config
               mountPath: /etc/garage.toml
               subPath: garage.toml
-            - name: data
+            - name: meta
               mountPath: /var/lib/garage/meta
-              subPath: meta
             - name: data
               mountPath: /var/lib/garage/data
               subPath: data
@@ -82,6 +83,9 @@ spec:
         - name: config
           configMap:
             name: garage-config
+        - name: meta
+          persistentVolumeClaim:
+            claimName: garage-meta-local
         - name: data
           persistentVolumeClaim:
             claimName: garage-data
