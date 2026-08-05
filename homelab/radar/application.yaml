@@ -33,7 +33,7 @@ spec:
         rbac:
           podLogs: true
           podExec: true
-          portForward: false
+          portForward: true
           secrets: false
           helm: false
           viewRBAC: false
