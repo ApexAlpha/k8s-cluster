@@ -58,22 +58,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-from-homepage
-  namespace: audiobookshelf
-spec:
-  podSelector: {}
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: homepage
-  policyTypes:
-  - Ingress
-
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
   name: default-deny-ingress
   namespace: authentik
 spec:
@@ -297,22 +281,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-homepage
-  namespace: frigate
-spec:
-  podSelector: {}
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: homepage
-  policyTypes:
-  - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -825,22 +793,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-homepage
-  namespace: media
-spec:
-  podSelector: {}
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: homepage
-  policyTypes:
-  - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1919,3 +1871,91 @@ spec:
           protocol: TCP
   policyTypes:
     - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-homepage
+  namespace: media
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values: [radarr, radarr-4k, sonarr, sonarr-4k, transmission, prowlarr, bazarr, qbittorrent]
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: homepage
+    ports:
+    - protocol: TCP
+      port: 80
+  policyTypes:
+  - Ingress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-homepage
+  namespace: frigate
+spec:
+  podSelector:
+    matchLabels:
+      app: frigate
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: homepage
+    ports:
+    - protocol: TCP
+      port: 80
+  policyTypes:
+  - Ingress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-homepage
+  namespace: audiobookshelf
+spec:
+  podSelector:
+    matchLabels:
+      app: audiobookshelf
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: homepage
+    ports:
+    - protocol: TCP
+      port: 80
+  policyTypes:
+  - Ingress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-shelfmark
+  namespace: media
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values: [prowlarr, qbittorrent]
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: shelfmark
+    ports:
+    - protocol: TCP
+      port: 80
+  policyTypes:
+  - Ingress
+
