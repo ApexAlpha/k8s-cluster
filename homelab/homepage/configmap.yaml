@@ -19,6 +19,10 @@ data:
         icon: mdi-toolbox
         style: row
         columns: 4
+      Monitoring:
+        icon: mdi-chart-line
+        style: row
+        columns: 4
       Media:
         icon: mdi-filmstrip
         style: row
@@ -73,6 +77,16 @@ data:
             href: https://search.k8s.hu.ls
             description: Private Search Engine
 
+    - Monitoring:
+        - Grafana:
+            icon: grafana
+            href: https://grafana.k8s.hu.ls
+            description: Metrics & Dashboards
+        - Radar:
+            icon: mdi-radar
+            href: https://radar.k8s.hu.ls
+            description: Cluster Diagnostics
+
     - Media:
         - Frigate:
             icon: frigate
@@ -85,6 +99,10 @@ data:
             icon: mdi-book-search
             href: https://shelfmark.k8s.hu.ls
             description: Book Search & Download
+        - Profilarr:
+            icon: mdi-movie-open-star
+            href: https://profilarr.k8s.hu.ls
+            description: Media Profile Automation
         - Audiobookshelf:
             icon: audiobookshelf
             href: https://abs.k8s.hu.ls/audiobookshelf/
@@ -191,6 +209,10 @@ data:
             icon: headlamp
             href: https://admin.k8s.hu.ls
             description: Kubernetes Dashboard
+        - WireGuard:
+            icon: wireguard
+            href: https://wg.k8s.hu.ls
+            description: VPN Gateway
         - Garage:
             icon: garage
             href: https://garage.k8s.hu.ls
