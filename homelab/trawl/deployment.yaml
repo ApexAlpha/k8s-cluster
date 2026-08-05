@@ -54,6 +54,8 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: k3s-home
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
