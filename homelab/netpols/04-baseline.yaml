@@ -1890,7 +1890,17 @@ spec:
           kubernetes.io/metadata.name: homepage
     ports:
     - protocol: TCP
-      port: 80
+      port: 7878
+    - protocol: TCP
+      port: 8989
+    - protocol: TCP
+      port: 9091
+    - protocol: TCP
+      port: 9696
+    - protocol: TCP
+      port: 6767
+    - protocol: TCP
+      port: 8080
   policyTypes:
   - Ingress
 
@@ -1911,7 +1921,7 @@ spec:
           kubernetes.io/metadata.name: homepage
     ports:
     - protocol: TCP
-      port: 80
+      port: 8971
   policyTypes:
   - Ingress
 
@@ -1932,7 +1942,7 @@ spec:
           kubernetes.io/metadata.name: homepage
     ports:
     - protocol: TCP
-      port: 80
+      port: 13378
   policyTypes:
   - Ingress
 
@@ -1955,7 +1965,9 @@ spec:
           kubernetes.io/metadata.name: shelfmark
     ports:
     - protocol: TCP
-      port: 80
+      port: 9696
+    - protocol: TCP
+      port: 8080
   policyTypes:
   - Ingress
 
