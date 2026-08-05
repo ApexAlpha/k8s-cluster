@@ -1,9 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# NOTE: application.yaml is intentionally NOT listed here — the
+# root-homelab app (homelab/kustomization.yaml) owns the system-upgrade
+# Application CR. Listing it here would make this app manage its own
+# Application CR (double-ownership → SharedResourceWarning + OutOfSync).
+
 resources:
   - crd.yaml
   - controller.yaml
   - server-plan.yaml
   - agent-plan.yaml
-  - application.yaml
