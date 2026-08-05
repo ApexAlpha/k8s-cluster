@@ -201,10 +201,7 @@ data:
             icon: unifi
             href: https://unifi.k8s.hu.ls
             description: Network Controller
-        - Blocky:
-            icon: blocky
-            href: https://blocky.k8s.hu.ls
-            description: DNS Ad Blocker
+
         - Headlamp:
             icon: headlamp
             href: https://admin.k8s.hu.ls
