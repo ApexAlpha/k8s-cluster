@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: trawl
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:8.8-alpine
+          ports:
+            - name: redis
+              containerPort: 6379
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trawl
+  namespace: trawl
+  labels:
+    app: trawl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trawl
+  template:
+    metadata:
+      labels:
+        app: trawl
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: trawl
+          image: ghcr.io/germondai/trawl:latest@sha256:5c9988899ce42e1b85e89ca5d81b4c1fa82653ad97bf7169f9125367243dcc49
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8191
+          env:
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+            - name: BROWSER_POOL_SIZE
+              value: "1"
+            - name: BROWSER_CONTENT_PROCESSES
+              value: "2"
+            - name: PORT
+              value: "8191"
+            - name: TZ
+              value: "Europe/Amsterdam"
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 12
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            failureThreshold: 3
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: shm
+              mountPath: /dev/shm
+      volumes:
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi

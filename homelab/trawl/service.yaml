@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: trawl
+spec:
+  selector:
+    app: redis
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trawl
+  namespace: trawl
+spec:
+  selector:
+    app: trawl
+  ports:
+    - name: http
+      port: 8191
+      targetPort: 8191
+      protocol: TCP
