@@ -166,7 +166,7 @@ data:
             description: Torrent Client
             widget:
               type: qbittorrent
-              url: https://qbittorrent.media.svc
+              url: http://qbittorrent.media.svc
         - Prowlarr:
             icon: prowlarr
             href: https://prowlarr.k8s.hu.ls
