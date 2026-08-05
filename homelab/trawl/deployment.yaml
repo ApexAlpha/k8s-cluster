@@ -54,10 +54,11 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: k3s-nuc
-      # Trawl runs as root: Camoufox downloads an addon to /opt/camoufox
-      # on first boot, which needs write access to the image-owned path.
       securityContext:
-        runAsUser: 0
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: trawl
           image: ghcr.io/germondai/trawl:latest@sha256:5c9988899ce42e1b85e89ca5d81b4c1fa82653ad97bf7169f9125367243dcc49
@@ -100,8 +101,12 @@ spec:
           volumeMounts:
             - name: shm
               mountPath: /dev/shm
+            - name: addons
+              mountPath: /opt/camoufox/addons
       volumes:
         - name: shm
           emptyDir:
             medium: Memory
             sizeLimit: 1Gi
+        - name: addons
+          emptyDir: {}
