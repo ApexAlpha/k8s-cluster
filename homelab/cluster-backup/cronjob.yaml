@@ -4,7 +4,7 @@ metadata:
   name: garage-to-hetzner
   namespace: cluster-backup
 spec:
-  schedule: "0 4 * * *"
+  schedule: "0 2 * * *"
   suspend: false
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 2

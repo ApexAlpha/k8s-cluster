@@ -22,9 +22,9 @@ spec:
   version: v1.35.6+k3s1
   upgrade:
     image: rancher/k3s-upgrade
-  # Nightly window AFTER all backups (CNPG 02:00, velero 03:00,
-  # garage-to-hetzner 04:00 UTC) and before you wake.
-  # 06:30-08:00 Amsterdam time (Europe/Amsterdam; UTC+2 in summer).
+  # Nightly window AFTER all backups (compressed: velero 01:00, CNPG base
+  # 00:00, garage-to-hetzner 02:00 UTC → all done ~02:00 UTC) and before you
+  # wake. 04:30-06:00 Amsterdam time (Europe/Amsterdam; UTC+2 in summer).
   window:
     days:
       - sunday
@@ -34,6 +34,6 @@ spec:
       - thursday
       - friday
       - saturday
-    startTime: "06:30"
-    endTime: "08:00"
+    startTime: "04:30"
+    endTime: "06:00"
     timeZone: Europe/Amsterdam

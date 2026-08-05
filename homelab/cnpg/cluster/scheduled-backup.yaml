@@ -6,7 +6,7 @@ metadata:
   name: postgres-shared-weekly
   namespace: database
 spec:
-  schedule: "0 0 3 * * 0"
+  schedule: "0 0 0 * * 0"
   backupOwnerReference: self
   cluster:
     name: postgres-shared
