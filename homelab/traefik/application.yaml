@@ -23,8 +23,9 @@ spec:
                       app.kubernetes.io/name: traefik
                   topologyKey: kubernetes.io/hostname
         service:
-          type: LoadBalancer
-          externalTrafficPolicy: Local
+          spec:
+            type: LoadBalancer
+            externalTrafficPolicy: Local
         ingressRoute:
           dashboard:
             enabled: false
