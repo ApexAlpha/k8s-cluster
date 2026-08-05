@@ -24,6 +24,7 @@ spec:
           - namespace: authentik
           - namespace: mcp
           - namespace: media
+          - namespace: byparr
           - namespace: radar
           - namespace: unifi
           - namespace: juleshuls

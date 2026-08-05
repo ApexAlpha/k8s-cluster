@@ -1971,3 +1971,23 @@ spec:
   policyTypes:
   - Ingress
 
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-shelfmark
+  namespace: byparr
+spec:
+  podSelector:
+    matchLabels:
+      app: byparr
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: shelfmark
+    ports:
+    - protocol: TCP
+      port: 8191
+  policyTypes:
+  - Ingress
