@@ -84,6 +84,13 @@ spec:
             limits:
               cpu: "2"
               memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 30
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /health
@@ -96,7 +103,7 @@ spec:
               path: /health
               port: http
             periodSeconds: 30
-            failureThreshold: 3
+            failureThreshold: 10
             timeoutSeconds: 5
           volumeMounts:
             - name: shm
