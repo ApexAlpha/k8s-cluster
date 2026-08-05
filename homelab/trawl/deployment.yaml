@@ -56,11 +56,11 @@ spec:
         kubernetes.io/hostname: k3s-home
       imagePullSecrets:
         - name: ghcr-pull-secret
+      # Camoufox/Firefox needs to write runtime files across /opt/camoufox;
+      # running as non-root hangs browser launch (proven: worked as root on nuc).
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsUser: 0
+        runAsGroup: 0
       containers:
         - name: trawl
           image: ghcr.io/germondai/trawl:latest@sha256:5c9988899ce42e1b85e89ca5d81b4c1fa82653ad97bf7169f9125367243dcc49
