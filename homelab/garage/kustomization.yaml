@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
+  - storageclass.yaml
   - pv.yaml
   - pvc.yaml
   - garage-meta-nvme.yaml
