@@ -13,6 +13,7 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: DoesNotExist
   prepare:
+    image: rancher/k3s-upgrade
     args:
       - prepare
       - server-plan
