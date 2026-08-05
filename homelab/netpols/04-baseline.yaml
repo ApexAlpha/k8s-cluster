@@ -795,6 +795,21 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-homepage
+  namespace: media
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: homepage
+  policyTypes:
+  - Ingress
 
 ---
 apiVersion: networking.k8s.io/v1
