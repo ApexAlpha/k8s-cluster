@@ -24,6 +24,7 @@ spec:
                   topologyKey: kubernetes.io/hostname
         service:
           type: LoadBalancer
+          externalTrafficPolicy: Local
         ingressRoute:
           dashboard:
             enabled: false
