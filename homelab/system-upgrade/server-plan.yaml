@@ -1,0 +1,38 @@
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: server-plan
+  namespace: system-upgrade
+  labels:
+    app.kubernetes.io/part-of: system-upgrade
+spec:
+  concurrency: 1
+  cordon: true
+  nodeSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/control-plane
+        operator: In
+        values:
+          - "true"
+  serviceAccountName: system-upgrade
+  # PINNED to v1.35.6 (latest v1.35 patch) for the FIRST step from v1.34.
+  # Once the cluster is on 1.35, flip this to:
+  #   channel: https://update.k3s.io/v1-release/channels/stable
+  # (see homelab/system-upgrade/README.md) so ongoing stable patches apply.
+  version: v1.35.6+k3s1
+  upgrade:
+    image: rancher/k3s-upgrade
+  # Nightly window AFTER all backups (CNPG 02:00, velero 03:00,
+  # garage-to-hetzner 04:00) and the 05:00 morning report.
+  window:
+    days:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+    startTime: "06:30"
+    endTime: "08:00"
+    timeZone: UTC

@@ -1,0 +1,37 @@
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: agent-plan
+  namespace: system-upgrade
+  labels:
+    app.kubernetes.io/part-of: system-upgrade
+spec:
+  concurrency: 1
+  cordon: true
+  nodeSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/control-plane
+        operator: DoesNotExist
+  prepare:
+    args:
+      - prepare
+      - server-plan
+  serviceAccountName: system-upgrade
+  # PINNED to v1.35.6 for the FIRST step. Flip to channel: stable together
+  # with server-plan once the cluster is on 1.35.
+  version: v1.35.6+k3s1
+  upgrade:
+    image: rancher/k3s-upgrade
+  # Nightly window after backups (see server-plan).
+  window:
+    days:
+      - sunday
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+    startTime: "06:30"
+    endTime: "08:00"
+    timeZone: UTC

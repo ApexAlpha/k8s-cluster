@@ -73,6 +73,9 @@ resources:
   # Backup - Wave 25 (after storage)
   - cluster-backup/application.yaml
 
+  # k3s Automated Upgrades (system-upgrade-controller) - Wave 26
+  - system-upgrade/application.yaml
+
   # Network
   - wireguard/application.yaml
 
