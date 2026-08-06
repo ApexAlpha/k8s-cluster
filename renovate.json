@@ -17,6 +17,11 @@
       "hostType": "docker",
       "username": "ApexAlpha",
       "password": "{{ secrets.DOCKER }}"
+    },
+    {
+      "matchHost": "ghcr.io",
+      "hostType": "docker",
+      "token": "{{ secrets.GHCR_TOKEN }}"
     }
   ],
   "kubernetes": {
