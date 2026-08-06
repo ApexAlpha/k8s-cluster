@@ -16,9 +16,7 @@
       "matchHost": "docker.io",
       "hostType": "docker",
       "username": "ApexAlpha",
-      "encrypted": {
-        "password": "{{ secrets.DOCKER }}"
-      }
+      "password": "{{ secrets.DOCKER }}"
     }
   ],
   "kubernetes": {
