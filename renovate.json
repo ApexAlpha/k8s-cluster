@@ -6,7 +6,7 @@
     "docker:pinDigests",
     ":disableRateLimiting"
   ],
-  "platformAutomerge": true,
+  "platformAutomerge": false,
   "hostRules": [
     {
       "matchHost": "juicedata.github.io",
@@ -76,7 +76,7 @@
         "pinDigest"
       ],
       "automerge": true,
-      "automergeSchedule": ["01:00", "05:00"],
+      "automergeSchedule": ["* 1-5 * * *"],
       "rebaseWhen": "conflicted"
     },
     {
