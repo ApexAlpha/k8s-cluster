@@ -107,6 +107,17 @@ spec:
               );
 
           phpConfigs:
+            # Tune the php-fpm [www] pool. zz-pm.conf lands after www.conf in
+            # the /usr/local/etc/php-fpm.d/*.conf include, so php-fpm merges it
+            # (later files win for the same pool key). Raised max_children so a
+            # DB/DNS blip (e.g. a node reboot pinning all workers on connect) can't
+            # exhaust the pool; request_terminate_timeout kills a worker stuck on
+            # such a blocking call instead of hanging forever.
+            zz-pm.conf: |-
+              [www]
+              pm.max_children = 15
+              pm.max_spare_servers = 8
+              request_terminate_timeout = 180
             zz-nextcloud.ini: |-
               memory_limit=512M
               upload_max_filesize=16G
