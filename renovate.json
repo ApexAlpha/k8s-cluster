@@ -11,6 +11,14 @@
     {
       "matchHost": "juicedata.github.io",
       "hostType": "helm"
+    },
+    {
+      "matchHost": "docker.io",
+      "hostType": "docker",
+      "username": "REPLACE_WITH_DOCKERHUB_USERNAME",
+      "encrypted": {
+        "password": "REPLACE_WITH_ENCRYPTED_DOCKER_TOKEN"
+      }
     }
   ],
   "kubernetes": {
@@ -67,7 +75,7 @@
       ]
     },
     {
-      "description": "Automerge non-major updates between 01:00-05:00",
+      "description": "Automerge non-major updates between 00:00-01:00 UTC (before nightly backups)",
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -76,7 +84,9 @@
         "pinDigest"
       ],
       "automerge": true,
-      "automergeSchedule": ["* 1-5 * * *"],
+      "automergeSchedule": [
+        "* 0 * * *"
+      ],
       "rebaseWhen": "conflicted"
     },
     {
