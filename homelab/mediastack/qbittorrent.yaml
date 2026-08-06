@@ -32,6 +32,8 @@ spec:
     metadata:
       labels:
         app: qbittorrent
+      annotations:
+        backup.velero.io/backup-volumes-excludes: media
     spec:
       tolerations:
         - key: "node.kubernetes.io/unreachable"

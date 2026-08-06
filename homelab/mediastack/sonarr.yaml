@@ -32,6 +32,8 @@ spec:
     metadata:
       labels:
         app: sonarr
+      annotations:
+        backup.velero.io/backup-volumes-excludes: media
     spec:
       tolerations:
         - key: "node.kubernetes.io/unreachable"

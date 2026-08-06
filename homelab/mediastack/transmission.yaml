@@ -64,6 +64,8 @@ spec:
     metadata:
       labels:
         app: transmission
+      annotations:
+        backup.velero.io/backup-volumes-excludes: media
     spec:
       tolerations:
         - key: "node.kubernetes.io/unreachable"
