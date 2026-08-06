@@ -15,9 +15,9 @@
     {
       "matchHost": "docker.io",
       "hostType": "docker",
-      "username": "REPLACE_WITH_DOCKERHUB_USERNAME",
+      "username": "ApexAlpha",
       "encrypted": {
-        "password": "REPLACE_WITH_ENCRYPTED_DOCKER_TOKEN"
+        "password": "wcBMA8xOaBJvzJNbAQgAmUCALkW8aQ3C5pelVSmGTRgmktUweb/CDB/dbsC7mOE+Skz046vw9gGRQYBKWC17o0X/VSD5uNKjHMXGNu0ZOca4j+FBeKFtep2Amnu+qX9WdQby5qCVD6Y1zWfmXeis7rMa5ZDZP3bbn4nwO3DqpTnnVhtAsLvljIzPD1fdoLJX4v6piW7z/ItwVgEdgKoOYDIGluiJCDO/YNmJ4M0W5ugtp/HXeg7oADGTTS4Sl1dAeeGpU9IcS9yuDv1l+fYPCDcMNQzRjIaTKf3eCMVyoOznKnH3ZinjfzP+X2JBfFQYcUiUbjUxmCEYWwFIzWjB2diWgCMexgRWeWY8mRHaudJ0AYJFb7MJDnTAHpHok4c8INXfswpN464k8iGojAaNwwLmdby7iO/viF3jwCXa6x/3aZmKCI5XgdEZ9e3uev0pd8T4m8QlaO+0wy782vSwdiCnFdxLZf6j+SxhPaGvKEw38vhNeGl0X9CaDaDhaLxP92HzRvI"
       }
     }
   ],
