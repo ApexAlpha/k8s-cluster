@@ -17,7 +17,7 @@
       "hostType": "docker",
       "username": "ApexAlpha",
       "encrypted": {
-        "password": "{{ secrets.Docker }}"
+        "password": "{{ secrets.DOCKER }}"
       }
     }
   ],
