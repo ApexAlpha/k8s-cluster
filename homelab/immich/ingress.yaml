@@ -8,7 +8,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     # Immich uploads can be large (photos/videos)
-    traefik.ingress.kubernetes.io/router.middlewares: ""
+    traefik.ingress.kubernetes.io/router.middlewares: "nc-maintenance-maintenance-errors@kubernetescrd"
 spec:
   ingressClassName: traefik
   tls:

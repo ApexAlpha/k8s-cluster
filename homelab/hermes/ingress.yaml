@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: "nc-maintenance-maintenance-errors@kubernetescrd"
     traefik.ingress.kubernetes.io/router.tls: "true"
     # NOTE: No Authentik forwardAuth middleware here on purpose.
     # The Hermes dashboard uses APP-LEVEL OIDC (self-hosted provider against

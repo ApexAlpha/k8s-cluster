@@ -184,7 +184,7 @@ spec:
           annotations:
             traefik.ingress.kubernetes.io/router.tls: "true"
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirect-https@kubernetescrd
+            traefik.ingress.kubernetes.io/router.middlewares: "nc-maintenance-maintenance-errors@kubernetescrd,kube-system-redirect-https@kubernetescrd"
           tls:
             - hosts:
                 - office.k8s.hu.ls

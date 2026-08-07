@@ -10,12 +10,16 @@ spec:
     - websecure
   routes:
     - kind: Rule
+      middlewares:
+        - nc-maintenance-maintenance-errors@kubernetescrd
       match: Host(`search.k8s.hu.ls`) && ClientIP(`192.168.1.235`)
       priority: 20
       services:
         - name: searxng
           port: 8080
     - kind: Rule
+      middlewares:
+        - nc-maintenance-maintenance-errors@kubernetescrd
       match: Host(`search.k8s.hu.ls`)
       priority: 10
       middlewares:

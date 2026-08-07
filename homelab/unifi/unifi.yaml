@@ -68,6 +68,8 @@ spec:
   routes:
     - match: Host(`unifi.k8s.hu.ls`)
       kind: Rule
+      middlewares:
+        - nc-maintenance-maintenance-errors@kubernetescrd
       services:
         - name: unifi-os-webui
           port: 443

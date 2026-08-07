@@ -8,6 +8,8 @@ spec:
   - websecure
   routes:
   - kind: Rule
+    middlewares:
+      - nc-maintenance-maintenance-errors@kubernetescrd
     match: Host(`mcp.k8s.hu.ls`)
     services:
     - name: k8s-mcp-server

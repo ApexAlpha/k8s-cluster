@@ -8,6 +8,7 @@ metadata:
   namespace: argocd
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: "nc-maintenance-maintenance-errors@kubernetescrd"
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   ingressClassName: traefik

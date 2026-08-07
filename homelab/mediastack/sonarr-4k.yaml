@@ -143,6 +143,8 @@ spec:
     - match: Host(`sonarr-4k.k8s.hu.ls`) && PathPrefix(`/api`)
       kind: Rule
       priority: 20
+      middlewares:
+        - nc-maintenance-maintenance-errors@kubernetescrd
       services:
         - name: sonarr-4k
           port: 80
@@ -150,6 +152,7 @@ spec:
       kind: Rule
       priority: 10
       middlewares:
+        - nc-maintenance-maintenance-errors@kubernetescrd
         - name: authentik
           namespace: authentik
       services:
