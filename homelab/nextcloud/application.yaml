@@ -17,8 +17,8 @@ spec:
       valuesObject:
         # ─── FPM + Nginx sidecar ────────────────────────────────────
         image:
-          flavor: fpm-alpine
-          tag: 33.0.1-fpm-alpine
+          flavor: fpm
+          tag: 33.0.1-fpm
           pullPolicy: IfNotPresent
 
         replicaCount: 1
