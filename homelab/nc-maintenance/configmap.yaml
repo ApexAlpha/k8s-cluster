@@ -69,13 +69,13 @@ data:
     <body>
       <div class="card">
         <div class="logo">🏠</div>
-        <h1><span class="dot"></span><span data-i18n="welcome">Welkom bij de Anke &amp; Jules Homelab</span></h1>
-        <div class="subtitle" data-i18n="subtitle">Service tijdelijk niet beschikbaar</div>
+        <h1><span class="dot"></span><span data-i18n="welcome">Welkom op de website van Anke &amp; Jules</span></h1>
+        <div class="subtitle" data-i18n="subtitle">Helaas is deze app niet bekend of niet bereikbaar</div>
     
         <p class="body" data-i18n="body1">Mogelijk heb je een verkeerd adres getypt, of wordt er op dit moment een update geïnstalleerd.</p>
         <p class="body" style="margin-top:10px" data-i18n="body2">Geen zorgen — probeer het over een paar minuten gewoon opnieuw.</p>
     
-        <a class="home-link" href="https://home.k8s.hu.ls" data-i18n="homelink">Naar het startoverzicht</a>
+        <a class="home-link" href="https://home.k8s.hu.ls" data-i18n="homelink">Naar de startpagina</a>
     
         <div class="languages" role="group" aria-label="Language">
           <button class="lang-btn active" data-lang="nl" title="Nederlands">
@@ -103,32 +103,32 @@ data:
         (function () {
           var strings = {
             nl: {
-              welcome: 'Welkom bij de Anke &amp; Jules Homelab',
-              subtitle: 'Service tijdelijk niet beschikbaar',
+              welcome: 'Welkom op de website van Anke &amp; Jules',
+              subtitle: 'Helaas is deze app niet bekend of niet bereikbaar',
               body1: 'Mogelijk heb je een verkeerd adres getypt, of wordt er op dit moment een update geïnstalleerd.',
               body2: 'Geen zorgen — probeer het over een paar minuten gewoon opnieuw.',
-              homelink: 'Naar het startoverzicht',
+              homelink: 'Naar de startpagina',
               footer: 'Fijn dat je er bent'
             },
             en: {
-              welcome: 'Welcome to the Anke &amp; Jules Homelab',
-              subtitle: 'Service temporarily unavailable',
+              welcome: 'Welcome to the Anke &amp; Jules website',
+              subtitle: 'Unfortunately this app is unknown or unreachable',
               body1: 'You may have mistyped the address, or an update is being installed right now.',
               body2: 'No worries — just give it a few minutes and try again.',
               homelink: 'Go to the home page',
               footer: 'Glad you are here'
             },
             fr: {
-              welcome: 'Bienvenue sur la Homelab d&rsquo;Anke &amp; Jules',
-              subtitle: 'Service temporairement indisponible',
+              welcome: 'Bienvenue sur le site d&rsquo;Anke &amp; Jules',
+              subtitle: 'Malheureusement, cette application est inconnue ou inaccessible',
               body1: 'Vous avez peut-être mal saisi l&rsquo;adresse, ou une mise à jour est en cours d&rsquo;installation.',
               body2: 'Pas de souci — réessayez dans quelques minutes.',
               homelink: 'Aller à la page d&rsquo;accueil',
               footer: 'Ravi de vous voir'
             },
             de: {
-              welcome: 'Willkommen in der Anke &amp; Jules Homelab',
-              subtitle: 'Dienst vorübergehend nicht verfügbar',
+              welcome: 'Willkommen auf der Website von Anke &amp; Jules',
+              subtitle: 'Leider ist diese App unbekannt oder nicht erreichbar',
               body1: 'Möglicherweise hast du die Adresse falsch eingegeben, oder gerade wird ein Update installiert.',
               body2: 'Kein Problem — versuche es in ein paar Minuten einfach erneut.',
               homelink: 'Zur Startseite',
