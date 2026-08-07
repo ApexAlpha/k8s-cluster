@@ -20,6 +20,5 @@ resources:
 - vaultwarden-user-password-sealed.yaml
 - authentik-user-password-sealed.yaml
 - grafana-user-password-sealed.yaml
-- firefly-user-password-sealed.yaml
 - stirling-user-password-sealed.yaml
 - postgres-shared-secret-reader.yaml

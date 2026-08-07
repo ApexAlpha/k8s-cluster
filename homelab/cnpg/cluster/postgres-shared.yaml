@@ -61,10 +61,6 @@ spec:
       passwordSecret:
         name: grafana-user-password
     - login: true
-      name: firefly_user
-      passwordSecret:
-        name: firefly-user-password
-    - login: true
       name: stirling_user
       passwordSecret:
         name: stirling-user-password
@@ -160,7 +156,6 @@ spec:
         - CREATE DATABASE "prowlarr-main" OWNER prowlarr_user;
         - CREATE DATABASE "prowlarr-log" OWNER prowlarr_user;
         - CREATE DATABASE bazarr OWNER bazarr_user;
-        - CREATE DATABASE firefly OWNER firefly_user;
 
 
   backup:
