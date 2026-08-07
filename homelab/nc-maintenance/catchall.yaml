@@ -8,19 +8,9 @@ spec:
     - web
     - websecure
   routes:
-    # Port 80 (web): redirect any unmatched host to HTTPS, consistent with
-    # the rest of the cluster.
-    - kind: Rule
-      match: HostRegexp(`{host:.+}`)
-      priority: 1
-      middlewares:
-        - name: redirect-https
-          namespace: kube-system
-      services:
-        - name: maintenance-page
-          port: 80
-    # Port 443 (websecure): serve the maintenance page for any unmatched host.
+    # Serve the maintenance page for ANY host no other router claims.
     # Real apps have longer/more specific rules (higher priority) and win.
+    # HTTP→HTTPS is handled globally by Traefik's web entrypoint redirect.
     - kind: Rule
       match: HostRegexp(`{host:.+}`)
       priority: 1
