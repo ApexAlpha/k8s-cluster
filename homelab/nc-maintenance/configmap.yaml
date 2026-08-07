@@ -12,7 +12,7 @@ data:
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Service unavailable</title>
       <style>
-        :root { --bg:#0f1115; --card:#1a1e27; --fg:#e6e8ee; --muted:#9aa3b2; --accent:#e8b339; }
+        :root { --bg:#0f1115; --card:#1a1e27; --fg:#e6e8ee; --muted:#9aa3b2; --accent:#e8b339; --link:#5aa9e6; }
         * { box-sizing:border-box; margin:0; padding:0; }
         body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
                background:radial-gradient(1200px 600px at 50% -10%, #232a36 0%, var(--bg) 60%);
@@ -23,6 +23,10 @@ data:
         h1 { font-size:22px; font-weight:650; margin-bottom:10px; }
         p { color:var(--muted); line-height:1.55; font-size:15px; }
         .status { color:var(--muted); font-size:13px; margin-top:20px; }
+        .home-link { display:inline-block; margin-top:22px; padding:10px 22px; border-radius:8px;
+                     background:#232a36; border:1px solid #2f3748; color:var(--link); text-decoration:none;
+                     font-size:14px; font-weight:600; transition:background .15s ease; }
+        .home-link:hover { background:#2a3242; }
         .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent);
                margin-right:8px; vertical-align:middle; animation:blink 1.3s ease-in-out infinite; }
         @keyframes blink { 0%,100%{opacity:.25} 50%{opacity:1} }
@@ -34,6 +38,7 @@ data:
         <h1><span class="dot"></span>Service unavailable</h1>
         <p>This service is temporarily unavailable while we perform maintenance or deploy an update.
            Please wait a few minutes and try again.</p>
+        <a class="home-link" href="https://home.k8s.hu.ls">Browse available services</a>
         <div class="status">Thank you for your patience.</div>
       </div>
     </body>
