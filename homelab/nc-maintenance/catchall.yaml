@@ -9,10 +9,11 @@ spec:
     - websecure
   routes:
     # Serve the maintenance page for ANY host no other router claims.
+    # `Host(`*`)` is Traefik v3's documented catch-all (matches every host).
     # Real apps have longer/more specific rules (higher priority) and win.
     # HTTP→HTTPS is handled globally by Traefik's web entrypoint redirect.
     - kind: Rule
-      match: HostRegexp(`{host:.+}`)
+      match: Host(`*`)
       priority: 1
       services:
         - name: maintenance-page
