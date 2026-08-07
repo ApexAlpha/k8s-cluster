@@ -21,7 +21,7 @@ spec:
             - office.k8s.hu.ls
       containers:
         - name: code
-          image: docker.io/collabora/code:26.04.2.4.1
+          image: docker.io/collabora/code:26.04.2.4.1@sha256:1f864ce3f0c49e867787b6dd303bd6ba989542d3023f6809df558eafd04c1b97
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9980
