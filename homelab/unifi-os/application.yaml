@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://chrissnell.github.io/unifi-os-kubernetes
     chart: unifi-os-server
-    targetRevision: 0.2.5
+    targetRevision: 0.2.7
     helm:
       valuesObject:
         fullnameOverride: unifi-os
