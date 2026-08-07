@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collabora
+  namespace: collabora
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collabora-code
+  template:
+    metadata:
+      labels:
+        app: collabora-code
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
+      hostAliases:
+        - ip: "192.168.1.245"
+          hostnames:
+            - office.k8s.hu.ls
+      containers:
+        - name: code
+          image: docker.io/collabora/code:26.04.2.4.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9980
+          env:
+            - name: aliasgroup1
+              value: "https://office.k8s.hu.ls"
+            - name: extra_params
+              value: "--o:ssl.enable=false --o:ssl.termination=true --o:logging.level=warning --o:storage.wopi.allowed_languages="
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "4"
+              memory: 4Gi
+          readinessProbe:
+            httpGet:
+              path: /hosting/discovery
+              port: 9980
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /hosting/discovery
+              port: 9980
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5

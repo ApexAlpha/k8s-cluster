@@ -62,6 +62,7 @@ resources:
   - audiobookshelf/application.yaml
   - nextcloud/
   - frigate/application.yaml
+  - collabora/application.yaml
   - home-assistant/application.yaml
   - wyoming/application.yaml
   - homepage/application.yaml
