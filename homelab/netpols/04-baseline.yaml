@@ -1973,21 +1973,3 @@ spec:
 
 ---
 apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-from-shelfmark
-  namespace: trawl
-spec:
-  podSelector:
-    matchLabels:
-      app: trawl
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: shelfmark
-    ports:
-    - protocol: TCP
-      port: 8191
-  policyTypes:
-  - Ingress
