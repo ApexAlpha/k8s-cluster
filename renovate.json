@@ -13,12 +13,6 @@
       "hostType": "helm"
     },
     {
-      "matchHost": "docker.io",
-      "hostType": "docker",
-      "username": "ApexAlpha",
-      "password": "{{ secrets.DOCKER }}"
-    },
-    {
       "matchHost": "ghcr.io",
       "hostType": "docker",
       "token": "{{ secrets.GHCR_TOKEN }}"
@@ -88,7 +82,7 @@
       ],
       "automerge": true,
       "automergeSchedule": [
-        "* 3-10 * * *"
+        "* 5-10 * * *"
       ],
       "rebaseWhen": "conflicted"
     },
@@ -111,5 +105,6 @@
   ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
-  "minimumReleaseAge": "1 day"
+  "minimumReleaseAge": "1 day",
+  "timezone": "Europe/Amsterdam"
 }
