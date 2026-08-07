@@ -2,8 +2,17 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
-  - configmap.yaml
   - deployment.yaml
   - service.yaml
   - middleware.yaml
   - catchall.yaml
+
+# configMapGenerator appends a content-hash suffix to the ConfigMap name.
+# The deployment references `maintenance-page` and kustomize rewrites it to
+# `maintenance-page-<hash>`; when the HTML changes, the hash changes, the
+# volume reference changes, and the Deployment rolls automatically.
+configMapGenerator:
+  - name: maintenance-page
+    namespace: nc-maintenance
+    files:
+      - index.html
