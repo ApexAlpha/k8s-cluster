@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maintenance-page
+  namespace: nc-maintenance
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: maintenance-page
+  template:
+    metadata:
+      labels:
+        app: maintenance-page
+    spec:
+      containers:
+        - name: page
+          image: nginx:alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: page
+              mountPath: /usr/share/nginx/html
+          resources:
+            requests: {cpu: 5m, memory: 16Mi}
+            limits:   {cpu: 100m, memory: 64Mi}
+          readinessProbe: {httpGet: {path: /, port: 80}, periodSeconds: 5}
+      volumes:
+        - name: page
+          configMap:
+            name: maintenance-page
+            items:
+              - key: index.html
+                path: index.html

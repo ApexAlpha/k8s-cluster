@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: maintenance-page
+  namespace: nc-maintenance
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Service unavailable</title>
+      <style>
+        :root { --bg:#0f1115; --card:#1a1e27; --fg:#e6e8ee; --muted:#9aa3b2; --accent:#e8b339; }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+               background:radial-gradient(1200px 600px at 50% -10%, #232a36 0%, var(--bg) 60%);
+               color:var(--fg); min-height:100vh; display:flex; align-items:center; justify-content:center; }
+        .card { background:var(--card); border:1px solid #2a3140; border-radius:16px; padding:48px 40px;
+                max-width:480px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.4); }
+        .icon { font-size:52px; margin-bottom:16px; }
+        h1 { font-size:22px; font-weight:650; margin-bottom:10px; }
+        p { color:var(--muted); line-height:1.55; font-size:15px; }
+        .status { color:var(--muted); font-size:13px; margin-top:20px; }
+        .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent);
+               margin-right:8px; vertical-align:middle; animation:blink 1.3s ease-in-out infinite; }
+        @keyframes blink { 0%,100%{opacity:.25} 50%{opacity:1} }
+      </style>
+    </head>
+    <body>
+      <div class="card">
+        <div class="icon">🛠️</div>
+        <h1><span class="dot"></span>Service unavailable</h1>
+        <p>This service is temporarily unavailable while we perform maintenance or deploy an update.
+           Please wait a few minutes and try again.</p>
+        <div class="status">Thank you for your patience.</div>
+      </div>
+    </body>
+    </html>

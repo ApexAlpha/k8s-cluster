@@ -1,0 +1,13 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: maintenance-errors
+  namespace: nc-maintenance
+spec:
+  errors:
+    status:
+      - "500-599"
+    query: /
+    service:
+      name: maintenance-page
+      port: 80

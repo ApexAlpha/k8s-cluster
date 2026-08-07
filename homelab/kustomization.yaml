@@ -60,6 +60,7 @@ resources:
   - searxng/application.yaml
   - mealie/application.yaml
   - audiobookshelf/application.yaml
+  - nc-maintenance/application.yaml
   - nextcloud/
   - frigate/application.yaml
   - collabora/application.yaml
