@@ -67,6 +67,22 @@ spec:
               value: "all"
             - name: IMMICH_CONFIG_FILE
               value: "/usr/src/app/config.yaml"
+            - name: IMMICH_OAUTH_ISSUER_URL
+              valueFrom:
+                secretKeyRef:
+                  name: immich-oauth
+                  key: issuerUrl
+            - name: IMMICH_OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: immich-oauth
+                  key: clientId
+            - name: IMMICH_OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: immich-oauth
+                  key: clientSecret
+
           volumeMounts:
             - name: library
               mountPath: /usr/src/app/upload

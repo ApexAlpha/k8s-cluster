@@ -2,6 +2,4 @@
 oauth:
   enabled: true
   issuerUrl: "https://auth.k8s.hu.ls/application/o/immich/"
-  clientId: "immich"
-  clientSecret: "o3_eOqa3zirlCF72AMF3zD4jJta6glohc1VHcCVYaTM"
   defaultStorageQuota: 100
