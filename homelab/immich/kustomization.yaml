@@ -10,3 +10,4 @@ resources:
   - service.yaml
   - ingress.yaml
   - immich-db-sealed.yaml
+  - configmap.yaml

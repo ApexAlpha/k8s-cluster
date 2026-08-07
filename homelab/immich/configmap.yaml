@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: immich-config
+  namespace: immich
+data:
+  config.yaml: |
+    oauth:
+      defaultStorageQuota: 100

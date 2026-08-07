@@ -1,0 +1,3 @@
+# Immich server configuration
+oauth:
+  defaultStorageQuota: 100
