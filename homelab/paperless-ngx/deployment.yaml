@@ -123,13 +123,13 @@ spec:
             - name: PAPERLESS_TIME_ZONE
               value: "Europe/Amsterdam"  # Adjust to your timezone
             
-            # Tika & Gotenberg for Office docs (optional, enable if you deploy them)
-            # - name: PAPERLESS_TIKA_ENABLED
-            #   value: "true"
-            # - name: PAPERLESS_TIKA_ENDPOINT
-            #   value: "http://paperless-tika:9998"
-            # - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
-            #   value: "http://paperless-gotenberg:3000"
+            # Tika & Gotenberg sidecars — Office docs + .eml parsing
+            - name: PAPERLESS_TIKA_ENABLED
+              value: "true"
+            - name: PAPERLESS_TIKA_ENDPOINT
+              value: "http://localhost:9998"
+            - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
+              value: "http://localhost:3000"
           
           volumeMounts:
             - name: data
@@ -177,7 +177,33 @@ spec:
             periodSeconds: 10
             failureThreshold: 3
             timeoutSeconds: 5
-      
+
+        - name: tika
+          image: docker.io/apache/tika:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+
+        - name: gotenberg
+          image: docker.io/gotenberg/gotenberg:8.34
+          imagePullPolicy: IfNotPresent
+          args:
+            - "gotenberg"
+            - "--chromium-disable-javascript=true"
+            - "--chromium-allow-list=file:///tmp/.*"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 384Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+
       volumes:
         - name: data
           persistentVolumeClaim:
