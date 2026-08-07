@@ -130,6 +130,19 @@ spec:
               value: "http://localhost:9998"
             - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
               value: "http://localhost:3000"
+
+            # AI / LLM metadata suggestions — oMLX on the Mac via SSH reverse-tunnel
+            # (opens only loopback in oMLX; reachable as 192.168.1.235:21234 through the tunnel)
+            - name: PAPERLESS_AI_ENABLED
+              value: "true"
+            - name: PAPERLESS_AI_LLM_BACKEND
+              value: "openai-like"
+            - name: PAPERLESS_AI_LLM_ENDPOINT
+              value: "http://192.168.1.235:21234/v1"
+            - name: PAPERLESS_AI_LLM_MODEL
+              value: "Qwen3.6-35B-A3B-oQ4-mtp"
+            - name: PAPERLESS_AI_LLM_REQUEST_TIMEOUT
+              value: "300"
           
           volumeMounts:
             - name: data
