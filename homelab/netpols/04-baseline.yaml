@@ -110,7 +110,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -167,7 +166,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -224,7 +222,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -337,7 +334,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -394,7 +390,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -451,7 +446,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -508,7 +502,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -565,7 +558,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -622,7 +614,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -679,7 +670,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -736,7 +726,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -849,7 +838,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -906,7 +894,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -963,7 +950,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1020,7 +1006,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1077,7 +1062,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1134,7 +1118,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1191,7 +1174,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1248,7 +1230,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1305,7 +1286,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1362,7 +1342,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1419,7 +1398,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1476,7 +1454,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1533,7 +1510,6 @@ spec:
           kubernetes.io/metadata.name: monitoring
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1824,7 +1800,6 @@ spec:
     - podSelector: {}
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1862,15 +1837,15 @@ metadata:
 spec:
   podSelector: {}
   ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: cluster-backup
-      ports:
-        - port: 3900
-          protocol: TCP
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: cluster-backup
+    ports:
+    - port: 3900
+      protocol: TCP
   policyTypes:
-    - Ingress
+  - Ingress
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1880,9 +1855,17 @@ metadata:
 spec:
   podSelector:
     matchExpressions:
-      - key: app
-        operator: In
-        values: [radarr, radarr-4k, sonarr, sonarr-4k, transmission, prowlarr, bazarr, qbittorrent]
+    - key: app
+      operator: In
+      values:
+      - radarr
+      - radarr-4k
+      - sonarr
+      - sonarr-4k
+      - transmission
+      - prowlarr
+      - bazarr
+      - qbittorrent
   ingress:
   - from:
     - namespaceSelector:
@@ -1903,7 +1886,6 @@ spec:
       port: 8080
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1924,7 +1906,6 @@ spec:
       port: 8971
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1945,7 +1926,6 @@ spec:
       port: 13378
   policyTypes:
   - Ingress
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1955,9 +1935,11 @@ metadata:
 spec:
   podSelector:
     matchExpressions:
-      - key: app
-        operator: In
-        values: [prowlarr, qbittorrent]
+    - key: app
+      operator: In
+      values:
+      - prowlarr
+      - qbittorrent
   ingress:
   - from:
     - namespaceSelector:
@@ -1970,6 +1952,3 @@ spec:
       port: 8080
   policyTypes:
   - Ingress
-
----
-apiVersion: networking.k8s.io/v1
