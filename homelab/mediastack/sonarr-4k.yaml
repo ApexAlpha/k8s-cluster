@@ -144,7 +144,7 @@ spec:
       kind: Rule
       priority: 20
       middlewares:
-        - name: nc-maintenance-maintenance-errors
+        - name: maintenance-errors
           namespace: nc-maintenance
       services:
         - name: sonarr-4k
@@ -153,7 +153,7 @@ spec:
       kind: Rule
       priority: 10
       middlewares:
-        - name: nc-maintenance-maintenance-errors
+        - name: maintenance-errors
           namespace: nc-maintenance
         - name: authentik
           namespace: authentik

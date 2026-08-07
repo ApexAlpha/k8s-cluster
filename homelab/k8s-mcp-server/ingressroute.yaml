@@ -9,7 +9,7 @@ spec:
   routes:
   - kind: Rule
     middlewares:
-      - name: nc-maintenance-maintenance-errors
+      - name: maintenance-errors
         namespace: nc-maintenance
     match: Host(`mcp.k8s.hu.ls`)
     services:

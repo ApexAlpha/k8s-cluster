@@ -69,7 +69,7 @@ spec:
     - match: Host(`unifi.k8s.hu.ls`)
       kind: Rule
       middlewares:
-        - name: nc-maintenance-maintenance-errors
+        - name: maintenance-errors
           namespace: nc-maintenance
       services:
         - name: unifi-os-webui
