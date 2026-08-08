@@ -32,6 +32,6 @@ spec:
       - thursday
       - friday
       - saturday
-    startTime: "04:30"
-    endTime: "06:00"
+    startTime: "02:00"
+    endTime: "03:00"
     timeZone: Europe/Amsterdam

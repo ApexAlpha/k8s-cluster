@@ -1,12 +1,28 @@
-
-# Weekly backup Sunday at 03:00 — longer-term safety copy
+# Daily backup at 01:20 CEST (23:20 UTC summer) — fresh restore anchor
+# NOTE: daily base was deliberately removed in 8530b6b ("7 full copies in-window"
+# with 7d cluster retention). Restored per user request 2026-08-08. CNPG
+# ScheduledBackup has NO per-backup retention (verified CNPG 1.30) — cluster
+# retentionPolicy (7d) applies to ALL base backups, so this adds ~7 copies in
+# window. Acceptable tradeoff (user preference); revisit if Garage space tight.
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: postgres-shared-daily
+  namespace: database
+spec:
+  schedule: "20 23 * * *"
+  backupOwnerReference: self
+  cluster:
+    name: postgres-shared
+---
+# Weekly backup Sunday 01:20 CEST (Sat 23:20 UTC) — longer-term safety copy
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: postgres-shared-weekly
   namespace: database
 spec:
-  schedule: "0 0 0 * * 0"
+  schedule: "20 23 * * 6"
   backupOwnerReference: self
   cluster:
     name: postgres-shared

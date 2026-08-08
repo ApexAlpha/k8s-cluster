@@ -72,7 +72,7 @@
       ]
     },
     {
-      "description": "Automerge non-major updates between 00:00-01:00 UTC (before nightly backups)",
+      "description": "Automerge non-major updates in the night maintenance window (23:00-04:59 CEST)",
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -82,7 +82,8 @@
       ],
       "automerge": true,
       "automergeSchedule": [
-        "* 5-10 * * *"
+        "* 0-4 * * *",
+        "* 23 * * *"
       ],
       "rebaseWhen": "conflicted"
     },
