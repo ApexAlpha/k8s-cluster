@@ -29,21 +29,27 @@ spec:
                   set -e
                   COMMON="--config /rclone/rclone.conf --retries 5 --low-level-retries 10 --timeout 60s --retries-sleep 15s --log-level INFO"
 
-                  # Nightly: mirror garage -> encrypted Hetzner.
-                  # rclone sync (with delete) keeps Hetzner exactly mirroring garage,
-                  # so both hold the same 7-day window (velero TTL 7d / barman retention 7d).
-                  rclone sync garage:postgres-backups hcrypt-postgres: $COMMON --transfers 8 --checkers 16
-                  rclone sync garage:velero-backups hcrypt-velero: $COMMON --transfers 8 --checkers 16
+                  # Nightly: archive garage -> encrypted Hetzner (long-retention tier).
+                  # rclone copy (NO delete) makes Hetzner ACCUMULATE history beyond the
+                  # local 7d window — it is a retention archive, not a same-window mirror.
+                  rclone copy garage:postgres-backups hcrypt-postgres: $COMMON --transfers 8 --checkers 16
+                  rclone copy garage:velero-backups hcrypt-velero: $COMMON --transfers 8 --checkers 16
+
+                  # Bounded retention on Hetzner: prune anything older than 60 days.
+                  # Local keeps 7d; Hetzner keeps 60d; monthly snapshots keep forever.
+                  # (60d is a TTL guard — old bases+WAL here become the long restore arc.)
+                  rclone delete hcrypt-postgres: $COMMON --min-age 60d
+                  rclone delete hcrypt-velero: $COMMON --min-age 60d
 
                   # Monthly snapshot on the 1st (poison-attack protection).
-                  # Copied into a separate monthly/ prefix never touched by the sync.
+                  # Copied into a separate monthly/ prefix never touched by prune/delete.
                   if [ "$(date +%d)" = "01" ]; then
                     M=$(date +%Y-%m)
                     rclone copy hcrypt-postgres: hcrypt-postgres-monthly:$M/ $COMMON --transfers 8 --checkers 16
                     rclone copy hcrypt-velero: hcrypt-velero-monthly:$M/ $COMMON --transfers 8 --checkers 16
                   fi
 
-                  echo "HETZNER_ENCRYPTED_SYNC_OK"
+                  echo "HETZNER_ENCRYPTED_ARCHIVE_OK"
               volumeMounts:
                 - name: rclone-config
                   mountPath: /rclone
