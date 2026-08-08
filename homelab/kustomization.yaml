@@ -77,6 +77,9 @@ resources:
   # k3s Automated Upgrades (system-upgrade-controller) - Wave 26
   - system-upgrade/application.yaml
 
+  # kured (safe node reboots) - Wave 26
+  - kured/application.yaml
+
   # Network
   - wireguard/application.yaml
 
