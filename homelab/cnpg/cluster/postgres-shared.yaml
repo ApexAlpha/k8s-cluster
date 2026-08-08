@@ -68,8 +68,9 @@ spec:
   # High priority ensures postgres pods preempt app pods when resources are tight
   priorityClassName: database-critical
 
-  # Single instance — control plane is on home VM, no point in replica
-  instances: 2
+  # One instance per k8s node (3 nodes) — anti-affinity spreads them.
+  # Sync (method: any, number: 1) = RPO 0; ANY 1 of 2 standbys tolerates a node loss/reboot.
+  instances: 3
 
   # Standard CNPG image — includes pgvector, PGAudit, Postgres Failover Slots
   imageName: ghcr.io/cloudnative-pg/postgresql:18
@@ -93,6 +94,10 @@ spec:
     size: 20Gi
 
   postgresql:
+    synchronous:
+      method: any
+      number: 1
+      dataDurability: required
     parameters:
       max_connections: "300"
 
@@ -107,7 +112,7 @@ spec:
       max_wal_senders: "10"
       max_replication_slots: "10"
 
-      synchronous_commit: "local"
+      synchronous_commit: "on"
 
       checkpoint_timeout: "15min"
       max_wal_size: "2GB"
