@@ -42,10 +42,10 @@ spec:
           fsBackupTimeout: 6h
           clientQPS: 100
           clientBurst: 150
-          concurrentBackups: 3
+          concurrentBackups: 6
           itemBlockWorkerCount: 5
           uploader:
-            parallelFilesUpload: 10
+            parallelFilesUpload: 20
           backupStorageLocation:
             - name: default
               provider: aws
@@ -96,7 +96,7 @@ spec:
                 - kube-node-lease
                 - velero
                 - garage
-                - garage
+                - database
 
   destination:
     server: https://kubernetes.default.svc
