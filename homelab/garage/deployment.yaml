@@ -16,6 +16,8 @@ spec:
       app: garage
   template:
     metadata:
+      annotations:
+        backup.velero.io/backup-volumes-excludes: meta,data
       labels:
         app: garage
     spec:
