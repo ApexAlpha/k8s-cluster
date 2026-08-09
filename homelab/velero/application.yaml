@@ -42,8 +42,8 @@ spec:
           fsBackupTimeout: 6h
           clientQPS: 100
           clientBurst: 150
-          concurrentBackups: 6
           itemBlockWorkerCount: 5
+          concurrentBackups: 6
           uploader:
             parallelFilesUpload: 20
           backupStorageLocation:
