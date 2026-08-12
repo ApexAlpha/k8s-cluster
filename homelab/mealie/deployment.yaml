@@ -79,6 +79,12 @@ spec:
                   key: client_secret
             - name: OIDC_AUTO_REDIRECT
               value: "false"
+            - name: OIDC_GROUPS_CLAIM
+              value: "groups"
+            - name: OIDC_USER_GROUP
+              value: "MealieUsers"
+            - name: OIDC_ADMIN_GROUP
+              value: "authentik Admins"
 
           volumeMounts:
             - name: data
