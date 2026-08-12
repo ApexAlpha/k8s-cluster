@@ -14,9 +14,16 @@ data:
       enabled: false
 
     proxy:
+      separator: "|"
       header_map:
         user: x-forwarded-user
-      default_role: admin
+        role: x-forwarded-groups
+      role_map:
+        admin:
+          - authentik Admins
+        viewer:
+          - authentik Read-only
+      default_role: viewer
 
     # MQTT — enable when Home Assistant is set up
     mqtt:
