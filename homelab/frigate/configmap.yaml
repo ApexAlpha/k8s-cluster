@@ -16,8 +16,8 @@ data:
     proxy:
       separator: "|"
       header_map:
-        user: x-forwarded-user
-        role: x-forwarded-groups
+        user: x-authentik-username
+        role: x-authentik-groups
       role_map:
         admin:
           - authentik Admins
