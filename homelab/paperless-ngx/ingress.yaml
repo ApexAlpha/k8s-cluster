@@ -12,6 +12,9 @@ spec:
     - match: Host(`docs.k8s.hu.ls`) && PathPrefix(`/api`)
       kind: Rule
       priority: 20
+      middlewares:
+        - name: authentik
+          namespace: authentik
       services:
         - name: paperless-web
           port: 80
