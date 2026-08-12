@@ -14,6 +14,8 @@ spec:
     helm:
       values: |
         grafana:
+          podAnnotations:
+            auth-mapping-change: "2026-08-12-grafana-admin-group"
           nodeSelector:
             kubernetes.io/hostname: k3s-nuc
           # kubectl create secret generic grafana-admin -n monitoring \
