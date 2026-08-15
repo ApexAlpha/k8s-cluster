@@ -72,10 +72,9 @@ spec:
   # Sync (method: any, number: 1) = RPO 0; ANY 1 of 2 standbys tolerates a node loss/reboot.
   instances: 3
 
-  # Standard CNPG image — includes pgvector, PGAudit, Postgres Failover Slots
-  # Pinned by digest: the floating :18 tag + IfNotPresent produced a mixed fleet
-  # (primary on old pgvector 0.8.2, replicas on 0.8.6) which crash-looped Immich.
-  imageName: ghcr.io/cloudnative-pg/postgresql@sha256:7af186660aead1b948d827ef1c52c20a8d2cb7b2a4089424b8f612e0a61dc2f9
+  # Keep the PostgreSQL operand separate from the pgvector extension image.
+  # Immich requires pgvector 0.8.6; CNPG rejects digest-only operand images.
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
 
   primaryUpdateStrategy: unsupervised
 
@@ -96,6 +95,10 @@ spec:
     size: 20Gi
 
   postgresql:
+    extensions:
+      - name: pgvector
+        image:
+          reference: ghcr.io/cloudnative-pg/pgvector:0.8.6-18-trixie@sha256:846a13b268f615bfca62d3c199878b9d0f5441d97f60ceaa5650020b8fbcbd8e
     synchronous:
       method: any
       number: 1
