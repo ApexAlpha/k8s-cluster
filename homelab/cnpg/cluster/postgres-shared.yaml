@@ -73,7 +73,9 @@ spec:
   instances: 3
 
   # Standard CNPG image — includes pgvector, PGAudit, Postgres Failover Slots
-  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  # Pinned by digest: the floating :18 tag + IfNotPresent produced a mixed fleet
+  # (primary on old pgvector 0.8.2, replicas on 0.8.6) which crash-looped Immich.
+  imageName: ghcr.io/cloudnative-pg/postgresql@sha256:7af186660aead1b948d827ef1c52c20a8d2cb7b2a4089424b8f612e0a61dc2f9
 
   primaryUpdateStrategy: unsupervised
 
