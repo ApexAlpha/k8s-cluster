@@ -74,7 +74,7 @@ spec:
 
   # Keep the PostgreSQL operand separate from the pgvector extension image.
   # Immich requires pgvector 0.8.6; CNPG rejects digest-only operand images.
-  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4@sha256:01b0ddc4a378f650fd6e8f9092b2e02563b3033444e5032925c20e15e9fe385e
   imagePullSecrets:
     - name: ghcr-pull-secret
 
@@ -97,10 +97,6 @@ spec:
     size: 20Gi
 
   postgresql:
-    extensions:
-      - name: pgvector
-        image:
-          reference: ghcr.io/cloudnative-pg/pgvector:0.8.6-18-trixie@sha256:846a13b268f615bfca62d3c199878b9d0f5441d97f60ceaa5650020b8fbcbd8e
     synchronous:
       method: any
       number: 1
