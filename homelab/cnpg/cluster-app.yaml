@@ -21,7 +21,6 @@ spec:
       kind: Cluster
       jsonPointers:
         - /status
-        - /spec/imageName
         - /spec/enablePDB
         - /spec/enableSuperuserAccess
         - /spec/failoverDelay
