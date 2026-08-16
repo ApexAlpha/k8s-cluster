@@ -30,7 +30,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: metabase
-          image: metabase/metabase:v0.59.28@sha256:43ce35c0c7a1cb9d9ea616b343c08ce9128ce43e63ca717dc492841529142dde
+          image: metabase/metabase:v0.63.13@sha256:6e188e7068c6e9cf7b24480ada80f335bca9135765764ee827245f44ffa9eace
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
