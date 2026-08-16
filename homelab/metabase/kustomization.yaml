@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
+  - duckdb-pvc.yaml
+  - duckdb-seed-job.yaml
   - database-role.yaml
   - database.yaml
   - deployment.yaml

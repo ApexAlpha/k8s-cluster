@@ -1,0 +1,90 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: metabase-duckdb-seed
+  namespace: metabase
+  annotations:
+    argocd.argoproj.io/sync-wave: "18"
+spec:
+  ttlSecondsAfterFinished: 86400
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        app: metabase-duckdb-seed
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seed
+          image: python:3.13-slim@sha256:ffb752e139c0a19692a43af8d8523b274222dd68eebad5d583b45c2201c6e30a
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -ec
+            - |
+              pip install --no-cache-dir duckdb==1.3.2
+              python - <<'PY'
+              import duckdb
+              from pathlib import Path
+
+              db_path = Path('/data/security.duckdb')
+              if db_path.exists():
+                  print(f'{db_path} already exists; leaving it unchanged')
+                  raise SystemExit(0)
+
+              con = duckdb.connect(str(db_path))
+              con.execute("PRAGMA threads=2")
+              con.execute("""
+                CREATE TABLE assets AS
+                SELECT
+                  'asset-' || lpad(CAST(i AS VARCHAR), 6, '0') AS asset_id,
+                  CASE i % 3 WHEN 0 THEN 'vm' WHEN 1 THEN 'container' ELSE 'cloud_resource' END AS asset_type,
+                  CASE i % 3 WHEN 0 THEN 'production' WHEN 1 THEN 'staging' ELSE 'development' END AS environment,
+                  'team-' || lpad(CAST((i % 20) + 1 AS VARCHAR), 2, '0') AS team,
+                  CASE i % 4 WHEN 0 THEN 'critical' WHEN 1 THEN 'high' WHEN 2 THEN 'medium' ELSE 'low' END AS criticality,
+                  i % 10 <> 0 AS autopatching_enabled,
+                  i % 12 <> 0 AS scanner_covered
+                FROM range(50000) AS t(i)
+              """)
+              con.execute("""
+                CREATE TABLE findings AS
+                SELECT
+                  'finding-' || lpad(CAST(i AS VARCHAR), 8, '0') AS finding_id,
+                  'asset-' || lpad(CAST(i % 50000 AS VARCHAR), 6, '0') AS asset_id,
+                  'CVE-2025-' || lpad(CAST((i % 9000) + 1 AS VARCHAR), 4, '0') AS cve,
+                  CASE i % 4 WHEN 0 THEN 'critical' WHEN 1 THEN 'high' WHEN 2 THEN 'medium' ELSE 'low' END AS severity,
+                  CASE i % 10 WHEN 0 THEN 'resolved' WHEN 1 THEN 'in_progress' ELSE 'open' END AS status,
+                  CASE i % 3 WHEN 0 THEN 'rapid7' WHEN 1 THEN 'defender' ELSE 'aqua' END AS scanner,
+                  current_date - ((i % 365) * INTERVAL '1 day') AS first_seen_at,
+                  CASE WHEN i % 10 = 0 THEN current_date - ((i % 30) * INTERVAL '1 day') ELSE NULL END AS resolved_at
+                FROM range(1000000) AS t(i)
+              """)
+              con.execute("""
+                CREATE VIEW current_finding_posture AS
+                SELECT f.*, a.asset_type, a.environment, a.team, a.criticality,
+                       a.autopatching_enabled, a.scanner_covered,
+                       date_diff('day', f.first_seen_at, current_date) AS age_days
+                FROM findings f JOIN assets a USING (asset_id)
+                WHERE f.status <> 'resolved'
+              """)
+              con.execute("""
+                CREATE VIEW kpi_summary AS
+                SELECT
+                  count(*) AS open_findings,
+                  count(*) FILTER (WHERE severity = 'critical') AS open_critical,
+                  count(*) FILTER (WHERE severity = 'high') AS open_high,
+                  count(*) FILTER (WHERE age_days > 30) AS over_30_days,
+                  count(DISTINCT asset_id) AS affected_assets
+                FROM current_finding_posture
+              """)
+              con.execute("CHECKPOINT")
+              con.close()
+              print(f'created {db_path} ({db_path.stat().st_size} bytes)')
+              PY
+          volumeMounts:
+            - name: duckdb-data
+              mountPath: /data
+      volumes:
+        - name: duckdb-data
+          persistentVolumeClaim:
+            claimName: metabase-duckdb

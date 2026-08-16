@@ -19,6 +19,13 @@ spec:
       labels:
         app: metabase
     spec:
+      volumes:
+        - name: metabase-runtime
+          emptyDir: {}
+        - name: duckdb-data
+          persistentVolumeClaim:
+            claimName: metabase-duckdb
+            readOnly: true
       tolerations:
         - key: node.kubernetes.io/unreachable
           operator: Exists
@@ -28,10 +35,27 @@ spec:
           operator: Exists
           effect: NoExecute
           tolerationSeconds: 30
-      containers:
-        - name: metabase
-          image: metabase/metabase:v0.59.28@sha256:43ce35c0c7a1cb9d9ea616b343c08ce9128ce43e63ca717dc492841529142dde
+      initContainers:
+        - name: install-metabase-duckdb-driver
+          image: alpine:3.22@sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce
           imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -ec
+            - |
+              apk add --no-cache ca-certificates wget
+              mkdir -p /opt/metabase/plugins
+              wget -qO /opt/metabase/metabase.jar https://downloads.metabase.com/v0.59.28/metabase.jar
+              echo "70e167d33fbffc87d07673dc5a8b32137f4cf513a68d5f4979e016609e709017  /opt/metabase/metabase.jar" | sha256sum -c -
+              wget -qO /opt/metabase/plugins/duckdb.metabase-driver.jar https://github.com/MotherDuck-Open-Source/metabase_duckdb_driver/releases/download/1.5.5.0/duckdb.metabase-driver.jar
+              echo "47a0d41ca52ff82a6ce78b0c52b2bdb58b32094405e446734cefc44eb1ddbd07  /opt/metabase/plugins/duckdb.metabase-driver.jar" | sha256sum -c -
+          volumeMounts:
+            - name: metabase-runtime
+              mountPath: /opt/metabase
+        - name: metabase
+          image: eclipse-temurin:21-jre-jammy@sha256:3097cbbebb7d490494a98aed2301f284b38f79eba158eef098c6fc8c8af11c23
+          imagePullPolicy: IfNotPresent
+          command: ["java", "-jar", "/opt/metabase/metabase.jar"]
           ports:
             - name: http
               containerPort: 3000
@@ -53,6 +77,8 @@ spec:
                   key: password
             - name: MB_JETTY_PORT
               value: "3000"
+            - name: MB_PLUGINS_DIR
+              value: /opt/metabase/plugins
             - name: JAVA_TIMEZONE
               value: Europe/Amsterdam
           resources:
@@ -75,6 +101,12 @@ spec:
               port: http
             periodSeconds: 10
             timeoutSeconds: 5
+          volumeMounts:
+            - name: metabase-runtime
+              mountPath: /opt/metabase
+            - name: duckdb-data
+              mountPath: /data
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /api/health
