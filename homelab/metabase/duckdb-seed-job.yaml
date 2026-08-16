@@ -4,7 +4,7 @@ metadata:
   name: metabase-duckdb-seed
   namespace: metabase
   annotations:
-    argocd.argoproj.io/sync-wave: "18"
+    argocd.argoproj.io/sync-wave: "15"
 spec:
   ttlSecondsAfterFinished: 86400
   backoffLimit: 2
