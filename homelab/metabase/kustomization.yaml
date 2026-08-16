@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - database-role.yaml
+  - database.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingressroute.yaml
+  - metabase-db-credentials-sealed.yaml
+  - metabase-user-password-sealed.yaml

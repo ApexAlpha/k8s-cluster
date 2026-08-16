@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metabase
+  namespace: metabase
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+  labels:
+    app: metabase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metabase
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: metabase
+    spec:
+      tolerations:
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 30
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 30
+      containers:
+        - name: metabase
+          image: metabase/metabase:v0.59.28@sha256:43ce35c0c7a1cb9d9ea616b343c08ce9128ce43e63ca717dc492841529142dde
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: MB_DB_TYPE
+              value: postgres
+            - name: MB_DB_DBNAME
+              value: metabase
+            - name: MB_DB_PORT
+              value: "5432"
+            - name: MB_DB_HOST
+              value: postgres-shared-rw.database.svc.cluster.local
+            - name: MB_DB_USER
+              value: metabase_user
+            - name: MB_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: metabase-db-credentials
+                  key: password
+            - name: MB_JETTY_PORT
+              value: "3000"
+            - name: JAVA_TIMEZONE
+              value: Europe/Amsterdam
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            failureThreshold: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 5

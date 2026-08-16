@@ -1,0 +1,16 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: metabase-user
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  cluster:
+    name: postgres-shared
+  name: metabase_user
+  login: true
+  passwordSecret:
+    name: metabase-user-password
+  ensure: present
+  databaseRoleReclaimPolicy: retain

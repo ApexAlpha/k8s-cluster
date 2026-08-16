@@ -55,6 +55,7 @@ resources:
   - unifi/application.yaml
   - immich/application.yaml
   - stirling-pdf/application.yaml
+  - metabase/application.yaml
   - it-tools/application.yaml
   - cyberchef/application.yaml
   - searxng/application.yaml
