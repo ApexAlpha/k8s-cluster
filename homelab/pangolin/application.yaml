@@ -59,10 +59,7 @@ spec:
                     - protocol: TCP
                       port: 5432
           gerbil:
-            enabled: true
-            startupMode: delayed
-            service:
-              type: ClusterIP
+            enabled: false
     - repoURL: https://github.com/ApexAlpha/k8s-cluster.git
       targetRevision: main
       path: homelab/pangolin/manifests
