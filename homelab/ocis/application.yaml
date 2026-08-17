@@ -34,6 +34,7 @@ spec:
               insecure: true
               certTrusted: false
               bindDN: cn=ocis-ldap,ou=users,OU=ocis,DC=ldap,DC=goauthentik,DC=io
+              userEnabledAttribute: ak-active
               user:
                 schema:
                   id: uid
@@ -41,7 +42,6 @@ spec:
                   displayName: displayName
                   userName: uid
                   userType: ownCloudUserType
-                userEnabledAttribute: ak-active
                 baseDN: ou=users,OU=ocis,DC=ldap,DC=goauthentik,DC=io
                 objectClass: goauthentik.io/ldap/user
               group:
