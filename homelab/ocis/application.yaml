@@ -27,7 +27,7 @@ spec:
 
         features:
           externalUserManagement:
-            enabled: true
+            enabled: false
             autoprovisionAccounts:
               enabled: true
             oidc:
