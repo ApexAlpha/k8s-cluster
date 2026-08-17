@@ -22,7 +22,7 @@ spec:
           csp:
             directives:
               connectSrc:
-                - 'self'
+                - "'self'"
                 - https://auth.k8s.hu.ls/application/o/
 
         features:
