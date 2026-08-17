@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: pangolin-db-connection
+  namespace: pangolin
+spec:
+  encryptedData:
+    connectionString: AgBu+ZVzyXJfEDlaBKKB//CC2Otarpk8cY4b1JmFttVCdh3oWX4ncbPDPa0r2dIO61tlVvNTGWN7d0INZDkED7QAPOuyQimZW7ksU7wkNSbEOCj6kgZh6bKuDBmGLMr3wY/ObdU5YF0l6v4ad6CaKwVYDI65ocy98jbziN+5Oz6rp2+y9Jgxy07zMoWwQLYGIGr3Q6iMBtTMqP2j3xfg7HGxYspkX1hxIN+bN6T2ZcevmnFu686Qu9NFdg2Xc+saVrvc+NHMbYcpmkMDGUm+g8O+zsyDNGkJqe/+zWJ9g09G01iUaF63xBxPwHffvRJpkkesHEq+np/gKuxQ0+/WRHQrM8TwTQXyGB2uvvngLTp3MPrnQpGtvCHPeHu4CJLEf+sfVGRWpKz4NPWVSSvbzPBOyA1sCYyykcsJot12hewuMKNIQgD1xO+Nf53yF+McK1DVWvkIeoSLDHzH+XI3dw/5pvXL6Mj3WvVtp8u5cU4cbqllCe/9Xk9EIchM4Vm09wJk0nMGhTZlt9OvlWiNgXzKAZnKGGtZszaeJ/GWn/I1Rnpx3nR1P92wAI75UIQS0jWFaq298MpFpMdnC8JKTemccj76GwnxpeYK9MTIbktNJ6qH+GtX+LQB6/EtoVBhWce3Vn8ld4VN9C99cWl8tUP3mbKLxCMm75gOKJGCmW5N7y+AmKxNTbaG9nG0ygTxKuc++Bg1WA02r7kdBfHJPufWlvot98crrNrJZK4dlh5f1ExXfZ/0/qIa7JD0mTlz95h0OViHY0upNie9UKjj+SobOjNXbq6jPFRaz8OXwUyxOpzh3ZQu3RHQ1QzwbEfB/NHLOB6s25Sp+9gB7T2E1o90Q0vIQRs7PFzCKDj2G8VIlLQOa/WfrBdMCJdbSlN8xfihaw==
+  template:
+    metadata:
+      name: pangolin-db-connection
+      namespace: pangolin
+    type: Opaque

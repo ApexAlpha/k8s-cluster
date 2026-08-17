@@ -1,0 +1,16 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: pangolin-user
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  cluster:
+    name: postgres-shared
+  name: pangolin_user
+  login: true
+  passwordSecret:
+    name: pangolin-user-password
+  ensure: present
+  databaseRoleReclaimPolicy: retain

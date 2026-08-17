@@ -1,0 +1,76 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pangolin
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://charts.fossorial.io
+      chart: pangolin
+      targetRevision: 0.1.0-alpha.1
+      helm:
+        releaseName: pangolin
+        values: |
+          deployment:
+            type: controller
+            mode: multi
+            installTraefikController: false
+          database:
+            mode: external
+            external:
+              enabled: true
+              existingSecretName: pangolin-db-connection
+              existingSecretKey: connectionString
+          pangolin:
+            secret:
+              existingSecretName: pangolin-app-secret
+              existingSecretKey: SERVER_SECRET
+            config:
+              app:
+                dashboard_url: https://pangolin.k8s.hu.ls
+              domains:
+                domain1:
+                  base_domain: k8s.hu.ls
+                  cert_resolver: letsencrypt
+              gerbil:
+                base_endpoint: pangolin.k8s.hu.ls
+              traefik:
+                cert_resolver: letsencrypt
+            ingressRoute:
+              dashboard:
+                enabled: true
+                host: pangolin.k8s.hu.ls
+                tls:
+                  enabled: true
+                  secretName: wildcard-k8s-hu-ls-tls
+          gerbil:
+            enabled: true
+            startupMode: delayed
+            service:
+              type: ClusterIP
+    - repoURL: https://github.com/ApexAlpha/k8s-cluster.git
+      targetRevision: main
+      path: homelab/pangolin/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: pangolin
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PruneLast=true
+      - SkipDryRunOnMissingResource=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

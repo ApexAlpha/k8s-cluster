@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-pangolin
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "12"
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: pangolin
+      ports:
+        - port: 5432
+          protocol: TCP
+  policyTypes:
+    - Ingress
