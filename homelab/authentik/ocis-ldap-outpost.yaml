@@ -55,13 +55,11 @@ spec:
             - secretRef:
                 name: ocis-ldap-outpost-api
           readinessProbe:
-            httpGet:
-              path: /outpost.goauthentik.io/ping
-              port: http
+            tcpSocket:
+              port: ldap
           livenessProbe:
-            httpGet:
-              path: /outpost.goauthentik.io/ping
-              port: http
+            tcpSocket:
+              port: ldap
           resources:
             requests:
               cpu: 50m
