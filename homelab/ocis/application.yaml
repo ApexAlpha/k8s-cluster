@@ -1,0 +1,118 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ocis
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/owncloud/ocis-charts.git
+    path: charts/ocis
+    targetRevision: 161472690d7577b6b4342dbf2b87fa04e3dd6181
+    helm:
+      valuesObject:
+        externalDomain: ocis.k8s.hu.ls
+
+        image:
+          repository: owncloud/ocis
+          tag: 7.1.4
+          pullPolicy: IfNotPresent
+
+        replicas: 1
+        deploymentStrategy:
+          type: Recreate
+
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          annotations:
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.middlewares: "nc-maintenance-maintenance-errors@kubernetescrd,authentik-authentik@kubernetescrd"
+          tls:
+            - hosts:
+                - ocis.k8s.hu.ls
+              secretName: wildcard-k8s-hu-ls-tls
+
+        # Keep the first installation intentionally small and single-replica.
+        # The chart's own IDM/NATS/storage services provide the test baseline.
+        services:
+          idm:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 10Gi
+          nats:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 10Gi
+          search:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 10Gi
+          storagesystem:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 100Gi
+          storageusers:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 100Gi
+          ocm:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 1Gi
+          thumbnails:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 20Gi
+          web:
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 1Gi
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: "2"
+            memory: 2Gi
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ocis
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
