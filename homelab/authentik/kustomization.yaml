@@ -6,3 +6,4 @@ resources:
   - authentik-secret-sealed.yaml
   - ocis-ldap-outpost.yaml
   - ocis-ldap-outpost-secret-sealed.yaml
+  - allow-ocis-ldap.yaml
