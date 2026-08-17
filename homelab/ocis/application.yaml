@@ -17,6 +17,14 @@ spec:
       valuesObject:
         externalDomain: ocis.k8s.hu.ls
 
+        # Authentik advertises OIDC token/userinfo endpoints under /application/o/.
+        http:
+          csp:
+            directives:
+              connectSrc:
+                - 'self'
+                - https://auth.k8s.hu.ls/application/o/
+
         features:
           externalUserManagement:
             enabled: true
