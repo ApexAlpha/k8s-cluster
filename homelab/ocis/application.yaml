@@ -69,7 +69,6 @@ spec:
           annotations:
             traefik.ingress.kubernetes.io/router.tls: "true"
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            traefik.ingress.kubernetes.io/router.middlewares: "nc-maintenance-maintenance-errors@kubernetescrd,authentik-authentik@kubernetescrd"
           tls:
             - hosts:
                 - ocis.k8s.hu.ls
