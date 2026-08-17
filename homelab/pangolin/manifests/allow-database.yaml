@@ -4,7 +4,7 @@ metadata:
   name: allow-from-pangolin
   namespace: database
   annotations:
-    argocd.argoproj.io/sync-wave: "12"
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector: {}
   ingress:

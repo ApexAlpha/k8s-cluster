@@ -48,6 +48,16 @@ spec:
                 tls:
                   enabled: true
                   secretName: wildcard-k8s-hu-ls-tls
+          networkPolicy:
+            pangolin:
+              extraEgress:
+                - to:
+                    - namespaceSelector:
+                        matchLabels:
+                          kubernetes.io/metadata.name: database
+                  ports:
+                    - protocol: TCP
+                      port: 5432
           gerbil:
             enabled: true
             startupMode: delayed
