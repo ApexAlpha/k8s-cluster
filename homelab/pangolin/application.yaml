@@ -53,6 +53,17 @@ spec:
               egress:
                 kubernetesApi:
                   cidr: 10.43.0.1/32
+                extraEgress:
+                  - to:
+                      - ipBlock:
+                          cidr: 192.168.1.203/32
+                      - ipBlock:
+                          cidr: 192.168.1.228/32
+                      - ipBlock:
+                          cidr: 192.168.1.230/32
+                    ports:
+                      - protocol: TCP
+                        port: 6443
             pangolin:
               extraEgress:
                 - to:
