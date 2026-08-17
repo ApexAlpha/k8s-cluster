@@ -95,4 +95,3 @@ resources:
   - caretta/application.yaml
   - hermes/application.yaml
   # - apps/plex.yaml
-  - ocis/oidc-ldap-secret-sealed.yaml

@@ -29,38 +29,14 @@ spec:
           externalUserManagement:
             enabled: true
             autoprovisionAccounts:
-              enabled: false
+              enabled: true
             oidc:
               issuerURI: https://auth.k8s.hu.ls/application/o/ocis/
               userIDClaim: preferred_username
               userIDClaimAttributeMapping: username
               accessTokenVerifyMethod: jwt
               skipUserInfo: false
-            ldap:
-              writeable: false
-              uri: ldap://ocis-ldap-outpost.authentik.svc.cluster.local:3389
-              insecure: true
-              certTrusted: false
-              bindDN: cn=ocis-ldap,ou=users,OU=ocis,DC=ldap,DC=goauthentik,DC=io
-              user:
-                schema:
-                  id: uid
-                  mail: mail
-                  displayName: displayName
-                  userName: uid
-                  userType: ownCloudUserType
-                baseDN: ou=users,OU=ocis,DC=ldap,DC=goauthentik,DC=io
-                objectClass: goauthentik.io/ldap/user
-              group:
-                schema:
-                  id: uid
-                  displayName: name
-                  groupName: cn
-                baseDN: ou=groups,OU=ocis,DC=ldap,DC=goauthentik,DC=io
-                objectClass: goauthentik.io/ldap/group
-
-        secretRefs:
-          ldapSecretRef: ocis-ldap-bind
+            # Accounts are provisioned from Authentik OIDC claims.
 
         image:
           repository: owncloud/ocis
