@@ -22,16 +22,14 @@ using the `cloudnative-vectorchord` image. It still uses the same CNPG operator.
 
 | PVC | StorageClass | Purpose |
 |-----|-------------|---------|
-| `immich-library` | `juicefs` | Photos, videos, thumbnails — replicated via Garage S3 |
+| `immich-library` | `local-path` | Photos, videos, thumbnails |
 | `immich-ml-cache` | `local-path` | ML model cache — can be re-downloaded |
 | Postgres PVC | `local-path` | Database files (managed by CNPG) |
 
-### JuiceFS for photo storage
+### Library storage
 
-JuiceFS provides compression and encryption over the Garage S3 backend. Your
-photos get automatic replication across geo-distributed nodes via Garage, which
-is exactly what you want for irreplaceable data. RWX access mode enables
-RollingUpdate deployments for zero-downtime upgrades.
+The library currently uses a `local-path` PVC on the node hosting Immich.
+Backups and replication are handled separately by the cluster backup infrastructure.
 
 ## Before deploying
 

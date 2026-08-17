@@ -133,7 +133,6 @@ spec:
               opcache.jit=1255
               opcache.jit_buffer_size=64M
 
-          # File storage via JuiceFS (provides compression & encryption over Garage S3)
           objectStore:
             s3:
               enabled: false
@@ -199,7 +198,7 @@ spec:
             traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
 
         # ─── Persistence ───────────────────────────────────────────────
-        # JuiceFS provides compression & encryption over Garage S3 backend
+        # File storage on the local-path PVC
         persistence:
           enabled: true
           storageClass: local-path

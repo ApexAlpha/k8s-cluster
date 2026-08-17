@@ -48,7 +48,7 @@ Then add the file to the app's `kustomization.yaml` and commit.
 
 ### database (CNPG barman backups)
 
-Uses the same JuiceFS gateway credentials to write backups to the `postgres-backups` bucket via the S3 gateway.
+Uses Garage S3 credentials to write backups to the `postgres-backups` bucket.
 
 ```bash
 kubectl create secret generic cnpg-barman-credentials -n database \
@@ -97,40 +97,6 @@ kubectl create secret generic authentik-secret -n authentik \
 Add to `homelab/authentik/kustomization.yaml`:
 ```yaml
   - authentik-secret-sealed.yaml
-```
-
----
-
-### kube-system (JuiceFS)
-
-> Set up Garage first and have your key ID and secret ready.
-
-```bash
-kubectl create secret generic juicefs-secret -n kube-system \
-  --from-literal=name=juicefs \
-  --from-literal=metaurl="postgres://app:<cnpg-app-password>@postgres-shared-rw.database.svc.cluster.local/juicefs" \
-  --from-literal=storage=s3 \
-  --from-literal=bucket="http://garage-s3.garage.svc.cluster.local:3900/juicefs-data" \
-  --from-literal=access-key=<garage-key-id> \
-  --from-literal=secret-key=<garage-secret-key> \
-  --dry-run=client -o yaml | \
-  kubeseal --controller-namespace kube-system --controller-name sealed-secrets-controller --format yaml \
-  > homelab/juicefs/juicefs-secret-sealed.yaml
-
-kubectl create secret generic juicefs-gateway-credentials -n kube-system \
-  --from-literal=access-key=<garage-key-id> \
-  --from-literal=secret-key=<garage-secret-key> \
-  --from-literal=webdav-user=admin \
-  --from-literal=webdav-password=<choose-password> \
-  --dry-run=client -o yaml | \
-  kubeseal --controller-namespace kube-system --controller-name sealed-secrets-controller --format yaml \
-  > homelab/juicefs/juicefs-gateway-credentials-sealed.yaml
-```
-
-Add both to `homelab/juicefs/kustomization.yaml`:
-```yaml
-  - juicefs-secret-sealed.yaml
-  - juicefs-gateway-credentials-sealed.yaml
 ```
 
 ---
@@ -324,17 +290,3 @@ Add all to `homelab/mediastack/kustomization.yaml`:
 ```
 
 ---
-
-## 4. Format JuiceFS
-
-After all secrets are applied and the JuiceFS gateway pod is running, the filesystem must be formatted once against the Postgres metadata database. This only needs to be done on a fresh install.
-
-```bash
-kubectl exec -n kube-system -it deploy/juicefs-gateway -- juicefs format \
-  --storage s3 \
-  --bucket "http://garage-s3.garage.svc.cluster.local:3900/juicefs-data" \
-  --access-key <garage-key-id> \
-  --secret-key <garage-secret> \
-  "postgres://app:<cnpg-app-password>@postgres-shared-rw.database.svc.cluster.local/juicefs" \
-  juicefs
-```

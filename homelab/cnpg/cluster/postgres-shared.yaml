@@ -169,7 +169,7 @@ spec:
   backup:
     barmanObjectStore:
       destinationPath: s3://postgres-backups/
-      # Direct to Garage — removes circular dependency (JuiceFS → PG → JuiceFS backup)
+      # Direct to Garage for PostgreSQL backups
       endpointURL: http://garage-s3.garage.svc.cluster.local:3900
       s3Credentials:
         accessKeyId:

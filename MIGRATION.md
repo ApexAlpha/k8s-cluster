@@ -12,7 +12,7 @@ Migration from 3-node WAN cluster (home + NUC + Hetzner) to 2-node LAN cluster (
 - **CNI:** Flannel (k3s default)
 - **LoadBalancer:** MetalLB (L2, pool 192.168.1.245-254)
 - **DNS/VPN:** WireGuard (replacing Netbird), wg-easy on Proxmox host
-- **Storage:** Garage replication factor 1 (4TB usable), JuiceFS on top
+- **Storage:** Garage for S3-compatible backups; local-path PVCs for application data
 - **Database:** CNPG single instance PG18, pinned to home VM, local-path storage
 - **Kured:** Removed — replaced by unattended-upgrades + Canonical Livepatch
 - **Backups:** rclone to Raspberry Pi + NAS at parents via WireGuard, or S3
@@ -238,7 +238,7 @@ Once cluster is healthy, NUC is joined, and backups are configured:
 - [ ] All apps healthy in ArgoCD
 - [ ] CNPG on PG18, single instance, home VM
 - [ ] Garage replication factor 1, both nodes, 4TB usable
-- [ ] JuiceFS connected to local Garage on each node
+- [x] Application storage uses local-path PVCs; Garage is used for S3-compatible backups
 - [ ] Headscale running on Proxmox host (already done)
 - [ ] Home VM joined to Headscale as subnet router (192.168.1.0/24 advertised)
 - [ ] MetalLB pool active (192.168.1.245-254)

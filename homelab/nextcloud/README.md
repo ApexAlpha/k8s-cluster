@@ -4,7 +4,7 @@ Nextcloud deployment using the [community Helm chart](https://github.com/nextclo
 
 - **URL**: https://office.k8s.hu.ls
 - **Database**: Shared CNPG PostgreSQL cluster (`postgres-shared-rw.database.svc`)
-- **File storage**: JuiceFS (compression & encryption over Garage S3)
+- **File storage**: `local-path` PVC
 - **Cache**: Bundled Bitnami Redis (standalone)
 - **Ingress**: Traefik with sticky sessions
 
@@ -59,8 +59,8 @@ Add to `homelab/cnpg/cluster/postgres-shared.yaml` under `postInitSQL`:
               ┌─────────────┼─────────────┐
               ▼             ▼             ▼
         ┌──────────┐ ┌──────────┐ ┌──────────┐
-        │ Postgres │ │ JuiceFS  │ │  Redis   │
-        │ (shared) │ │  (RWX)   │ │(bundled) │
+        │ Postgres │ │ local-path │ │  Redis   │
+        │ (shared) │ │ (RWO)    │ │(bundled) │
         └──────────┘ └──────────┘ └──────────┘
 ```
 

@@ -14,7 +14,7 @@ GitOps-managed Kubernetes homelab cluster using ArgoCD.
 
 - **GitOps:** ArgoCD with automated sync (prune + selfHeal)
 - **Ingress:** Traefik exposed via WireGuard tunnel
-- **Storage:** Garage (S3-compatible object storage, runs on both nodes as system service) + JuiceFS
+- **Storage:** Garage (S3-compatible object storage for backups) plus local-path PVCs for application data
 - **Database:** CloudNativePG shared PostgreSQL cluster (2 instances, spread across nodes)
 - **Secrets:** Kept out of git (`*secret*.yaml` in .gitignore), sealed with kubeseal
 - **DNS:** Blocky — two instances, one per node, each with dedicated MetalLB IP (.253 NUC, .254 home)
@@ -30,7 +30,7 @@ GitOps-managed Kubernetes homelab cluster using ArgoCD.
 
 ## Sync Wave Order
 
-5: Operators (CNPG, Kured) → 10: Databases → 14-18: Storage (Garage, JuiceFS) → 20+: Apps → 30: Homepage
+5: Operators (CNPG, Kured) → 10: Databases → 14-18: Storage (Garage) → 20+: Apps → 30: Homepage
 
 ## Key Applications
 
