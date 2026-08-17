@@ -49,6 +49,10 @@ spec:
                   enabled: true
                   secretName: wildcard-k8s-hu-ls-tls
           networkPolicy:
+            controller:
+              egress:
+                kubernetesApi:
+                  cidr: 10.43.0.1/32
             pangolin:
               extraEgress:
                 - to:
