@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocis-ldap-outpost
+  namespace: authentik
+  labels:
+    app.kubernetes.io/instance: ocis-ldap-outpost
+    app.kubernetes.io/name: authentik-outpost
+spec:
+  selector:
+    app.kubernetes.io/instance: ocis-ldap-outpost
+    app.kubernetes.io/name: authentik-outpost
+  ports:
+    - name: http
+      port: 9000
+      targetPort: http
+    - name: ldap
+      port: 3389
+      targetPort: ldap
+    - name: ldaps
+      port: 6636
+      targetPort: ldaps
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocis-ldap-outpost
+  namespace: authentik
+  labels:
+    app.kubernetes.io/instance: ocis-ldap-outpost
+    app.kubernetes.io/name: authentik-outpost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: ocis-ldap-outpost
+      app.kubernetes.io/name: authentik-outpost
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ocis-ldap-outpost
+        app.kubernetes.io/name: authentik-outpost
+    spec:
+      containers:
+        - name: proxy
+          image: ghcr.io/goauthentik/proxy:2026.5.6
+          ports:
+            - name: http
+              containerPort: 9000
+            - name: ldap
+              containerPort: 3389
+            - name: ldaps
+              containerPort: 6636
+          envFrom:
+            - secretRef:
+                name: ocis-ldap-outpost-api
+          readinessProbe:
+            httpGet:
+              path: /outpost.goauthentik.io/ping
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /outpost.goauthentik.io/ping
+              port: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

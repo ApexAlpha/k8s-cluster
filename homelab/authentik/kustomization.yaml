@@ -4,3 +4,5 @@ resources:
   - application.yaml
   - middleware.yaml
   - authentik-secret-sealed.yaml
+  - ocis-ldap-outpost.yaml
+  - ocis-ldap-outpost-secret-sealed.yaml

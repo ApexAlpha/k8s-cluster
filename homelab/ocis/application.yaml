@@ -17,6 +17,43 @@ spec:
       valuesObject:
         externalDomain: ocis.k8s.hu.ls
 
+        features:
+          externalUserManagement:
+            enabled: true
+            autoprovisionAccounts:
+              enabled: false
+            oidc:
+              issuerURI: https://auth.k8s.hu.ls/application/o/ocis/
+              userIDClaim: preferred_username
+              userIDClaimAttributeMapping: username
+              accessTokenVerifyMethod: jwt
+              skipUserInfo: false
+            ldap:
+              writeable: false
+              uri: ldap://ocis-ldap-outpost.authentik.svc.cluster.local:3389
+              insecure: true
+              certTrusted: false
+              bindDN: cn=ocis-ldap,ou=users,OU=ocis,DC=ldap,DC=goauthentik,DC=io
+              user:
+                schema:
+                  id: uid
+                  mail: mail
+                  displayName: displayName
+                  userName: uid
+                  userType: ownCloudUserType
+                baseDN: ou=users,OU=ocis,DC=ldap,DC=goauthentik,DC=io
+                objectClass: goauthentik.io/ldap/user
+              group:
+                schema:
+                  id: uid
+                  displayName: name
+                  groupName: cn
+                baseDN: ou=groups,OU=ocis,DC=ldap,DC=goauthentik,DC=io
+                objectClass: goauthentik.io/ldap/group
+
+        secretRefs:
+          ldapSecretRef: ocis-ldap-bind
+
         image:
           repository: owncloud/ocis
           tag: 7.1.4
@@ -41,6 +78,15 @@ spec:
         # Keep the first installation intentionally small and single-replica.
         # The chart's own IDM/NATS/storage services provide the test baseline.
         services:
+          web:
+            config:
+              oidc:
+                webClientID: web
+            persistence:
+              enabled: true
+              storageClassName: local-path
+              accessModes: [ReadWriteOnce]
+              size: 1Gi
           idm:
             persistence:
               enabled: true
@@ -83,12 +129,6 @@ spec:
               storageClassName: local-path
               accessModes: [ReadWriteOnce]
               size: 20Gi
-          web:
-            persistence:
-              enabled: true
-              storageClassName: local-path
-              accessModes: [ReadWriteOnce]
-              size: 1Gi
 
         resources:
           requests:
