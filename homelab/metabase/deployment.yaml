@@ -54,7 +54,7 @@ spec:
               mountPath: /opt/metabase
       containers:
         - name: metabase
-          image: eclipse-temurin:25-jre-jammy@sha256:5bd5dbe00f40ea149de434a75029713765a2912cfc1fd770cc7c7aff007384ea
+          image: eclipse-temurin:25-jre-jammy@sha256:966f3ab99ef7ad3cbc89ebaf954597d205a5e8d6a53915280afd48fed4a59c5b
           imagePullPolicy: IfNotPresent
           command: ["java", "-jar", "/opt/metabase/metabase.jar"]
           ports:
