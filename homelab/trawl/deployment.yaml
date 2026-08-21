@@ -63,7 +63,7 @@ spec:
         runAsGroup: 0
       containers:
         - name: trawl
-          image: ghcr.io/germondai/trawl:latest@sha256:5c9988899ce42e1b85e89ca5d81b4c1fa82653ad97bf7169f9125367243dcc49
+          image: ghcr.io/germondai/trawl:latest@sha256:e8f109e737e289c0eaefff5abe442c7e0abbc3bf6b3778b2fcd42e0bc0aa0ae2
           imagePullPolicy: IfNotPresent
           # Camoufox/Firefox needs user namespaces for its sandbox; the default
           # k3s seccomp profile blocks unshare -> browser launch times out.
