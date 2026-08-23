@@ -55,7 +55,6 @@ resources:
   - unifi/application.yaml
   - immich/application.yaml
   - stirling-pdf/application.yaml
-  - metabase/application.yaml
   - it-tools/application.yaml
   - cyberchef/application.yaml
   - searxng/application.yaml
@@ -91,7 +90,6 @@ resources:
   - k8s-mcp-server/application.yaml
   - radar/application.yaml
   - trawl/application.yaml
-  - pangolin/application.yaml
   - caretta/application.yaml
   - hermes/application.yaml
   # - apps/plex.yaml
