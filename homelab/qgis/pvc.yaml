@@ -5,7 +5,7 @@ metadata:
   namespace: qgis
   annotations:
     argocd.argoproj.io/sync-options: SkipHealthCheck=true
-    argocd.argoproj.io/sync-wave: "25"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   accessModes:
     - ReadWriteOnce
