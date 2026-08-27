@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qgis
+  namespace: qgis
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  labels:
+    app: qgis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qgis
+  template:
+    metadata:
+      labels:
+        app: qgis
+    spec:
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 30
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 100
+        fsGroup: 100
+      containers:
+        - name: qgis
+          image: quay.io/bedata/jupyterlab/qgis/base:ltr@sha256:ffd7da08c905c4256a9e12989cf4d85f30964adce19585b6af5457e8e183cc58
+          args:
+            - start-notebook.sh
+            - --ServerApp.token=
+            - --ServerApp.password=
+          env:
+            - name: CHOWN_HOME
+              value: "yes"
+            - name: CHOWN_HOME_OPTS
+              value: "-R"
+            - name: NB_UID
+              value: "1000"
+            - name: NB_GID
+              value: "100"
+          ports:
+            - name: http
+              containerPort: 8888
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 4
+              memory: 6Gi
+          startupProbe:
+            httpGet:
+              path: /api/status
+              port: http
+            failureThreshold: 60
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/status
+              port: http
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/status
+              port: http
+            periodSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+            - name: home
+              mountPath: /home/jovyan
+            - name: shm
+              mountPath: /dev/shm
+      volumes:
+        - name: home
+          persistentVolumeClaim:
+            claimName: qgis-home
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi

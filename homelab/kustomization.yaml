@@ -68,6 +68,7 @@ resources:
   - home-assistant/application.yaml
   - wyoming/application.yaml
   - homepage/application.yaml
+  - qgis/application.yaml
 
   # Public personal website (Jules Huls)
   - juleshuls/application.yaml
