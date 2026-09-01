@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://skyhook-io.github.io/helm-charts
-    targetRevision: 1.11.0
+    targetRevision: 1.12.2
     chart: radar
     helm:
       values: |
