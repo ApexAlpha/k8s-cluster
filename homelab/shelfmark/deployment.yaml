@@ -32,7 +32,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: shelfmark
-          image: ghcr.io/calibrain/shelfmark:latest@sha256:e22413551ab647388f0279f1d7b7db3ff4a6fe1151337b5b234d3747cc09f5a3
+          image: ghcr.io/calibrain/shelfmark:latest@sha256:e19458e598adbb7e4dae422d1cc8fb0d6fda6f532cd97ea2cb6d4e6b04e7e9ca
           ports:
             - name: http
               containerPort: 8084
