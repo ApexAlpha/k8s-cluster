@@ -16,11 +16,11 @@ spec:
     helm:
       values: |
         # One replicated volume per app -> protect against a single node loss.
+        defaultClassReplicaCount: 2
+        # GitOps: skip Longhorn pre-upgrade checker hook (references an SA not yet created); disables it.
         preUpgradeChecker:
           jobEnabled: false
           upgradeVersionCheck: false
-        # One replicated volume per app -> protect against a single node loss.
-        defaultClassReplicaCount: 2
         # Longhorn UI replicas spread across nodes (anti-affinity is built-in).
         longhornUI:
           replicas: 2
