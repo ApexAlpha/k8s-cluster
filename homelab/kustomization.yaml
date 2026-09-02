@@ -26,7 +26,8 @@ resources:
 
   # Storage - Wave 14-17 (after databases)
   - garage/application.yaml         # Wave 14: Garage namespace, services, ingress
-  
+  - longhorn/application.yaml       # Wave 14: Longhorn distributed block storage + UI (replica=2)
+
   #Ingress
   - traefik/
 
@@ -51,7 +52,6 @@ resources:
   - vaultwarden/application.yaml
   - mediastack/application.yaml
   - paperless-ngx/application.yaml  
-  - unifi-os/application.yaml
   - unifi/application.yaml
   - immich/application.yaml
   - stirling-pdf/application.yaml
@@ -59,28 +59,15 @@ resources:
   - cyberchef/application.yaml
   - searxng/application.yaml
   - mealie/application.yaml
+  - firefly/application.yaml
   - audiobookshelf/application.yaml
-  - nc-maintenance/application.yaml
   - nextcloud/
-  - ocis/application.yaml
   - frigate/application.yaml
-  - collabora/application.yaml
   - home-assistant/application.yaml
   - wyoming/application.yaml
   - homepage/application.yaml
-  - qgis/application.yaml
-
-  # Public personal website (Jules Huls)
-  - juleshuls/application.yaml
 
   # Backup - Wave 25 (after storage)
-  - cluster-backup/application.yaml
-
-  # k3s Automated Upgrades (system-upgrade-controller) - Wave 26
-  - system-upgrade/application.yaml
-
-  # kured (safe node reboots) - Wave 26
-  - kured/application.yaml
 
   # Network
   - wireguard/application.yaml
@@ -90,7 +77,5 @@ resources:
   - openclaw/application.yaml
   - k8s-mcp-server/application.yaml
   - radar/application.yaml
-  - trawl/application.yaml
   - caretta/application.yaml
-  - hermes/application.yaml
   # - apps/plex.yaml
