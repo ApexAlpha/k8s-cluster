@@ -13,7 +13,7 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: DoesNotExist
   prepare:
-    image: rancher/k3s-upgrade@sha256:92acc1d7fab0219b0fbfe1e5b988e8cb995363e71ff213a78ead4494369ddd55
+    image: rancher/k3s-upgrade@sha256:7c07938593a64f13002b8c7c5148d2ebcfb5a4a1d520c21516e1d3cab76a2ef9
     args:
       - prepare
       - server-plan
@@ -21,7 +21,7 @@ spec:
   # Track the k3s stable release channel, alongside server-plan.
   channel: https://update.k3s.io/v1-release/channels/stable
   upgrade:
-    image: rancher/k3s-upgrade@sha256:92acc1d7fab0219b0fbfe1e5b988e8cb995363e71ff213a78ead4494369ddd55
+    image: rancher/k3s-upgrade@sha256:7c07938593a64f13002b8c7c5148d2ebcfb5a4a1d520c21516e1d3cab76a2ef9
   # Nightly window after backups (see server-plan).
   window:
     days:

@@ -19,7 +19,7 @@ spec:
   # ArgoCD applies; controller moves nodes inside the nightly window.
   channel: https://update.k3s.io/v1-release/channels/stable
   upgrade:
-    image: rancher/k3s-upgrade@sha256:92acc1d7fab0219b0fbfe1e5b988e8cb995363e71ff213a78ead4494369ddd55
+    image: rancher/k3s-upgrade@sha256:7c07938593a64f13002b8c7c5148d2ebcfb5a4a1d520c21516e1d3cab76a2ef9
   # Nightly window AFTER all backups (compressed: velero 01:00, CNPG base
   # 00:00, garage-to-hetzner 02:00 UTC → all done ~02:00 UTC) and before you
   # wake. 04:30-06:00 Amsterdam time (Europe/Amsterdam; UTC+2 in summer).
