@@ -60,7 +60,7 @@ spec:
               subPath: config.yml
       containers:
         - name: frigate
-          image: ghcr.io/blakeblackshear/frigate:stable@sha256:d4351369984d4a9e2a49ac59736f6490856a7ea11f7790040746d21496967010
+          image: ghcr.io/blakeblackshear/frigate:stable@sha256:9678a83a76e4730ac7d9ea7428370e32ae656d6b312aaad30d6c69f3fef14d35
           ports:
             - name: http
               containerPort: 8971
