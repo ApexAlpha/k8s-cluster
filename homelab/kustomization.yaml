@@ -65,6 +65,7 @@ resources:
   - home-assistant/application.yaml
   - wyoming/application.yaml
   - homepage/application.yaml
+  - hister/application.yaml
 
   # Backup - Wave 25 (after storage)
 

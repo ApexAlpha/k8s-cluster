@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: hister-db
+  namespace: hister
+spec:
+  encryptedData:
+    database: AgAE8et90QKkBWLQoS2WgE8lZry5iDPRbYQsc9YyvQIJChUOzU0sv/Nhrl5HX5LPqOoIue4ka8QGAEyne/et5YqUtiLpajgYDYVqPcQ5gFbCKheAdeXG371q/UD8f6WGS4OBRjNhwtwtUdJBQ5e/AEM4DE4zUxWm/W/OtK6DVMhenVdNL4CHEES8tlw1t1n5XjcNMC0tKwtV64+fJt2MPImlu+dm+WUGKBtTM/3Cpn9wWI00ut9XrdeCel5Gphnl02XcqmQfgCm+CQ55EqpQSzJfWj12S2nv74MuPUoiZrzjONuH1/CJ4zPO3pMtIGELUYt4JDexd9kuzDcQyGpUzPqLmcbjDyY2ZR0tqFZV3k/uCHIIk63wGrOm5/Hz+Jzo8XsqCUADT76b9t2LwrxUK4JZEbObTLuysOVlj3eh4pSSi8wApp8fOVR6IEfIJecf2bZqyFV9lvosE0fPTT6leTcDsmerhN52AlhuN4ZWdSA+XPIcssn1QdQSi9av8pQghWBjyBM34NQu8EpZ+ELpzXua8HEMbtcFegFMi/JePDy/v7xqs/hfbu/NESewH1O9G7qhq5q9UAf2KsZiiRaqZdgderdYDrDAQnD4ecQ5w+OHiQc8NAhLp0+pSVLBNxLSX+N13IEgSAn278tODeY3RT9dy+ZDjHsKlImnCbygghhDDe2YAc1fzA91p6Kb+jtL8nw8y5cQvR+AYnzUoJrBoAaPcspvqxu/qePFkxCutjJyHXUQVTLsAclCqMvM+EebThQfk12wFGOPjTiLPBXbUs7JCXAJ0hFPG9lkaOoKs4AF3tt4TzX1OdIcMveUVWpE9GUQmSVcxvauzwOTtHZrZkgHVz1TjDQ2+ncueLeRLrD5/KMIjczWMM6MZpiq7sj+7m4HhHCaPsJCqtejWlwkVkJyqjU1Zko=
+  template:
+    metadata:
+      name: hister-db
+      namespace: hister

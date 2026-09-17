@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hister
+  namespace: hister
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  labels:
+    app: hister
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hister
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: hister
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: hister
+          image: ghcr.io/asciimoo/hister:v0.18.0@sha256:55ca3b00da9d3245cc689a7f4455be5f4a3931c29d3450d6d1f46f8c931cce35
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - name: http
+              containerPort: 4433
+          env:
+            - name: HISTER__APP__DIRECTORY
+              value: /hister/data
+            - name: HISTER__APP__USER_HANDLING
+              value: "false"
+            - name: HISTER__SERVER__ADDRESS
+              value: 0.0.0.0:4433
+            - name: HISTER__SERVER__BASE_URL
+              value: https://hister.k8s.hu.ls
+            - name: HISTER__SERVER__DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: hister-db
+                  key: database
+          volumeMounts:
+            - name: data
+              mountPath: /hister/data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "2"
+              memory: 1Gi
+          startupProbe:
+            tcpSocket:
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: hister-data

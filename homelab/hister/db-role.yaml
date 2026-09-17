@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: hister-user
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  cluster:
+    name: postgres-shared
+  name: hister_user
+  login: true
+  passwordSecret:
+    name: hister-user-password
+  databaseRoleReclaimPolicy: retain
