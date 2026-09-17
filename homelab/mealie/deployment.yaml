@@ -32,7 +32,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: mealie
-          image: ghcr.io/mealie-recipes/mealie:latest@sha256:0b08ac3a9f0a65b8298bcb3a9fcb596f870f92fbefbecd8fffe075fa9b6d2d5d
+          image: ghcr.io/mealie-recipes/mealie:latest@sha256:a4d12ab3a009832cc94058345e22aea831c3e992e94783fefc1cd5a08544fe0c
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
