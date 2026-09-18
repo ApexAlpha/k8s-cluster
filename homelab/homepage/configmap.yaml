@@ -76,6 +76,10 @@ data:
             icon: searxng
             href: https://search.k8s.hu.ls
             description: Private Search Engine
+        - Hister:
+            icon: mdi-magnify
+            href: https://hister.k8s.hu.ls
+            description: Personal Search Engine
 
     - Monitoring:
         - Grafana:
