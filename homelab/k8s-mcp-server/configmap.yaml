@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-mcp-server-config
+  namespace: mcp
+data:
+  config.toml: |
+    port = "8080"
+    cluster_provider_strategy = "in-cluster"

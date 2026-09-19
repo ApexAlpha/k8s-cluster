@@ -18,18 +18,25 @@ spec:
       imagePullSecrets:
         - name: ghcr-pull-secret
       serviceAccountName: k8s-mcp-reader
+      volumes:
+      - name: config
+        configMap:
+          name: k8s-mcp-server-config
       containers:
       - name: server
         image: ghcr.io/containers/kubernetes-mcp-server:latest@sha256:71d2cf69429874fc972388284e337fd892eabdbaea632ca6dcab3b3bdeb2fec4
         imagePullPolicy: IfNotPresent
         args:
-        - --port
-        - "8080"
-        - --cluster-provider
-        - in-cluster
+        - --config
+        - /etc/kubernetes-mcp-server/config.toml
         ports:
         - containerPort: 8080
           name: http
+        volumeMounts:
+        - name: config
+          mountPath: /etc/kubernetes-mcp-server/config.toml
+          subPath: config.toml
+          readOnly: true
         resources:
           requests:
             cpu: 50m
