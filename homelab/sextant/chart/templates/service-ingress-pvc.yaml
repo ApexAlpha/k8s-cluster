@@ -30,7 +30,6 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
   {{- if .Values.certManager.enabled }}
     cert-manager.io/{{ if eq .Values.certManager.issuerKind "ClusterIssuer" }}cluster-issuer{{ else }}issuer{{ end }}: {{ .Values.certManager.issuerName }}
   {{- end }}
