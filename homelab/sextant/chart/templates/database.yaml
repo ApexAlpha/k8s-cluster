@@ -1,0 +1,14 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sextant
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  cluster:
+    name: postgres-shared
+  name: sextant
+  owner: sextant_user
+  ensure: present
+  databaseReclaimPolicy: retain
