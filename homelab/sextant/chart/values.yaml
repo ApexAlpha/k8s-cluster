@@ -1,0 +1,356 @@
+# Sextant chart defaults. Secrets never live in values: the release reads
+# an existing Secret (secretName) with SEXTANT_* keys.
+image:
+  repository: forgejo.bb-open.com/bb-open/sextant
+  # Empty by default: the deployment template falls back to
+  # `.Chart.AppVersion` (`| default .Chart.AppVersion`), so a fresh install
+  # with no override tracks the chart it came from instead of whatever tag
+  # was last hand-pinned here. A running release may still be moved onto a
+  # specific tag out of band (e.g. a live `kubectl patch` on the Deployment's
+  # image field, ADR-documented) without that becoming the new checked-in
+  # default and going stale again.
+  tag: ""
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+replicaCount: 1
+
+# Existing Secret with SEXTANT_API_TOKEN, SEXTANT_CHECKIN_TOKEN,
+# SEXTANT_SESSION_KEY, SEXTANT_OIDC_CLIENT_SECRET; optionally
+# SEXTANT_LDAP_BIND_PASSWORD, and SEXTANT_PG_DSN when cnpg.enabled=false
+# (external Postgres).
+#
+# SEXTANT_SECRET_KEY (also optional) seals the few secrets Sextant holds at
+# rest, and that includes the LUKS RECOVERY KEYS escrowed from devices - the
+# break-glass path for a locked laptop. ROTATING IT: put the new key FIRST and
+# KEEP the old one, comma-separated:
+#     SEXTANT_SECRET_KEY=<new-base64-32B>,<old-base64-32B>
+# New values seal under the new key; everything already stored keeps opening
+# under the old one, because each sealed value names the key that sealed it.
+# Removing a key makes every value sealed under it unreadable, so keep it until
+# nothing needs it. If you do lose it, the error says which key id is missing
+# rather than pretending the data is corrupt.
+secretName: sextant-v2
+
+write: true
+# Validation gate. remote (recommended for any real deploy) delegates to the
+# gate-runner; eval runs in-pod nix (the console image ships none, so eval is
+# effectively dev-only); none commits WITHOUT validation. A write-enabled
+# console with gateMode: none refuses to start unless allowUnvalidated: true
+# is set explicitly - a bad fleet.json otherwise reaches devices.
+gateMode: none # none | eval | remote
+# allowUnvalidated acknowledges a deliberate no-gate write deploy (a demo /
+# dev cell). Never set this on a cell that manages real devices.
+allowUnvalidated: false
+
+# gate-runner: nix-capable validation gate for gateMode=remote. The console
+# image ships no nix; when enabled the runner evaluates the overlay generator
+# out of process. Deploy it (enabled) and verify /healthz before flipping the
+# console to gateMode=remote (remote is fail-closed: writes reject if the
+# runner is down).
+gateRunner:
+  enabled: false
+  image:
+    repository: forgejo.bb-open.com/bb-open/sextant-gate
+    # Empty by default: falls back to .Chart.AppVersion, same as image.tag
+    # above.
+    tag: ""
+    pullPolicy: IfNotPresent
+  hostVariants: "" # comma-separated suffixes the generator emits, e.g. ",-sb"
+  # Max host toplevels forced per nix process. The gate evaluates a large host
+  # set in batches of this size so peak memory is bounded by the batch, not the
+  # fleet: size it to the runner's memory limit below (a batch that does not fit
+  # OOM-fails its own change instead of the node). Empty = the binary default.
+  chunkSize: ""
+  # Concurrent eval batches. Wall-clock for a big validation divides by it;
+  # peak memory multiplies by it: workers x per-batch memory must fit the
+  # resources.limits below. Empty = 1 (sequential).
+  evalWorkers: ""
+  # Boehm's initial heap, in bytes, as GC_INITIAL_HEAP_SIZE. Left unset, nix
+  # starts small and grows, spending a large share of a system evaluation
+  # collecting. Measured in the pod on 2026-08-03, one host:
+  #
+  #   unset    cpuTime 8.13s  gc 3.14s  21 cycles   peak anon 1477 MiB
+  #   2.0 GB   cpuTime 5.85s  gc 1.00s   1 cycle    peak anon 1778 MiB
+  #   3.5 GB   cpuTime 5.78s  gc 0.98s   1 cycle
+  #
+  # So ~28% off the wall clock for ~300 MiB, and nothing beyond 2 GB - past
+  # that it only reserves memory. This buys TIME, not memory: it raises the
+  # floor the process sits on, so re-measure the peak against resources.limits
+  # whenever either changes. Empty = leave it to the collector.
+  gcInitialHeapSize: ""
+  # nix-eval-jobs: the evaluator that makes memory a PARAMETER instead of an
+  # outcome. Its ceiling is per worker, so a host that outgrows its budget
+  # fails that host rather than the runner - and the runner going down stops
+  # every path that commits configuration, which is how a five-device fleet
+  # froze the control plane for an hour on 2026-08-01.
+  #
+  # It is also the faster arrangement, and our chunker was the slow one. Five
+  # hosts, same overlay, same machine: one process for all five 35.6s,
+  # chunkSize 1 in five processes 47.6s, nix-eval-jobs with four workers 24.4s.
+  # Every chunk re-pays the fixed cost of loading nixpkgs and the module system.
+  #
+  # Empty falls back to the in-process chunker, so a console keeps working
+  # against a gate image built before the binary was added. Set it and
+  # chunkSize stops being consulted.
+  evalJobs: "" # e.g. "nix-eval-jobs"
+  # Per-worker ceiling in MB. evalWorkers x this must fit resources.limits
+  # below; unlike the chunker, exceeding it costs one host, not the service.
+  evalJobsMaxMemoryMB: ""
+  # Host toplevels per nix process on the RELEASE build (build-before-promote).
+  # The eval gate has been batched since it OOM-killed the runner; this path
+  # was not, so a ring's build loaded every member's toplevel into one
+  # evaluator regardless of size. Empty keeps one invocation - today's
+  # behaviour - so batching a release is a deliberate act.
+  releaseChunkSize: ""
+  # Release cache (build-before-promote): the runner realises a ring's release
+  # and serves it - signed - under /cache, so devices substitute instead of
+  # compiling. Enabled by naming the Secret that holds the nix signing secret
+  # key (key: "key"; generate with `nix key generate-secret --key-name <org>-1`).
+  # The console enables the build step separately via releaseCache below.
+  cache:
+    keySecret: ""
+    # Optional dedicated host for the cache (Ingress + TLS via certManager);
+    # empty serves /cache only inside the cluster.
+    host: ""
+    # Naming a host PUBLISHES the cache. Set CACHE_TOKEN in the app secret to
+    # require a credential, because the tempting reasoning - "every path is
+    # signed, so exposing it is safe" - conflates two different things. A
+    # signature stops somebody serving you a tampered closure; it does nothing
+    # about them reading yours, and what they read is which versions of what
+    # your fleet runs (threat model, control 8).
+    #
+    # Devices authenticate from a netrc file: nix speaks Basic auth and nothing
+    # else, the token is the password, and the username is ignored.
+    #
+    # ORDER MATTERS, and requireAuth is the switch that enforces it. Roll the
+    # netrc out to every device FIRST (dawo.cacheAuth in the overlay), confirm
+    # they still substitute, and only then set this true. A device that cannot
+    # authenticate does not fail loudly - it falls back to building the closure
+    # itself, which is hours per machine and looks like a slow rollout rather
+    # than an access problem.
+    #
+    # Off by default for exactly that reason: flipping it is a decision about
+    # the whole fleet, not a side effect of upgrading the chart.
+    requireAuth: false
+    # Node-disk cap for the ephemeral cache volume (emptyDir). The cache is
+    # derived state: a pod restart clears it and builds republish on demand.
+    sizeLimit: 20Gi
+    # persistent: keep the release cache across pod restarts on a PVC.
+    # Rebuilding a full system image takes hours, and every console release
+    # restarts the gate pod - for a single-node/on-prem install a PVC is the
+    # difference between an instant wave and a two-hour await-build. Central
+    # durable storage (S3) remains the enterprise tier.
+    persistent: false
+    storageClass: ""
+  # The nix store is baked into the image (chowned to the runtime uid); a
+  # volume over /nix would hide it, so only the overlay clone is persisted.
+  # First eval per pod re-fetches nixpkgs to the ephemeral layer.
+  persistence:
+    enabled: true
+    storageClass: ""
+    dataSize: 2Gi
+  resources:
+    requests: { cpu: 100m, memory: 512Mi }
+    limits: { cpu: "2", memory: 4Gi }
+
+# Git remote as the source of truth (M1): when url is set, the init
+# container clones it instead of self-seeding, and the server runs with
+# --git-remote=origin (sync loop + HA push). netrcSecret must contain a
+# `netrc` key with credentials for the remote host.
+gitRemote:
+  url: ""
+  branch: main
+  netrcSecret: ""
+logFormat: json
+
+oidc:
+  issuer: ""
+  clientId: ""
+  groupsClaim: ""
+  scopes: ""
+editorGroups: ""
+ownerGroups: ""
+viewerGroups: ""
+
+# Organisation presentation defaults; per-user preferences override.
+orgName: "" # the organisation's display name (the scope tree's root); empty = "Organisation"
+# Build-before-promote (requires gateMode remote + gateRunner.cache configured):
+# a ring's release is built into the runner's signed cache before its branch
+# moves. Devices must list the cache as a substituter (overlay config).
+releaseCache: false
+defaultLocale: "" # en|nl; empty = en
+defaultTimezone: "" # IANA name; empty = UTC
+upstreamRepo: "" # core image repo the upstream watcher polls; empty disables it
+
+# Optional LDAP directory browse (group pickers). The app runs fully
+# without it: empty url leaves the surface off and access bindings stay
+# free-text. Bind password goes in the secret as SEXTANT_LDAP_BIND_PASSWORD.
+ldap:
+  url: ""
+  bindDn: ""
+  baseDn: ""
+  groupFilter: ""
+  nameAttr: ""
+  # Secret holding a `ca.crt` that signs the directory's certificate, for an
+  # ldaps:// url whose issuer is a private CA. Mounted read-only and added to
+  # SSL_CERT_DIR alongside the system store, so public trust (forge, OIDC,
+  # SMTP) is unaffected and verification stays strict - there is deliberately
+  # no skip-verify anywhere in the LDAP client (ADR 0021).
+  caSecret: ""
+
+# CloudNativePG single-instance cluster for the observed plane. The
+# operator must be installed cluster-wide. DSN comes from the generated
+# <name>-app secret.
+# Network policy engine. The policies this chart ships were written against
+# Cilium, because that is what the platform it grew up on runs. On any other
+# CNI a CiliumNetworkPolicy is an unknown kind and the install fails outright,
+# which is a poor first impression for a chart somebody found in a catalogue.
+#
+#   cilium      the CiliumNetworkPolicy set (default, unchanged behaviour)
+#   kubernetes  the same intent as plain NetworkPolicy, portable to any CNI
+#               that implements them
+#   none        render none, for a cluster that governs egress elsewhere
+#
+# "none" is a real answer rather than a cop-out: a platform that already puts
+# a default-deny on the namespace does not want a second author of the same
+# rule. It is not the default, because a chart that quietly ships no egress
+# policy at all is how a console ends up talking to the whole internet.
+networkPolicy:
+  engine: cilium
+
+cnpg:
+  enabled: true
+  name: sextant-pg
+  instances: 1
+  # WHY NOT 2Gi. It was, and it is the fuse that took production down on
+  # 2026-08-13. With archiving on, Postgres switches a 16 MiB WAL segment every
+  # archive_timeout whether or not anything happened - about 4.6 GiB a day at
+  # five minutes - and wal_keep_size holds 512 MB on top. So the moment
+  # archiving fails, a 2Gi volume has roughly ten hours before CNPG stops the
+  # instance to protect itself. Those ten hours ran out overnight and the
+  # console was down before anyone was awake.
+  #
+  # 8Gi is not a calculation, it is a floor: enough that a failed archive is a
+  # problem you find in the morning rather than an outage you wake up to.
+  storage: 8Gi
+  storageClass: longhorn
+  # A deliberate small cell (a demo, a laptop cluster) sets this to render a
+  # volume under the floor with backups on. Named rather than a number so the
+  # decision is visible in the values file, like allowUnvalidated.
+  acknowledgeSmallVolume: false
+  # Off-cluster backup of the observed plane. OFF by default because it needs
+  # an object store this chart cannot assume, and a default pointing nowhere
+  # would fail every install.
+  #
+  # WHAT IS IN THIS DATABASE, and why the default being off is a decision
+  # somebody has to make rather than inherit: device inventory, check-ins and
+  # image jobs are all rebuildable from the fleet document and the devices
+  # themselves. The LUKS recovery-key escrow is NOT. A device erases its own
+  # copy once the console acknowledges the key, so this database holds the
+  # only copy of the material that gets a user back into an encrypted disk.
+  # Losing this volume without a backup means every encrypted device in the
+  # fleet is unrecoverable.
+  #
+  # Enabling renders a Cluster with barmanObjectStore AND a ScheduledBackup.
+  # Both or neither, deliberately: see the comment in the template.
+  backup:
+    enabled: false
+    # s3:// prefix, e.g. s3://bucket/sextant/v1/
+    destinationPath: ""
+    # Omit for AWS; set for any S3-compatible endpoint.
+    endpointURL: ""
+    # Secret holding the two keys below. Must exist in this namespace.
+    secretName: ""
+    accessKeyIdKey: ACCESS_KEY_ID
+    secretAccessKeyKey: SECRET_ACCESS_KEY
+    # SIX fields (sec min hour dom month dow). Default 02:45 UTC, chosen to
+    # sit away from the other backup windows in the platform rather than
+    # adding to a burst.
+    schedule: "0 45 2 * * *"
+    retention: 30d
+
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: longhorn
+
+ingress:
+  enabled: true
+  className: cilium
+  host: console.bb-open.com
+  tls: true
+certManager:
+  enabled: true
+  issuerName: letsencrypt-dns01
+  issuerKind: ClusterIssuer
+
+resources:
+  requests: { cpu: 50m, memory: 128Mi }
+  limits: { cpu: "1", memory: 512Mi }
+
+# The simulated fleet (demo instances only): fleetsim as a sidecar deployment
+# against this release's own console. Keep off anywhere real devices report.
+# Passwordless demo. The console then has no identity provider at all: every
+# request arrives as a synthetic owner session, which is only defensible
+# because the chart also pins the listen address to loopback. Nothing on the
+# network can reach it - not the Service, not an Ingress - so the way in is
+# `kubectl port-forward` and the person doing that already has cluster access.
+#
+# This is for a demo instance: invented devices, its own repository, its own
+# database, nothing that outlives the room it is shown in. The guards below
+# refuse the combinations that would quietly make it public.
+devAuth:
+  enabled: false
+
+simulator:
+  enabled: false
+  interval: 30s
+  # fleetsim lives in the TOOLS image, not the console image: it can invent
+  # device state from nothing but the shared check-in token, so the control
+  # plane does not carry it. Empty values default to the console repository
+  # with a "-tools" suffix on the tag, which is what
+  # `podman build --target tools -t <repo>:<tag>-tools .` produces.
+  image:
+    repository: ""
+    tag: ""
+  # Run the simulator inside the console pod instead of beside it. Required
+  # with devAuth: a console bound to loopback cannot be reached through its
+  # Service, so a separate deployment would post into a void and the demo
+  # would show a fleet that never checks in.
+  sidecar: false
+  # An imaging station on the same simulated fleet. Machines appear on its
+  # PXE network by themselves, an operator enrols one from the console, and
+  # the station walks the install and the firmware ceremonies.
+  #
+  # It is here because imaging is the one part of this product a demo cannot
+  # show from a database. Everything else can be seeded; a laptop arriving on
+  # a network cannot. A tag turns it on; empty leaves the fleet simulation
+  # exactly as it was.
+  station:
+    tag: ""
+    # How many machines wait on the network. One finishes, a fresh one takes
+    # its place, so a demo never runs out and never grows unboundedly.
+    pool: 3
+    # Some jobs fail once. A failed install and a retry is demo material:
+    # it is the question every buyer asks and the screen most products hide.
+    failPercent: 10
+    # Walk sb-pending and sb-enrolled before sealing to the TPM. Off shows the
+    # shorter road hardware without Secure Boot takes, which is also real.
+    secureBoot: true
+
+# Metrics. separatePort moves /metrics onto its own container port, off the
+# listener the ingress publishes. Leave it on: the endpoint discloses the exact
+# build, the route inventory and the per-route traffic volume, and a public
+# console would otherwise serve all of that to anyone who asks. It carries no
+# fleet data, but a version number is the first thing somebody matches against
+# a vulnerability list.
+#
+# Nothing needs the public path. Prometheus scrapes inside the cluster, and the
+# console's own /status page reads the build identity server-side.
+#
+# Turning it off puts /metrics back on the main listener, which is right for a
+# local run with no ingress in front and no second port to scrape.
+metrics:
+  separatePort: true
+  port: 9090

@@ -1,0 +1,77 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sextant
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "25"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ApexAlpha/k8s-cluster.git
+    targetRevision: HEAD
+    path: homelab/sextant/chart
+    helm:
+      releaseName: sextant
+      valuesObject:
+        image:
+          repository: forgejo.bb-open.com/bb-open/sextant
+          tag: "0.92.0"
+          pullPolicy: IfNotPresent
+        imagePullSecrets: []
+        replicaCount: 1
+        secretName: sextant
+        write: false
+        gateMode: none
+        allowUnvalidated: false
+        oidc:
+          issuer: https://auth.k8s.hu.ls/application/o/sextant/
+          clientId: sextant
+          groupsClaim: groups
+          scopes: openid,profile,email
+        ownerGroups: Sextant Owners
+        editorGroups: ""
+        viewerGroups: ""
+        orgName: "Sextant test fleet"
+        defaultLocale: nl
+        defaultTimezone: Europe/Amsterdam
+        networkPolicy:
+          engine: none
+        cnpg:
+          enabled: false
+        persistence:
+          enabled: true
+          size: 1Gi
+          storageClass: local-path
+        ingress:
+          enabled: true
+          className: traefik
+          host: sextant.k8s.hu.ls
+          tls: true
+        certManager:
+          enabled: true
+          issuerName: letsencrypt-prod
+          issuerKind: ClusterIssuer
+        devAuth:
+          enabled: false
+        simulator:
+          enabled: false
+        metrics:
+          separatePort: true
+          port: 9090
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sextant
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

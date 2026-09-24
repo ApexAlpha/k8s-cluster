@@ -66,6 +66,7 @@ resources:
   - wyoming/application.yaml
   - homepage/application.yaml
   - hister/application.yaml
+  - sextant/application.yaml
 
   # Backup - Wave 25 (after storage)
 

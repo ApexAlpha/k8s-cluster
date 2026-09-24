@@ -1,0 +1,242 @@
+{{- if .Values.gateRunner.enabled }}
+# gate-runner: the nix-capable validation gate the console delegates to when
+# gateMode=remote. It keeps its own warm overlay clone and a persistent /nix
+# store so evaluations are fast after the first. Never exposed via ingress -
+# only the console talks to it (see the CiliumNetworkPolicy).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-gate
+  labels: { app: {{ .Release.Name }}-gate }
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # single overlay working tree
+  selector:
+    matchLabels: { app: {{ .Release.Name }}-gate }
+  template:
+    metadata:
+      labels: { app: {{ .Release.Name }}-gate }
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: { type: RuntimeDefault }
+      {{- if .Values.gitRemote.netrcSecret }}
+      initContainers:
+        # Drop the overlay remote's netrc into HOME so git (and nix, for the
+        # flake input) can authenticate before the runner clones on boot.
+        - name: seed-netrc
+          image: "{{ .Values.gateRunner.image.repository }}:{{ .Values.gateRunner.image.tag | default .Chart.AppVersion }}"
+          command: ["/bin/sh", "-c"]
+          args:
+            - install -m 0600 /netrc-secret/netrc /data/.netrc
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: [ALL] }
+          volumeMounts:
+            - { name: data, mountPath: /data }
+            - { name: netrc, mountPath: /netrc-secret, readOnly: true }
+      {{- end }}
+      containers:
+        - name: gate-runner
+          image: "{{ .Values.gateRunner.image.repository }}:{{ .Values.gateRunner.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.gateRunner.image.pullPolicy }}
+          args:
+            - --addr=0.0.0.0:8090
+            - --workdir=/data/overlay
+            - --remote={{ .Values.gitRemote.url }}
+            - --branch={{ .Values.gitRemote.branch }}
+            - --log-format={{ .Values.logFormat }}
+            {{- with .Values.gateRunner.hostVariants }}
+            - --host-variants={{ . }}
+            {{- end }}
+            {{- with .Values.gateRunner.chunkSize }}
+            - --chunk-size={{ . }}
+            {{- end }}
+            {{- with .Values.gateRunner.evalWorkers }}
+            - --eval-workers={{ . }}
+            {{- end }}
+            {{- if .Values.gateRunner.evalJobs }}
+            - --eval-jobs={{ .Values.gateRunner.evalJobs }}
+            {{- with .Values.gateRunner.evalJobsMaxMemoryMB }}
+            - --eval-jobs-max-memory-mb={{ . }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.gateRunner.cache.keySecret }}
+            {{- with .Values.gateRunner.releaseChunkSize }}
+            - --release-chunk-size={{ . }}
+            {{- end }}
+            - --cache-dir=/cache
+            - --cache-key=/cache-key/key
+            {{- end }}
+          env:
+            # git and nix read /data/.netrc for the private overlay remote.
+            - { name: HOME, value: /data }
+            {{- with .Values.gateRunner.gcInitialHeapSize }}
+            # Boehm starts small and grows otherwise, which costs a measured
+            # 28% of a system evaluation in collection. See values.yaml.
+            - { name: GC_INITIAL_HEAP_SIZE, value: {{ . | quote }} }
+            {{- end }}
+            # Bearer token the console must present to /validate. Optional so a
+            # loopback/dev runner may go without; when the key is set in the
+            # app secret, a networked runner requires it (fail-closed) and the
+            # console picks up the same value via envFrom the same secret.
+            - name: GATE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: GATE_TOKEN
+                  optional: true
+            # Guards the read-only cache. Optional and separate from
+            # GATE_TOKEN: every device needs this one and no device needs the
+            # gate's, so one secret for both would hand a build trigger to
+            # every laptop. Absent leaves the cache open, which is what a
+            # cluster-internal runner wants and what a PUBLIC cache host does
+            # not - a path signature proves integrity, never confidentiality.
+            {{- if .Values.gateRunner.cache.requireAuth }}
+            # Where to verify a substituting device's credential. Setting this
+            # CLOSES the cache immediately, so it is behind an explicit flag:
+            # devices must already carry the netrc, and a device that cannot
+            # authenticate does not fail loudly - it builds its own closure,
+            # hours per machine, looking like a slow rollout.
+            - name: SEXTANT_CONSOLE_URL
+              value: "http://{{ .Release.Name }}:80"
+            {{- end }}
+            - name: CACHE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: CACHE_TOKEN
+                  optional: true
+          ports:
+            - { containerPort: 8090, name: http }
+          startupProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 5
+            failureThreshold: 60 # first clone + nixpkgs warm can be slow
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources: {{- toYaml .Values.gateRunner.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: [ALL] }
+          volumeMounts:
+            - { name: data, mountPath: /data }
+            {{- if .Values.gateRunner.cache.keySecret }}
+            - { name: cache-key, mountPath: /cache-key, readOnly: true }
+            - { name: cache, mountPath: /cache }
+            {{- end }}
+      volumes:
+        {{- if .Values.gitRemote.netrcSecret }}
+        - name: netrc
+          secret: { secretName: {{ .Values.gitRemote.netrcSecret }} }
+        {{- end }}
+        {{- if .Values.gateRunner.cache.keySecret }}
+        # The nix signing secret key for published releases. nix wants a file
+        # path, so it mounts as a volume, never an env var.
+        - name: cache-key
+          secret:
+            secretName: {{ .Values.gateRunner.cache.keySecret }}
+            items: [{ key: key, path: key }]
+        # The cache is derived state - ephemeral by default (a pod restart
+        # clears it, EnsureBuilt republishes on demand). cache.persistent
+        # keeps it on a PVC instead: a full system image takes hours to
+        # rebuild and every console release restarts this pod. Durable
+        # central storage (S3) is the enterprise tier.
+        - name: cache
+          {{- if .Values.gateRunner.cache.persistent }}
+          persistentVolumeClaim: { claimName: {{ .Release.Name }}-gate-cache }
+          {{- else }}
+          emptyDir:
+            sizeLimit: {{ .Values.gateRunner.cache.sizeLimit }}
+          {{- end }}
+        {{- end }}
+        - name: data
+          {{- if .Values.gateRunner.persistence.enabled }}
+          persistentVolumeClaim: { claimName: {{ .Release.Name }}-gate-data }
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-gate
+  labels: { app: {{ .Release.Name }}-gate }
+spec:
+  selector: { app: {{ .Release.Name }}-gate }
+  ports:
+    - { port: 8090, targetPort: http, name: http }
+{{- if .Values.gateRunner.persistence.enabled }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-gate-data
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: { requests: { storage: {{ .Values.gateRunner.persistence.dataSize }} } }
+  {{- with .Values.gateRunner.persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+{{- end }}
+{{- if and .Values.gateRunner.cache.keySecret .Values.gateRunner.cache.host }}
+---
+# Read endpoint for the signed release cache: devices substitute over
+# plain HTTPS GET; integrity comes from the path signatures (devices pin the
+# org public key), not transport secrecy. Only /cache is exposed - /validate
+# and /build stay cluster-internal (and bearer-guarded regardless).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-cache
+  {{- if .Values.certManager.enabled }}
+  annotations:
+    cert-manager.io/{{ if eq .Values.certManager.issuerKind "ClusterIssuer" }}cluster-issuer{{ else }}issuer{{ end }}: {{ .Values.certManager.issuerName }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.gateRunner.cache.host }}
+      http:
+        paths:
+          - path: /cache
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-gate
+                port: { name: http }
+  {{- if .Values.ingress.tls }}
+  tls:
+    - hosts: [{{ .Values.gateRunner.cache.host }}]
+      secretName: {{ .Release.Name }}-cache-tls
+  {{- end }}
+{{- end }}
+{{- end }}
+
+{{- if and .Values.gateRunner.enabled .Values.gateRunner.cache.keySecret .Values.gateRunner.cache.persistent }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-gate-cache
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes: [ReadWriteOnce] # strategy Recreate: one gate pod at a time
+  {{- with .Values.gateRunner.cache.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.gateRunner.cache.sizeLimit }}
+{{- end }}
