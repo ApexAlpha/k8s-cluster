@@ -17,6 +17,8 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   labels: { app: {{ .Release.Name }} }
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   replicas: {{ .Values.replicaCount }}
   {{- if gt (int .Values.replicaCount) 1 }}
