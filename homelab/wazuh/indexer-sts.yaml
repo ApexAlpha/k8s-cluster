@@ -16,6 +16,9 @@ metadata:
   namespace: wazuh
 spec:
   replicas: 1
+  # Explicit even though it is the API default: ArgoCD compares it and the
+  # value cannot be changed later (the field is immutable on StatefulSets).
+  podManagementPolicy: OrderedReady
   selector:
     matchLabels:
       app: wazuh-indexer

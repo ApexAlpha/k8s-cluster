@@ -67,9 +67,6 @@ patches:
           whenDeleted: Retain
           whenScaled: Retain
       - op: add
-        path: /spec/podManagementPolicy
-        value: OrderedReady
-      - op: add
         path: /spec/revisionHistoryLimit
         value: 10
       - op: add
