@@ -46,3 +46,36 @@ resources:
   - sealed/dashboard-certs.yaml
   - sealed/manager-certs.yaml
   - sealed/wazuh-traefik-ca.yaml
+
+# Pin the StatefulSet fields the API server defaults on every create/update.
+#
+# ArgoCD prunes server-side defaults using the OpenAPI schema, but
+# persistentVolumeClaimRetentionPolicy has no schema default (the API sets
+# Retain/Retain in a defaulting function), so it can never be pruned and the
+# three StatefulSets showed as permanently OutOfSync. Declaring them makes the
+# live object match the manifest field for field. Retain is also the intent
+# here: pruning pods must not delete the indexer's and managers' data volumes.
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: StatefulSet
+    patch: |-
+      - op: add
+        path: /spec/persistentVolumeClaimRetentionPolicy
+        value:
+          whenDeleted: Retain
+          whenScaled: Retain
+      - op: add
+        path: /spec/podManagementPolicy
+        value: OrderedReady
+      - op: add
+        path: /spec/revisionHistoryLimit
+        value: 10
+      - op: add
+        path: /spec/updateStrategy
+        value:
+          type: RollingUpdate
+          rollingUpdate:
+            partition: 0
+

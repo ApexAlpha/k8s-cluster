@@ -128,7 +128,9 @@ spec:
             - containerPort: 9300
               name: indexer-nodes
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: wazuh-indexer
       spec:
         accessModes:
