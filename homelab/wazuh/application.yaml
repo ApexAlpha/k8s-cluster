@@ -16,6 +16,14 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: wazuh
+  # Rotating a SealedSecret does not roll the pods (the env comes from the
+  # Secret at pod start), so an operator restarts the StatefulSets by hand.
+  # Without this, that restart's annotation shows up as permanent drift.
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      jsonPointers:
+        - /spec/template/metadata/annotations/kubectl.kubernetes.io~1restartedAt
   syncPolicy:
     automated:
       prune: true
