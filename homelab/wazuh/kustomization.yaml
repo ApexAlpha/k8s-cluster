@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: wazuh
+
+configMapGenerator:
+  - name: indexer-conf
+    files:
+      - conf/opensearch.yml
+      - conf/internal_users.yml
+  - name: wazuh-conf
+    files:
+      - conf/master.conf
+      - conf/worker.conf
+  - name: dashboard-conf
+    files:
+      - conf/opensearch_dashboards.yml
+
+resources:
+  - namespace.yaml
+  - servers-transport.yaml
+  - ingressroute.yaml
+
+  # indexer (wave 1) -> manager master (wave 2) -> worker (wave 3) -> dashboard (wave 4)
+  - indexer-svc.yaml
+  - indexer-api-svc.yaml
+  - indexer-sts.yaml
+
+  - wazuh-cluster-svc.yaml
+  - wazuh-master-svc.yaml
+  - wazuh-master-sts.yaml
+
+  - wazuh-workers-svc.yaml
+  - wazuh-worker-sts.yaml
+
+  - dashboard-svc.yaml
+  - dashboard-deploy.yaml
+
+  # credentials + certificate bundles (SealedSecrets; plaintext never committed)
+  - sealed/indexer-cred.yaml
+  - sealed/dashboard-cred.yaml
+  - sealed/wazuh-api-cred.yaml
+  - sealed/wazuh-authd-pass.yaml
+  - sealed/wazuh-cluster-key.yaml
+  - sealed/indexer-certs.yaml
+  - sealed/dashboard-certs.yaml
+  - sealed/manager-certs.yaml
+  - sealed/wazuh-traefik-ca.yaml

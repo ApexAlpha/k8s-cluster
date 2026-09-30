@@ -1,0 +1,13 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: wazuh-cluster-key
+  namespace: wazuh
+spec:
+  encryptedData:
+    key: AgAiP8S6KfTBFdoVE1RHj876tNERfE4F6vpaWwEhQuQFcmYR/UFf8quf8c/FhoD7a/m+mWevG6n6e+St1J5eXvLl+v41y00tmRz4d1bdV0xZoodYf7tjuS5JHyTzT5L4uJDIWS9IoEsTSyGOOLQFMhlPpD6oPLT8Iuvs4fWQeF9fcq/JpYpoJekZ1atZpXahFSrYGLDwBLoqXAX2olyUQRl+H6eGYaFIL+0Zj2pFJiVOHqT/j5X/IWCTQDRateM75VNG4Z+lQ8TZVeRzBTLXJ4WDnHFrWZboUunlIUqjaId7zRwTJn5+hO8WH3Monto8ewdMVX4fR6eVskp1YT8sFa/paAjsLRHZO3DZpPdkuVAunkIkxSFheNJxOUh/nqL8dPRo1Ezzf1VBM+4q2qI0Q3umyy7gU9MT3mLDk9yEevlS7GByDXwEtFVMh/gsUtFNoxFtekSgorpvXi1YHpYlYuKvel5o/6dFQUPpUBvTBZ6k8MYOhG+UcRAoBn00/0zu6o7LIQxAnlNq2fQvMfhGHB6NAXsnWll/NxTWuNOV/W2/fdseOpGAt2O7VcZK9taeqyKpy/kNbWVZULK0hDM/PmNr+k/qkMDSWL31kLAd1tYnhvopPil7loZhTJ6TQVTUns87vQFocwP7tAbhJvUv+SGkQSk9OqAigtlnzcAlqOzp1KogSaGjbEpB4Yts53Qm+P2XAjCtTOAmEbvhSYTbYOdEJ3NsVOTmJN27t4/WT2FiiA==
+  template:
+    metadata:
+      name: wazuh-cluster-key
+      namespace: wazuh

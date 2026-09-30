@@ -1,0 +1,50 @@
+---
+# This is the internal user database (Wazuh indexer / OpenSearch security).
+# Hashes generated with htpasswd -bnBC 12 (same as Wazuh's plugin/tools/hash.sh).
+# Plaintext passwords live only in the SealedSecret indexer-cred / dashboard-cred.
+
+_meta:
+  type: "internalusers"
+  config_version: 2
+
+admin:
+  hash: "$2y$12$mdVb2IFevlxIog1pLjj0WOc4YUWsOu8uAWqILtcy776H0nfVPtR2K"
+  reserved: true
+  backend_roles:
+  - "admin"
+  description: "Admin user (filebeat + dashboard -> indexer)"
+
+kibanaserver:
+  hash: "$2y$12$WN9rfbXeYiNOT.ca0QTvJ.q11x7gZ.Fc9jgU8UjiJS/FgabrARszy"
+  reserved: true
+  description: "Dashboard server user"
+
+# Upstream demo accounts, retained but with unknown random passwords.
+kibanaro:
+  hash: "$2y$12$kuY5u8q5R67nRssqP1Bao.AzNNPN.SNw7s2.3ZGFo9QCPWA5zSawi"
+  reserved: false
+  backend_roles:
+  - "kibanauser"
+  - "readall"
+  description: "Demo user (password not recorded; effectively disabled)"
+
+logstash:
+  hash: "$2y$12$uGdsPSAoRdXHHdRfAaEW/.3Q7mW7MUUVWwwslVqVqYTrEb1D34dqS"
+  reserved: false
+  backend_roles:
+  - "logstash"
+  description: "Demo user (password not recorded; effectively disabled)"
+
+readall:
+  hash: "$2y$12$WpKpwiXiIfAiB6Bzmbxvf.Eo1pcTf8AZ.O5UwXSVBiXnFViwi/9PC"
+  reserved: false
+  backend_roles:
+  - "readall"
+  description: "Demo user (password not recorded; effectively disabled)"
+
+snapshotrestore:
+  hash: "$2y$12$fFDASHFchmC35MS2hqMOk.I..Q80ZtFMDT8WOSt9nZd4kjtPZI2SW"
+  reserved: false
+  backend_roles:
+  - "snapshotrestore"
+  description: "Demo user (password not recorded; effectively disabled)"

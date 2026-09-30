@@ -1,0 +1,14 @@
+# Traefik re-encrypts to the Wazuh dashboard, which keeps its own TLS listener.
+# The dashboard certificate is signed by the Wazuh root CA and carries
+# SAN DNS:dashboard, so Traefik verifies the chain instead of skipping it.
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: wazuh-dashboard-tls
+  namespace: wazuh
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  serverName: dashboard
+  rootCAs:
+    - secret: wazuh-traefik-ca

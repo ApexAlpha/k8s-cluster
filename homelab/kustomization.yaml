@@ -67,6 +67,7 @@ resources:
   - homepage/application.yaml
   - hister/application.yaml
   - sextant/application.yaml
+  - wazuh/application.yaml
 
   # Backup - Wave 25 (after storage)
 
