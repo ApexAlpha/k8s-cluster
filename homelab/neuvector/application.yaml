@@ -28,6 +28,16 @@ spec:
         # the chart creates in this same namespace.
         ingressController: traefik
 
+        # Do NOT let the chart generate the controller/manager SSL cert.
+        # controller-secret.yaml calls genSelfSignedCert on every render and the
+        # pod template carries a sha256 of that file (checksum/controller-secret).
+        # ArgoCD re-renders on every sync, so the hash changes -> new ReplicaSet
+        # -> a rolling restart each time, and the internal-cert-upgrader never
+        # sees a settled rollout (it waits for controller-pod to finish rolling).
+        # The certs come from the sealed secrets in this directory instead, and
+        # their keys (tls.pem/tls.key) match the pemFile/keyFile defaults.
+        autoGenerateCert: false
+
         # k3s keeps containerd at a non-default socket path. Since 5.3 the
         # enforcer auto-detects the runtime, but only at the default location.
         runtimePath: /run/k3s/containerd/containerd.sock
@@ -39,6 +49,8 @@ spec:
         # serve, hence the explicit ReadWriteOnce.
         controller:
           replicas: 1
+          certificate:
+            secret: neuvector-controller-secret
           nodeSelector:
             kubernetes.io/hostname: k3s-home-2
           resources:
@@ -66,15 +78,19 @@ spec:
               memory: 1Gi
 
         manager:
+          certificate:
+            secret: neuvector-manager-secret
           nodeSelector:
             kubernetes.io/hostname: k3s-home-2
+          # The manager is a JVM app (Pekko). The chart's 512Mi limit OOMKills it
+          # roughly 20s after start (exit 137) before it can bind 8443.
           resources:
             requests:
-              cpu: 50m
-              memory: 128Mi
-            limits:
-              cpu: 500m
+              cpu: 100m
               memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 2Gi
           probes:
             enabled: true
           ingress:
