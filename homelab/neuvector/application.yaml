@@ -1,0 +1,135 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: neuvector
+  namespace: argocd
+  annotations:
+    # Security wave, next to falco. The chart self-registers no admission
+    # webhook at install time, so it can come up alongside the app stacks.
+    argocd.argoproj.io/sync-wave: "21"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://neuvector.github.io/neuvector-helm
+    chart: core
+    targetRevision: 2.11.2
+    helm:
+      releaseName: neuvector
+      valuesObject:
+        registry: docker.io
+        tag: 5.6.2
+
+        # Creates the shared ServersTransport and annotates the backend
+        # services for HTTPS, instead of hand-writing those like the raw
+        # stacks do. The annotation resolves cross-namespace as
+        # <namespace>-<name>@kubernetescrd, which points back at the object
+        # the chart creates in this same namespace.
+        ingressController: traefik
+
+        # k3s keeps containerd at a non-default socket path. Since 5.3 the
+        # enforcer auto-detects the runtime, but only at the default location.
+        runtimePath: /run/k3s/containerd/containerd.sock
+
+        # One controller for an eval. The PVC is NOT really optional: users,
+        # policy and the CVE database live in the controller's internal store,
+        # so without it a controller restart resets the admin password. The
+        # chart default access mode is ReadWriteMany, which local-path cannot
+        # serve, hence the explicit ReadWriteOnce.
+        controller:
+          replicas: 1
+          nodeSelector:
+            kubernetes.io/hostname: k3s-home-2
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          pvc:
+            enabled: true
+            storageClass: local-path
+            accessModes:
+              - ReadWriteOnce
+            capacity: 1Gi
+
+        # DaemonSet across every node, including the control-plane taints.
+        enforcer:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+
+        manager:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-home-2
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          probes:
+            enabled: true
+          ingress:
+            enabled: true
+            host: neuvector.k8s.hu.ls
+            ingressClassName: traefik
+            path: /
+            tls: true
+            secretName: wildcard-k8s-hu-ls-tls
+            annotations:
+              # Same Authentik forwardAuth gate as every other user-facing app.
+              traefik.ingress.kubernetes.io/router.middlewares: authentik-authentik@kubernetescrd
+
+        cve:
+          scanner:
+            # Upstream defaults to 3; one is plenty for an eval.
+            replicas: 1
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                cpu: 500m
+                memory: 1Gi
+
+        updater:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+
+        certupgrader:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: neuvector
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

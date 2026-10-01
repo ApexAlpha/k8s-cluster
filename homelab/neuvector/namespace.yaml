@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: neuvector
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  labels:
+    # The enforcer is a privileged container with hostPath mounts (runtime
+    # socket, /lib/modules) — NeuVector cannot run under baseline.
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/enforce-version: latest

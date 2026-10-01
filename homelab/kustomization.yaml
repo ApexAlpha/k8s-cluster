@@ -47,6 +47,7 @@ resources:
 
   # Security - Wave 21 (after monitoring stack is ready for falcosidekick → Loki)
   - falco/application.yaml
+  - neuvector/
 
   # Apps - Wave 20+ (after storage)
   - vaultwarden/application.yaml

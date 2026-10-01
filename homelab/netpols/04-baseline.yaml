@@ -2137,3 +2137,92 @@ spec:
               kubernetes.io/metadata.name: monitoring
   policyTypes:
     - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: neuvector
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-intra-namespace
+  namespace: neuvector
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-traefik
+  namespace: neuvector
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: traefik
+    ports:
+    - port: 8443
+      protocol: TCP
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-monitoring
+  namespace: neuvector
+spec:
+  podSelector: {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+  policyTypes:
+  - Ingress
+---
+# The Kubernetes API server runs as a host process on each k3s node, so its
+# calls to the controller's admission (20443) and CRD (30443) webhooks arrive
+# from a node IP with no pod identity — no namespaceSelector can match them.
+# Without this rule the default-deny above blocks them, and enabling NeuVector
+# admission control fails closed. Node IPs are static; update if a node is added.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-apiserver-webhooks
+  namespace: neuvector
+spec:
+  podSelector:
+    matchLabels:
+      app: neuvector-controller-pod
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 192.168.1.228/32
+    - ipBlock:
+        cidr: 192.168.1.203/32
+    - ipBlock:
+        cidr: 192.168.1.230/32
+    ports:
+    - port: 20443
+      protocol: TCP
+    - port: 30443
+      protocol: TCP
+  policyTypes:
+  - Ingress
