@@ -47,9 +47,11 @@ spec:
             - name: LANGS
               value: "en_GB"
             # PostgreSQL configuration
+            - name: DISABLE_ADDITIONAL_FEATURES
+              value: "false"
             - name: SYSTEM_DATASOURCE_ENABLECUSTOMDATABASE
               value: "true"
-            - name: SYSTEM_DATASOURCE_CUSTOMDATABACKENDURL
+            - name: SYSTEM_DATASOURCE_CUSTOMDATABASEURL
               value: "jdbc:postgresql://postgres-shared-pooler.database.svc:5432/stirling"
             - name: SYSTEM_DATASOURCE_USERNAME
               value: "stirling_user"
