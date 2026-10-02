@@ -4,8 +4,8 @@ metadata:
   name: neuvector
   namespace: argocd
   annotations:
-    # Security wave, next to falco. The chart self-registers no admission
-    # webhook at install time, so it can come up alongside the app stacks.
+    # Security wave. The chart self-registers no admission webhook at
+    # install time, so it can come up alongside the app stacks.
     argocd.argoproj.io/sync-wave: "21"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
