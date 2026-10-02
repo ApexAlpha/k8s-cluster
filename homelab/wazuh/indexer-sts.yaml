@@ -62,7 +62,7 @@ spec:
         kubernetes.io/hostname: k3s-home-2
       containers:
         - name: wazuh-indexer
-          image: 'wazuh/wazuh-indexer:4.14.8'
+          image: 'wazuh/wazuh-indexer:4.14.8@sha256:6a9c1e3827da627a70859213b3e9cfe43193a492e358953de332b94de33b07de'
           resources:
             requests:
               cpu: 200m
