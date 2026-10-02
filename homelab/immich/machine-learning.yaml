@@ -61,7 +61,7 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 512Mi
+              memory: 256Mi
             limits:
               # ML inference is CPU-hungry; adjust to your nodes
               cpu: 4000m

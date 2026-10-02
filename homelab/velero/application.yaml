@@ -62,8 +62,8 @@ spec:
           podVolumePath: /var/lib/kubelet/pods
           resources:
             requests:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 100m
+              memory: 128Mi
             limits:
               cpu: 1000m
               memory: 2Gi
