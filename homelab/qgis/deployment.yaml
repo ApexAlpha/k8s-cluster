@@ -32,7 +32,7 @@ spec:
         fsGroup: 100
       containers:
         - name: qgis
-          image: quay.io/bedata/jupyterlab/qgis/base:ltr@sha256:93ef03d1c290d269db5ca127abc9eba65af71ef75b870eefcfc8e0e6a396e4cd
+          image: quay.io/bedata/jupyterlab/qgis/base:ltr@sha256:5c08752a881076820286f82952b6046b08139ea1de46d43864853bb4065086fd
           args:
             - start-notebook.sh
             - --ServerApp.token=
