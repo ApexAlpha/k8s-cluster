@@ -32,7 +32,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: immich-server
-          image: ghcr.io/immich-app/immich-server:release@sha256:db996e352359771c6a3db121a0ed8761516b22f727fc092a0f46dcfef82c1bc1
+          image: ghcr.io/immich-app/immich-server:release@sha256:485d546a2e31d6a8b4db8423fcba5c109de8c218d93410af115fd1ccfc4352a6
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
