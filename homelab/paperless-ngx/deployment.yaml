@@ -192,7 +192,7 @@ spec:
             timeoutSeconds: 5
 
         - name: tika
-          image: docker.io/apache/tika:latest@sha256:06bcdbd09aca073293e5a171ad161418cc93c91d58d9e4e205064eade84889d4
+          image: docker.io/apache/tika:latest@sha256:fe2c6e3fca77b986ff3368107a20fa5060a3eefd03d14c12b45c0334626335d2
           imagePullPolicy: IfNotPresent
           resources:
             requests:
