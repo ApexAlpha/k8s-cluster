@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: https://neuvector.github.io/neuvector-helm
     chart: core
-    targetRevision: 2.11.2
+    targetRevision: 2.11.3
     helm:
       releaseName: neuvector
       valuesObject:
