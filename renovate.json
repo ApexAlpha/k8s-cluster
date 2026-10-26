@@ -80,10 +80,7 @@
         "digest",
         "pinDigest"
       ],
-      "automerge": true,
-      "automergeSchedule": [
-        "* 1-5 * * *"
-      ],
+      "automerge": false,
       "rebaseWhen": "conflicted"
     },
     {
@@ -96,7 +93,7 @@
   ],
   "vulnerabilityAlerts": {
     "enabled": true,
-    "automerge": true,
+    "automerge": false,
     "minimumReleaseAge": "0 days"
   },
   "labels": [
@@ -105,6 +102,6 @@
   ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
-  "minimumReleaseAge": "1 day",
+  "minimumReleaseAge": "0 days",
   "timezone": "Europe/Amsterdam"
 }
