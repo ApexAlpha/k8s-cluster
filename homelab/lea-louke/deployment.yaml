@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lea-louke
+  namespace: lea-louke
+  labels:
+    app.kubernetes.io/name: lea-louke
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 600
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lea-louke
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lea-louke
+      annotations:
+        backup.velero.io/backup-volumes: media
+        backup.velero.io/backup-volumes-excludes: tmp
+    spec:
+      serviceAccountName: lea-louke
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          # CI-verified private linux/amd64 release, pinned to the OCI index.
+          image: ghcr.io/apexalpha/lea-louke:44850ace3c3cf7cc0469dbe1f5c8d4d26e9b96e8@sha256:266dd3f2c98711efa8402d7840f369f1ffaf8dc6e4da190492c28be0eeb7e0fc
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: DEVELOPMENT
+              value: "false"
+            - name: PUBLIC_ORIGIN
+              value: https://letters.k8s.hu.ls
+            - name: ALLOWED_USERS
+              value: '["jules","anke"]'
+            # Actual socket peer only; startup must retain --no-proxy-headers.
+            # NetworkPolicy additionally restricts these CIDRs to Traefik pods.
+            - name: TRUSTED_PROXY_CIDRS
+              value: '["10.42.0.0/24","10.42.1.0/24","10.42.2.0/24"]'
+            - name: MEDIA_DIR
+              value: /app/media
+            - name: STATIC_DIR
+              value: /app/static
+            - name: TMPDIR
+              value: /tmp
+            - name: PYTHONDONTWRITEBYTECODE
+              value: "1"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: lea-louke-app
+                  key: DATABASE_URL
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: lea-louke-app
+                  key: SESSION_SECRET
+            - name: PARENT_PIN
+              valueFrom:
+                secretKeyRef:
+                  name: lea-louke-app
+                  key: PARENT_PIN
+            - name: ELEVENLABS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: lea-louke-app
+                  key: ELEVENLABS_API_KEY
+                  optional: true
+            - name: ELEVENLABS_VOICE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: lea-louke-app
+                  key: ELEVENLABS_VOICE_ID
+                  optional: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+              ephemeral-storage: 64Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+              ephemeral-storage: 256Mi
+          startupProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: http
+            timeoutSeconds: 5
+            periodSeconds: 20
+            failureThreshold: 3
+          volumeMounts:
+            - name: media
+              mountPath: /app/media
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: lea-louke-media
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi

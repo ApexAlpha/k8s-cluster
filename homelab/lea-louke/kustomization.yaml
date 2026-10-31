@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Explicit namespaces: database objects must stay in namespace database.
+# application.yaml belongs ONLY to homelab/kustomization.yaml in the parent.
+resources:
+  - namespace.yaml
+  - app-secret-sealed.yaml
+  - db-secret-sealed.yaml
+  - serviceaccount.yaml
+  - db-role.yaml
+  - database.yaml
+  - networkpolicy.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingressroute.yaml
+
+patches:
+  - target:
+      kind: SealedSecret
+    patch: |-
+      - op: add
+        path: /metadata/annotations
+        value:
+          argocd.argoproj.io/sync-wave: "0"
+  - target:
+      kind: SealedSecret
+      name: lea-louke-user-password
+    patch: |-
+      - op: add
+        path: /spec/template/type
+        value: kubernetes.io/basic-auth

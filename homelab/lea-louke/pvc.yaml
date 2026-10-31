@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lea-louke-media
+  namespace: lea-louke
+  annotations:
+    # Keep in the workload wave, including if migrated to a WFFC class later.
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi

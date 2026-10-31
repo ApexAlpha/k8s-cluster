@@ -1,0 +1,13 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: lea-louke
+  namespace: database
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  cluster:
+    name: postgres-shared
+  name: lea_louke
+  owner: lea_louke_user
+  databaseReclaimPolicy: retain

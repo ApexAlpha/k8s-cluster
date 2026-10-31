@@ -1,0 +1,21 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: lea-louke
+  namespace: lea-louke
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`letters.k8s.hu.ls`)
+      middlewares:
+        - name: authentik
+          namespace: authentik
+      services:
+        - name: lea-louke
+          port: 80
+  tls:
+    secretName: wildcard-k8s-hu-ls-tls
