@@ -41,7 +41,7 @@ spec:
       containers:
         - name: app
           # CI-verified private linux/amd64 release, pinned to the OCI index.
-          image: ghcr.io/apexalpha/lea-louke:4cc56b3a0be49ec30dc2ff8ce4bf0d3bed73254b@sha256:69ef3e9ba2d14a404e0b186f7bf253ef0909fb859bf11f2cd1e99d62e892ab4c
+          image: ghcr.io/apexalpha/lea-louke:1407684db372e926af8cb933102f3b18dd07650e@sha256:1cfcf84cf8ae591000a94fad5d4d811e0d85b64b443c52da27f4cbf34f9c53c7
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
