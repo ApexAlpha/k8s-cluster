@@ -11,6 +11,9 @@ resources:
   - db-role.yaml
   - database.yaml
   - networkpolicy.yaml
+  # Opt-in public IPv4 HTTPS egress for parent-triggered ElevenLabs generation.
+  # Remove together with the provider keys in lea-louke-app to close egress again.
+  - optional/elevenlabs-egress.yaml
   - pvc.yaml
   - deployment.yaml
   - service.yaml
