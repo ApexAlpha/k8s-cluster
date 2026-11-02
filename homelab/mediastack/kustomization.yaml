@@ -22,3 +22,4 @@ resources:
   - radarr-db-credentials-sealed.yaml
   - sonarr-4k-db-credentials-sealed.yaml
   - sonarr-db-credentials-sealed.yaml
+  - longhorn-claims.yaml

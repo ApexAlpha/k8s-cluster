@@ -4,7 +4,7 @@ metadata:
   name: hister-data
   namespace: hister
   annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true,Prune=false,Delete=false
     argocd.argoproj.io/sync-wave: "3"
 spec:
   accessModes:

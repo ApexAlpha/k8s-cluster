@@ -9,3 +9,4 @@ resources:
   - ingress.yaml
   - mealie-db-sealed.yaml
   - mealie-oidc-sealed.yaml
+  - longhorn-claims.yaml

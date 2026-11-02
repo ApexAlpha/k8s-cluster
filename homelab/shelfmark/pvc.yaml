@@ -4,7 +4,7 @@ metadata:
   name: shelfmark-config
   namespace: shelfmark
   annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true,Prune=false,Delete=false
     argocd.argoproj.io/sync-wave: "25"
 spec:
   accessModes:

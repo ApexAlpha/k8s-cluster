@@ -4,7 +4,7 @@ metadata:
   name: mealie-data-local
   namespace: mealie
   annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true,Prune=false,Delete=false
 spec:
   accessModes:
     - ReadWriteOnce

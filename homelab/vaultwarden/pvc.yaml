@@ -4,7 +4,7 @@ metadata:
   name: vaultwarden-data-local
   namespace: vaultwarden
   annotations:
-    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true,Prune=false,Delete=false
 spec:
   accessModes:
     - ReadWriteOnce
