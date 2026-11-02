@@ -8,7 +8,7 @@ metadata:
   labels:
     app: hister
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: hister
@@ -19,6 +19,9 @@ spec:
       labels:
         app: hister
     spec:
+      # Temporary Longhorn cross-node validation; removed after readiness.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
       enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
@@ -81,4 +84,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: hister-data
+            claimName: hister-data-longhorn

@@ -8,7 +8,7 @@ metadata:
   labels:
     app: shelfmark
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: shelfmark
@@ -21,6 +21,9 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: books
     spec:
+      # Temporary Longhorn cross-node validation; removed after readiness.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home-2
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -92,7 +95,7 @@ spec:
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: shelfmark-config
+            claimName: shelfmark-config-longhorn
         - name: books
           persistentVolumeClaim:
             claimName: shelfmark-books

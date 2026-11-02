@@ -22,7 +22,7 @@ metadata:
   labels:
     app: qbittorrent
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: qbittorrent
@@ -35,6 +35,9 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: media
     spec:
+      # Temporary Longhorn cross-node validation; removed after readiness.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -99,7 +102,7 @@ spec:
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: qbittorrent-config-local
+            claimName: qbittorrent-config-longhorn
         - name: media
           persistentVolumeClaim:
             claimName: media-data
