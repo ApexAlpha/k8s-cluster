@@ -8,7 +8,7 @@ metadata:
   labels:
     app: vaultwarden
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: vaultwarden
@@ -19,6 +19,9 @@ spec:
       labels:
         app: vaultwarden
     spec:
+      # Temporary Longhorn cross-node validation; removed after readiness.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -89,4 +92,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: vaultwarden-data-local
+            claimName: vaultwarden-data-longhorn
