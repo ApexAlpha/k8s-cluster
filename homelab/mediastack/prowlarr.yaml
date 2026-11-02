@@ -33,9 +33,6 @@ spec:
       labels:
         app: prowlarr
     spec:
-      # Temporary Longhorn cross-node validation; removed after readiness.
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home-2
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

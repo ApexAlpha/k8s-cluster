@@ -19,9 +19,6 @@ spec:
       labels:
         app: mealie
     spec:
-      # Temporary Longhorn cross-node validation; removed after readiness.
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home-2
       imagePullSecrets:
         - name: ghcr-pull-secret
       tolerations:
