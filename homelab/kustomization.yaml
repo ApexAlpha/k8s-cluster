@@ -68,7 +68,8 @@ resources:
   - homepage/application.yaml
   - hister/application.yaml
   - hermes/application.yaml
-  - qgis/application.yaml
+  # Retired QGIS: preserve files only; no running application
+  - retained-storage/qgis/
   - sextant/application.yaml
   - lea-louke/application.yaml
 
