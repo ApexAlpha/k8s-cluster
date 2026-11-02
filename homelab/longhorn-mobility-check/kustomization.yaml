@@ -4,3 +4,4 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - home-job.yaml
+  - nuc-job.yaml
