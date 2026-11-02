@@ -9,7 +9,7 @@ metadata:
   labels:
     app: stirling-pdf
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: stirling-pdf
@@ -20,6 +20,9 @@ spec:
       labels:
         app: stirling-pdf
     spec:
+      # Temporary placement to verify the new volume away from its source.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home-2
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -95,4 +98,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: stirling-pdf-data-local
+            claimName: stirling-pdf-data-longhorn
