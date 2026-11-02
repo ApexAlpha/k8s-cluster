@@ -10,4 +10,3 @@ resources:
   - service.yaml
   - ingress.yaml
   - longhorn-claims.yaml
-  - longhorn-migration-jobs.yaml

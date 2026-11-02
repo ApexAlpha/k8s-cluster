@@ -21,9 +21,6 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: books
     spec:
-      # Temporary Longhorn cross-node validation; removed after readiness.
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home-2
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"

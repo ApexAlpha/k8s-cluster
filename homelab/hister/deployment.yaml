@@ -19,9 +19,6 @@ spec:
       labels:
         app: hister
     spec:
-      # Temporary Longhorn cross-node validation; removed after readiness.
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home
       enableServiceLinks: false
       securityContext:
         runAsNonRoot: true

@@ -12,4 +12,3 @@ resources:
   - service.yaml
   - ingressroute.yaml
   - longhorn-claims.yaml
-  - longhorn-migration-jobs.yaml
