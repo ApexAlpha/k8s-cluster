@@ -10,3 +10,4 @@ resources:
   - vaultwarden-db-sealed.yaml
   - vaultwarden-admin-sealed.yaml
   - longhorn-claims.yaml
+  - longhorn-migration-jobs.yaml
