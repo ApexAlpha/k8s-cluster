@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bentopdf
+  namespace: bentopdf
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.priority: '100'
+    traefik.ingress.kubernetes.io/router.middlewares: nc-maintenance-maintenance-errors@kubernetescrd,authentik-authentik@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - pdf.k8s.hu.ls
+    secretName: wildcard-k8s-hu-ls-tls
+  rules:
+  - host: pdf.k8s.hu.ls
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bentopdf
+            port:
+              number: 80

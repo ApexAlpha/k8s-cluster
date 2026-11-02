@@ -14,3 +14,8 @@ Default WASM/OCR assets may download from CDNs; file processing remains in the
 browser. This is not an air-gapped deployment or a server-side REST API.
 Stirling's old claims/database are retained separately for rollback; never delete
 the old local-path PVC or Longhorn PVC without explicit data-cleanup approval.
+
+Browser tests passed: merge preserves both input pages/text; compression produces
+a valid smaller PDF; OCR recognizes raster text; searchable PDF includes a verified
+text layer; RTF-to-PDF uses LibreOffice WASM and preserves text. Tested served headers
+are COOP same-origin and COEP credentialless, with crossOriginIsolated=true.

@@ -60,8 +60,8 @@ data:
             description: Recipes & Meal Planning
 
     - Tools:
-        - Stirling PDF:
-            icon: stirling-pdf
+        - BentoPDF:
+            icon: mdi-file-pdf-box
             href: https://pdf.k8s.hu.ls
             description: PDF Tools
         - IT-Tools:

@@ -5,3 +5,4 @@ resources:
   - service.yaml
   - pdb.yaml
   - networkpolicy.yaml
+  - ingress.yaml
