@@ -48,3 +48,30 @@ Before copying any app data, inspect current usage rather than formatting it.
 VM2 had a 132 GiB virtual boot disk, a 130 GiB LVM PV/VG, and a 65 GiB root LV;
 the remaining 65 GiB was free in the VG. Check pvs/vgs/lvs before requesting
 Proxmox expansion. Expanding a root LV remains a separately approved operation.
+
+## VM2 capacity update and first migration candidate
+
+With owner approval, k3s-home-2's existing root LV was expanded online from
+approximately 65 GiB to 130 GiB using all free extents in ubuntu-vg:
+
+    sudo lvextend --resizefs -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+
+The ext4 filesystem now reports approximately 128 GiB, and Longhorn detected
+the increased capacity without a reboot or service restart. All 44 running
+VM2 pods kept their UIDs/restart counts. Pre-change VG metadata was saved on
+VM2 at /etc/lvm/backup/ubuntu-vg.pre-root-expansion-20261102T123511Z.
+This is an LVM metadata backup, not a filesystem/data backup. The VG now has
+no free extents; reaching the future >=1 TB goal needs additional virtual disk
+capacity. Consider a separate Longhorn data disk for that larger expansion.
+
+Selected first pilot: Stirling PDF, not migrated yet. Its 2 GiB local-path
+claim is on k3s-nuc, contains about 196 KiB in /configs and no allocated data
+in /customFiles, and its database is already external PostgreSQL. It has no
+nodeSelector or hardware bindings. The source PV uses reclaimPolicy Delete,
+so keep the original PVC manifest and binding intact as the rollback source.
+
+For the approved migration, create a new explicit Longhorn claim, quiesce the
+app, preserve the configs/customFiles subdirectories and file ownership during
+the copy, verify file hashes, update the Deployment's claim reference via
+GitOps, and exercise app health on a different eligible node. Do not mutate
+the bound source PVC's storageClass or delete it during the pilot.
