@@ -22,7 +22,7 @@ metadata:
   labels:
     app: sonarr-4k
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: sonarr-4k

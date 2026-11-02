@@ -22,7 +22,7 @@ metadata:
   labels:
     app: radarr-4k
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: radarr-4k
