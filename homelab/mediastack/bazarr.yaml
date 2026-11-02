@@ -21,7 +21,7 @@ metadata:
   labels:
     app: bazarr
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: bazarr
@@ -34,6 +34,9 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: media
     spec:
+      # Temporary Longhorn cross-node validation; removed after readiness.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-nuc
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -102,7 +105,7 @@ spec:
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: bazarr-config-local
+            claimName: bazarr-config-longhorn
         - name: media
           persistentVolumeClaim:
             claimName: media-data

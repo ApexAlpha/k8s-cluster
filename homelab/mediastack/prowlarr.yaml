@@ -22,7 +22,7 @@ metadata:
   labels:
     app: prowlarr
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: prowlarr
@@ -33,6 +33,9 @@ spec:
       labels:
         app: prowlarr
     spec:
+      # Temporary Longhorn cross-node validation; removed after readiness.
+      nodeSelector:
+        kubernetes.io/hostname: k3s-home-2
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -109,7 +112,7 @@ spec:
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: prowlarr-config-local
+            claimName: prowlarr-config-longhorn
 ---
 apiVersion: v1
 kind: Service
