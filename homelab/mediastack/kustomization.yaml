@@ -23,3 +23,4 @@ resources:
   - sonarr-4k-db-credentials-sealed.yaml
   - sonarr-db-credentials-sealed.yaml
   - longhorn-claims.yaml
+  - longhorn-migration-jobs.yaml
