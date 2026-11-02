@@ -85,3 +85,5 @@ resources:
   - k8s-mcp-server/application.yaml
   - radar/application.yaml
   # - apps/plex.yaml
+  - bentopdf/namespace.yaml
+  - bentopdf/application.yaml
