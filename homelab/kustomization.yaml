@@ -85,3 +85,4 @@ resources:
   - k8s-mcp-server/application.yaml
   - radar/application.yaml
   # - apps/plex.yaml
+  - longhorn-mobility-check/
