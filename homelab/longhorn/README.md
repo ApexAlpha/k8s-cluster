@@ -64,8 +64,9 @@ This is an LVM metadata backup, not a filesystem/data backup. The VG now has
 no free extents; reaching the future >=1 TB goal needs additional virtual disk
 capacity. Consider a separate Longhorn data disk for that larger expansion.
 
-First pilot completed: Stirling PDF now uses a two-replica Longhorn PVC.
-See ../stirling-pdf/README.md for verification, rollback and the pre-existing
+First pilot completed: Stirling PDF demonstrated two-replica Longhorn mobility,
+then was retired in favour of stateless BentoPDF. Both pilot claims are retained.
+See ../retained-storage/stirling-pdf/README.md for verification, rollback and the pre-existing
 application licence limitation. The original selection rationale follows. Its 2 GiB local-path
 claim is on k3s-nuc, contains about 196 KiB in /configs and no allocated data
 in /customFiles, and its database is already external PostgreSQL. It has no

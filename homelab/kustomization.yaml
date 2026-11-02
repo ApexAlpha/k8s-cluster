@@ -55,7 +55,7 @@ resources:
   - unifi/application.yaml
   - unifi-os/application.yaml
   - immich/application.yaml
-  - stirling-pdf/application.yaml
+  - retained-storage/stirling-pdf/
   - it-tools/application.yaml
   - cyberchef/application.yaml
   - searxng/application.yaml

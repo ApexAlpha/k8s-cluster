@@ -6,7 +6,6 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.tls: 'true'
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.priority: '100'
     traefik.ingress.kubernetes.io/router.middlewares: nc-maintenance-maintenance-errors@kubernetescrd,authentik-authentik@kubernetescrd
 spec:
   ingressClassName: traefik
