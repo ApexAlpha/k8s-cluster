@@ -15,8 +15,15 @@ spec:
     targetRevision: 1.13.0
     helm:
       values: |
-        # One replicated volume per app -> protect against a single node loss.
-        defaultClassReplicaCount: 2
+        # Two copies on distinct nodes for newly created v1 volumes.
+        # Existing volumes keep their current replica count.
+        persistence:
+          defaultClassReplicaCount: 2
+        defaultSettings:
+          defaultReplicaCount:
+            v1: "2"
+            v2: "3"
+          replicaSoftAntiAffinity: false
         # GitOps: skip Longhorn pre-upgrade checker hook (references an SA not yet created); disables it.
         preUpgradeChecker:
           jobEnabled: false
