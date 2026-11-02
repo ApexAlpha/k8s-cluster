@@ -10,3 +10,4 @@ resources:
   - mealie-db-sealed.yaml
   - mealie-oidc-sealed.yaml
   - longhorn-claims.yaml
+  - longhorn-migration-jobs.yaml
