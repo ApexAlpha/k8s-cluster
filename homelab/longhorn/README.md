@@ -30,3 +30,21 @@ Sources:
 - https://longhorn.io/docs/1.13.0/references/storage-class-parameters/
 - https://longhorn.io/docs/1.13.0/nodes-and-volumes/nodes/scheduling/
 - https://longhorn.io/kb/troubleshooting-volume-with-multipath/
+
+## Cross-node validation
+
+A disposable 1 GiB PVC explicitly using storageClassName: longhorn was created
+through root-homelab. A restricted Job wrote a probe on k3s-home, and a second
+restricted Job read the same PVC on k3s-nuc after CSI detach/reattach. Both
+returned SHA256 a69efed39a5e2c72d40661d53d77b3d4c8626f710e719aa3a234374042c5c164.
+Longhorn reported exactly two healthy replicas, on k3s-home and k3s-nuc.
+The disposable namespace, Jobs, PVC and Longhorn test volume were then removed.
+
+NUC already has a single configured Longhorn disk, nvme-xfs at /mnt/nvme on
+/dev/nvme0n1 (Samsung 990 EVO Plus 2TB, XFS), not its boot SSD. All NUC replica
+paths point there. The filesystem is shared with other data: it is not empty.
+Before copying any app data, inspect current usage rather than formatting it.
+
+VM2 had a 132 GiB virtual boot disk, a 130 GiB LVM PV/VG, and a 65 GiB root LV;
+the remaining 65 GiB was free in the VG. Check pvs/vgs/lvs before requesting
+Proxmox expansion. Expanding a root LV remains a separately approved operation.
