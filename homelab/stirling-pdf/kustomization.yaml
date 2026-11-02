@@ -10,4 +10,3 @@ resources:
   - ingress.yaml
   - stirling-db-credentials-sealed.yaml
   - database.yaml
-  - migration-job.yaml

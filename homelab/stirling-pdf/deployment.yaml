@@ -20,9 +20,6 @@ spec:
       labels:
         app: stirling-pdf
     spec:
-      # Temporary placement to verify the new volume away from its source.
-      nodeSelector:
-        kubernetes.io/hostname: k3s-home-2
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
