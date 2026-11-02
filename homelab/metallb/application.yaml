@@ -13,6 +13,14 @@ spec:
     repoURL: https://metallb.github.io/metallb
     chart: metallb
     targetRevision: 0.16.1
+    helm:
+      values: |
+        # frr-k8s is on by chart default, but this cluster runs no BGP:
+        # there is no BGPAdvertisement/BGPPeer and FRR's running-config is
+        # empty. It only crashlooped its liveness probe. L2 is served by
+        # the speaker, which is not gated on this value.
+        frrk8s:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: metallb-system
