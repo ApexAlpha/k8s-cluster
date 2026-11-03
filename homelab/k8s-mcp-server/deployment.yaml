@@ -24,7 +24,7 @@ spec:
           name: k8s-mcp-server-config
       containers:
       - name: server
-        image: ghcr.io/containers/kubernetes-mcp-server:latest@sha256:ceafafa51f57e94c8310ec477c6f0c44497e450f569e28e5cc602817d21166cd
+        image: ghcr.io/containers/kubernetes-mcp-server:latest@sha256:a74489bc6e3394fe7f2a308cbf916c4a42a0c91c70e4926bd8b7f9a5c25aa41b
         imagePullPolicy: IfNotPresent
         args:
         - --config
