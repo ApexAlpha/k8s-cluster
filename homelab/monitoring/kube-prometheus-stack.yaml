@@ -83,16 +83,29 @@ spec:
             podMetadata:
               annotations:
                 backup.velero.io/backup-volumes-excludes: "prometheus-kube-prometheus-stack-prometheus-db"
-            retention: 30d
+            retention: 7d
             storageSpec:
               volumeClaimTemplate:
                 spec:
-                  storageClassName: local-path
+                  storageClassName: longhorn
                   accessModes:
                     - ReadWriteOnce
                   resources:
                     requests:
                       storage: 20Gi
+            # Keep Prometheus off the memory-pressured bare-metal nuc: prefer either
+            # Proxmox VM, but still allow the nuc if both VMs are unavailable.
+            affinity:
+              nodeAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                  - weight: 100
+                    preference:
+                      matchExpressions:
+                        - key: kubernetes.io/hostname
+                          operator: In
+                          values:
+                            - k3s-home
+                            - k3s-home-2
             # Resource requests/limits for Prometheus and its sidecars
             resources:
               requests:
