@@ -52,7 +52,7 @@ spec:
         kubernetes.io/hostname: k3s-home-2
       containers:
         - name: wazuh-manager
-          image: 'wazuh/wazuh-manager:4.14.9@sha256:dbb337727a6b6b17e24b1ccfe4c6e95fd983286ba0ccbf29d568144aa9527c6b'
+          image: 'wazuh/wazuh-manager:4.14.9@sha256:9d07740f780024600101d759ddab9a4413bdcb3412ccb81dccc143b3cdc702a2'
           resources:
             requests:
               cpu: 100m
