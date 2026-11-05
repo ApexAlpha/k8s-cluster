@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://metallb.github.io/metallb
     chart: metallb
-    targetRevision: 0.16.1
+    targetRevision: 0.16.2
     helm:
       values: |
         # frr-k8s is on by chart default, but this cluster runs no BGP:
