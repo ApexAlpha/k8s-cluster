@@ -16,9 +16,9 @@ spec:
         values:
           - "true"
   serviceAccountName: system-upgrade
-  # Patch-only on 1.36. Promote to stable after assessing 1.37 app disruption.
+  # Follow stable (currently 1.37.2); minor updates may briefly interrupt apps.
   # ArgoCD applies; controller moves nodes inside the nightly window.
-  channel: https://update.k3s.io/v1-release/channels/v1.36
+  channel: https://update.k3s.io/v1-release/channels/stable
   upgrade:
     image: rancher/k3s-upgrade
   # 02:00-03:00 Amsterdam local time, after 01:00-02:00 local backups.

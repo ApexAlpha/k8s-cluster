@@ -1,17 +1,18 @@
-# system-upgrade (k3s automated patch upgrades)
+# system-upgrade (k3s automated stable upgrades)
 
 ArgoCD's `root-homelab` owns `application.yaml`; this child app owns the CRD,
 controller and Plans. Do not include `application.yaml` in the child's kustomization.
 
-Both Plans track `https://update.k3s.io/v1-release/channels/v1.36`: **patches in
-1.36 only**. The cluster was at `v1.36.4-rc1+k3s1` when the controller was
-restored; the channel resolved to `v1.36.6+k3s1`. Do not switch to `stable`
-(currently 1.37) without checking workload downtime and version skew first.
+Both Plans track `https://update.k3s.io/v1-release/channels/stable`.
+When enabled for stable, all three nodes were `v1.36.4-rc1+k3s1`, and the
+channel resolved to `v1.37.2+k3s1` (one adjacent minor). Later stable releases
+may trigger new rolling upgrades inside the maintenance window. Monitor for
+version-skew gaps if a node has been unavailable for multiple minor releases.
 Upgrade images must be **untagged** `rancher/k3s-upgrade`: the controller appends
 the channel's resolved version tag. A pinned image digest here can install the
 wrong binary or fail as a downgrade when the channel changes. The controller
 image itself is pinned separately. The job's kubectl helper is pinned to a
-compatible Kubernetes 1.36 image.
+Kubernetes 1.36 image, compatible with 1.36 and 1.37 API servers.
 
 At 02:00-03:00 `Europe/Amsterdam`, the controller upgrades one node at a time,
 with 5 minutes after each completed node before starting the next. All three
