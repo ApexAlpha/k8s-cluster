@@ -76,6 +76,9 @@ resources:
   # Backup - Wave 25 (after storage)
   - cluster-backup/application.yaml
 
+  # Node lifecycle - Wave 26 (rolling k3s patch upgrades)
+  - system-upgrade/application.yaml
+
   # Network
   - wireguard/application.yaml
 

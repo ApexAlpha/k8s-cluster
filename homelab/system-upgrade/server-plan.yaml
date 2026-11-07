@@ -7,6 +7,7 @@ metadata:
     app.kubernetes.io/part-of: system-upgrade
 spec:
   concurrency: 1
+  postCompleteDelay: "5m"
   cordon: true
   nodeSelector:
     matchExpressions:
@@ -15,14 +16,13 @@ spec:
         values:
           - "true"
   serviceAccountName: system-upgrade
-  # Track the k3s stable release channel (1.35 verified -> now 1.36+).
+  # Patch-only on 1.36. Promote to stable after assessing 1.37 app disruption.
   # ArgoCD applies; controller moves nodes inside the nightly window.
-  channel: https://update.k3s.io/v1-release/channels/stable
+  channel: https://update.k3s.io/v1-release/channels/v1.36
   upgrade:
-    image: rancher/k3s-upgrade@sha256:69b48cf32cf51ed23ed86348fc913db1e00d1ddc00369ded18953dcad859a6e1
-  # Nightly window AFTER all backups (compressed: velero 01:00, CNPG base
-  # 00:00, garage-to-hetzner 02:00 UTC → all done ~02:00 UTC) and before you
-  # wake. 04:30-06:00 Amsterdam time (Europe/Amsterdam; UTC+2 in summer).
+    image: rancher/k3s-upgrade
+  # 02:00-03:00 Amsterdam local time, after 01:00-02:00 local backups.
+  # Cordon only: no drain; existing pods can still see a short interruption.
   window:
     days:
       - sunday
