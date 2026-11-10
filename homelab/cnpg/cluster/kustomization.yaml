@@ -21,5 +21,4 @@ resources:
 - authentik-user-password-sealed.yaml
 - grafana-user-password-sealed.yaml
 - stirling-user-password-sealed.yaml
-- sextant-user-password-sealed.yaml
 - postgres-shared-secret-reader.yaml

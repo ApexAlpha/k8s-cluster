@@ -70,7 +70,6 @@ resources:
   - hermes/application.yaml
   # Retired QGIS: preserve files only; no running application
   - retained-storage/qgis/
-  - sextant/application.yaml
   - lea-louke/application.yaml
 
   # Backup - Wave 25 (after storage)
