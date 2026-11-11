@@ -21,7 +21,7 @@ spec:
           tag: 33.0.1-fpm
           pullPolicy: IfNotPresent
 
-        replicaCount: 1
+        replicaCount: 0
 
         # Fix data directory permissions for www-data
         securityContext:
