@@ -30,3 +30,36 @@ spec:
   resources:
     requests:
       storage: 10Gi
+
+---
+# Longhorn migration target; populated before the workload is cut over.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-library-longhorn
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 200Gi
+---
+# Longhorn migration target for the ML cache.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-ml-cache-longhorn
+  namespace: immich
+  annotations:
+    argocd.argoproj.io/sync-options: SkipHealthCheck=true
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 10Gi
