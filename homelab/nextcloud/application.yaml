@@ -21,7 +21,7 @@ spec:
           tag: 33.0.1-fpm
           pullPolicy: IfNotPresent
 
-        replicaCount: 0
+        replicaCount: 1
 
         # Fix data directory permissions for www-data
         securityContext:
@@ -201,7 +201,8 @@ spec:
         # File storage on the local-path PVC
         persistence:
           enabled: true
-          storageClass: local-path
+          existingClaim: nextcloud-files-longhorn
+          storageClass: longhorn
           accessMode: ReadWriteOnce
           size: 100Gi
           annotations:
