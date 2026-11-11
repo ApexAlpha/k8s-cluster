@@ -8,7 +8,7 @@ metadata:
   labels:
     app: paperless
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: paperless
@@ -220,5 +220,5 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: paperless-storage-local
+            claimName: paperless-storage-longhorn
 
