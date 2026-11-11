@@ -85,4 +85,4 @@ spec:
       volumes:
         - name: ml-cache
           persistentVolumeClaim:
-            claimName: immich-ml-cache-local
+            claimName: immich-ml-cache-longhorn

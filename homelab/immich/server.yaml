@@ -121,7 +121,7 @@ spec:
       volumes:
         - name: library
           persistentVolumeClaim:
-            claimName: immich-library-local
+            claimName: immich-library-longhorn
         - name: config
           configMap:
             name: immich-config
