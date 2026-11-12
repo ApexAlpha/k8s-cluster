@@ -34,7 +34,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: blocky
-          image: ghcr.io/0xerr0r/blocky:latest@sha256:4f165b63db0d76c96ecc47c7a8f57caeedc003a912bdce29abb0e283ce02e16b
+          image: ghcr.io/0xerr0r/blocky:latest@sha256:191c0f1e688aa37698297ef4059e11a2b080299a878f5b31d6d32ace9d0c54b2
           imagePullPolicy: IfNotPresent
           ports:
             - name: dns-udp
@@ -107,7 +107,7 @@ spec:
           tolerationSeconds: 30
       containers:
         - name: blocky
-          image: ghcr.io/0xerr0r/blocky:latest@sha256:4f165b63db0d76c96ecc47c7a8f57caeedc003a912bdce29abb0e283ce02e16b
+          image: ghcr.io/0xerr0r/blocky:latest@sha256:191c0f1e688aa37698297ef4059e11a2b080299a878f5b31d6d32ace9d0c54b2
           imagePullPolicy: IfNotPresent
           ports:
             - name: dns-udp
