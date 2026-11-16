@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  namespace: media
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: fix-run-permissions
+          image: lscr.io/linuxserver/bazarr:latest@sha256:832820dec70bce9e912c6eee7a95baf6551e03dbc63325a7208daaa455423752
+          command: ["/bin/sh", "-c", "chown 1000:1000 /run"]
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+              add: [CHOWN]
+          volumeMounts:
+            - name: run
+              mountPath: /run
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: run
+          emptyDir:
+            medium: Memory
+      containers:
+        - name: bazarr
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: run
+              mountPath: /run

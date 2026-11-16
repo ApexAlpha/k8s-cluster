@@ -74,3 +74,59 @@ patches:
       version: v1
       kind: Deployment
       name: prowlarr
+
+  - path: patches/security-bazarr.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: bazarr
+
+  - path: patches/security-sonarr.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: sonarr
+
+  - path: patches/security-sonarr-4k.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: sonarr-4k
+
+  - path: patches/security-radarr.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: radarr
+
+  - path: patches/security-radarr-4k.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: radarr-4k
+
+  - path: patches/security-qbittorrent.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: qbittorrent
+
+  - path: patches/security-transmission.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: transmission
+
+  - path: patches/security-plex.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: plex
