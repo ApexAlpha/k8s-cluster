@@ -82,9 +82,6 @@ spec:
               emptyDir:
                 medium: Memory
           extraVolumeMounts:
-            - name: php-confd
-              mountPath: /usr/local/etc/php/conf.d/redis-session.ini
-              subPath: redis-session.ini
             - name: nginx-cache
               mountPath: /var/cache/nginx
             - name: nginx-run
