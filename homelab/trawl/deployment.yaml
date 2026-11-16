@@ -66,7 +66,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: trawl
-          image: ghcr.io/germondai/trawl:latest@sha256:e5af96e09d0ec24723472a7dc816deaa791ace672b5ac4d54c51a38362db7b85
+          image: ghcr.io/germondai/trawl:latest@sha256:3eb1f6a432606e2cbb025d81d3a6b8225f2e64288f056948f8756d88f7f66276
           imagePullPolicy: IfNotPresent
           # Camoufox/Firefox currently needs user namespaces; RuntimeDefault
           # blocked unshare in prior testing, so retain this exception until it
