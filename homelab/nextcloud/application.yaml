@@ -82,6 +82,9 @@ spec:
               emptyDir:
                 medium: Memory
           extraVolumeMounts:
+            - name: php-confd
+              mountPath: /usr/local/etc/php/conf.d/redis-session.ini
+              subPath: redis-session.ini
             - name: nginx-cache
               mountPath: /var/cache/nginx
             - name: nginx-run
@@ -246,19 +249,7 @@ spec:
 
         # ─── Cron (sidecar) ───────────────────────────────────────────
         cronjob:
-          enabled: true
-          type: sidecar
-          sidecar:
-            securityContext:
-              runAsNonRoot: true
-              runAsUser: 33
-              runAsGroup: 33
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
-              seccompProfile:
-                type: RuntimeDefault
+          enabled: false
 
         # ─── Probes (disabled during first install, re-enable after) ───
         startupProbe:
