@@ -74,6 +74,21 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
           host: office.k8s.hu.ls
           containerPort: 8080
+          extraVolumes:
+            - name: nginx-cache
+              emptyDir:
+                medium: Memory
+            - name: nginx-run
+              emptyDir:
+                medium: Memory
+          extraVolumeMounts:
+            - name: php-confd
+              mountPath: /usr/local/etc/php/conf.d/redis-session.ini
+              subPath: redis-session.ini
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /var/run
 
           # Hooks run by the Nextcloud Docker entrypoint.
           # Clear stale maintenance mode left by a crashed / replaced pod.
