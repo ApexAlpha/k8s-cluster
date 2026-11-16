@@ -250,8 +250,8 @@ spec:
         # ─── Cron (sidecar) ───────────────────────────────────────────
         cronjob:
           enabled: true
-          type: cronjob
-          cronjob:
+          type: sidecar
+          sidecar:
             securityContext:
               runAsNonRoot: true
               runAsUser: 33
