@@ -8,3 +8,17 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+
+patches:
+  - path: patches/security-blocky-home.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: blocky-home
+  - path: patches/security-blocky-nuc.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: blocky-nuc

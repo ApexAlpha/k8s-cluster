@@ -1,0 +1,22 @@
+- op: add
+  path: /spec/template/spec/securityContext
+  value:
+    runAsNonRoot: true
+    runAsUser: 100
+    runAsGroup: 100
+    fsGroup: 100
+    fsGroupChangePolicy: OnRootMismatch
+- op: add
+  path: /spec/template/spec/containers/0/securityContext
+  value:
+    runAsNonRoot: true
+    runAsUser: 100
+    runAsGroup: 100
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+      add:
+        - NET_BIND_SERVICE
+    seccompProfile:
+      type: RuntimeDefault

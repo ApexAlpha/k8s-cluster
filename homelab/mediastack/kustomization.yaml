@@ -23,3 +23,47 @@ resources:
   - sonarr-4k-db-credentials-sealed.yaml
   - sonarr-db-credentials-sealed.yaml
   - longhorn-claims.yaml
+
+patches:
+  - path: patches/security-exportarr-sonarr.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: exportarr-sonarr
+  - path: patches/security-exportarr-sonarr-4k.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: exportarr-sonarr-4k
+  - path: patches/security-exportarr-radarr.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: exportarr-radarr
+  - path: patches/security-exportarr-radarr-4k.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: exportarr-radarr-4k
+  - path: patches/security-exportarr-prowlarr.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: exportarr-prowlarr
+  - path: patches/security-exportarr-bazarr.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: exportarr-bazarr
+  - path: patches/security-profilarr-parser.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: profilarr-v2
