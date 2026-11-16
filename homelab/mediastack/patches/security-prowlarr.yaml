@@ -6,6 +6,20 @@ metadata:
 spec:
   template:
     spec:
+      initContainers:
+        - name: fix-run-permissions
+          image: lscr.io/linuxserver/prowlarr:latest@sha256:6660787a99b2e58203539583663c973b48979fc00ff2cb78dc0ea17429e1f6ef
+          command: ["/bin/sh", "-c", "chown 1000:1000 /run"]
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+              add: [CHOWN]
+          volumeMounts:
+            - name: run
+              mountPath: /run
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -14,8 +28,15 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
+      volumes:
+        - name: run
+          emptyDir:
+            medium: Memory
       containers:
         - name: prowlarr
+          volumeMounts:
+            - name: run
+              mountPath: /run
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
