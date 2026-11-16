@@ -7,3 +7,11 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+
+patches:
+  - path: patches/security-searxng.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: searxng

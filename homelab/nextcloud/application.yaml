@@ -23,10 +23,6 @@ spec:
 
         replicaCount: 1
 
-        # Fix data directory permissions for www-data
-        securityContext:
-          fsGroup: 33
-
         # Suppress Apache ServerName warning
         extraEnv:
           - name: TRUSTED_PROXIES
@@ -46,10 +42,38 @@ spec:
 
         nginx:
           enabled: true
+          containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 82
+            runAsGroup: 33
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
 
         # ─── Nextcloud core settings ───────────────────────────────────
         nextcloud:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 33
+            runAsGroup: 33
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          podSecurityContext:
+            runAsNonRoot: true
+            runAsUser: 33
+            runAsGroup: 33
+            fsGroup: 33
+            fsGroupChangePolicy: OnRootMismatch
           host: office.k8s.hu.ls
+          containerPort: 8080
 
           # Hooks run by the Nextcloud Docker entrypoint.
           # Clear stale maintenance mode left by a crashed / replaced pod.
@@ -212,6 +236,17 @@ spec:
         cronjob:
           enabled: true
           type: sidecar
+          sidecar:
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 33
+              runAsGroup: 33
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+              seccompProfile:
+                type: RuntimeDefault
 
         # ─── Probes (disabled during first install, re-enable after) ───
         startupProbe:
