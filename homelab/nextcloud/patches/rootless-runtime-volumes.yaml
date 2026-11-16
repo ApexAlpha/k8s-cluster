@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+spec:
+  template:
+    spec:
+      containers:
+        - name: nextcloud
+          volumeMounts:
+            - name: php-confd
+              mountPath: /usr/local/etc/php/conf.d/redis-session.ini
+              subPath: redis-session.ini
+        - name: nextcloud-nginx
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /var/run
+      volumes:
+        - name: nginx-cache
+          emptyDir:
+            medium: Memory
+        - name: nginx-run
+          emptyDir:
+            medium: Memory

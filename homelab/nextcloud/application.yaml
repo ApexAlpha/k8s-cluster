@@ -235,12 +235,14 @@ spec:
         # ─── Cron (sidecar) ───────────────────────────────────────────
         cronjob:
           enabled: true
-          type: sidecar
-          sidecar:
+          type: cronjob
+          cronjob:
             securityContext:
               runAsNonRoot: true
               runAsUser: 33
               runAsGroup: 33
+              fsGroup: 33
+              fsGroupChangePolicy: OnRootMismatch
               allowPrivilegeEscalation: false
               capabilities:
                 drop:
