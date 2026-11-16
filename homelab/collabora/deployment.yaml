@@ -17,6 +17,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1001
         runAsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       nodeSelector:
         kubernetes.io/hostname: k3s-home
       hostAliases:
@@ -31,6 +33,11 @@ spec:
             runAsNonRoot: true
             runAsUser: 1001
             runAsGroup: 1001
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+            seccompProfile:
+              type: RuntimeDefault
           ports:
             - containerPort: 9980
           env:
