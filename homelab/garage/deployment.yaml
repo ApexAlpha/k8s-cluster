@@ -21,6 +21,12 @@ spec:
       labels:
         app: garage
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       nodeSelector:
         kubernetes.io/hostname: k3s-nuc
       tolerations:
@@ -35,6 +41,10 @@ spec:
       containers:
         - name: garage
           image: dxflrs/garage:v2.5.0@sha256:677e5b758e4425a325b811c425c026bf35a4bf42f7ddbaa773de3f4fd779a5a5
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
           ports:
             - name: s3
               containerPort: 3900

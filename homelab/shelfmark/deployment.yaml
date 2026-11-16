@@ -21,6 +21,12 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: books
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       tolerations:
         - key: "node.kubernetes.io/unreachable"
           operator: "Exists"
@@ -33,6 +39,10 @@ spec:
       containers:
         - name: shelfmark
           image: ghcr.io/calibrain/shelfmark:latest@sha256:6544e02595271b0267b9acda58fa7f3db6f14942bece51b7aadfe4000cf34f1c
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
           ports:
             - name: http
               containerPort: 8084

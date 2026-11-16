@@ -21,6 +21,12 @@ spec:
       annotations:
         backup.velero.io/backup-volumes-excludes: audiobooks
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       imagePullSecrets:
         - name: ghcr-pull-secret
       tolerations:
@@ -35,6 +41,10 @@ spec:
       containers:
         - name: audiobookshelf
           image: ghcr.io/advplyr/audiobookshelf:2.37.2@sha256:b897c33f05972fb1bf484f7487bc878fa91ec8691335c1db6e2929c3a7658efa
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
           ports:
             - name: http
               containerPort: 13378

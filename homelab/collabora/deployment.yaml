@@ -13,6 +13,10 @@ spec:
       labels:
         app: collabora-code
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
       nodeSelector:
         kubernetes.io/hostname: k3s-home
       hostAliases:
@@ -23,6 +27,10 @@ spec:
         - name: code
           image: docker.io/collabora/code:26.04.6.1.1@sha256:95f29f1c0a1778999125f53f058d968fe0afb37c95e32ebfb9f3444140faebd2
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            runAsGroup: 1001
           ports:
             - containerPort: 9980
           env:
