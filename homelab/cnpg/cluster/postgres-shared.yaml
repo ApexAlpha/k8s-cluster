@@ -41,10 +41,6 @@ spec:
       passwordSecret:
         name: nextcloud-user-password
     - login: true
-      name: mealie_user
-      passwordSecret:
-        name: mealie-user-password
-    - login: true
       name: paperless_user
       passwordSecret:
         name: paperless-user-password
@@ -149,7 +145,6 @@ spec:
         - CREATE DATABASE vaultwarden OWNER vaultwarden_user;
         - CREATE DATABASE immich OWNER immich_user;
         - CREATE DATABASE nextcloud OWNER nextcloud_user;
-        - CREATE DATABASE mealie OWNER mealie_user;
         - CREATE DATABASE grafana OWNER grafana_user;
         - CREATE DATABASE authentik OWNER authentik_user;
         - CREATE DATABASE paperless OWNER paperless_user;

@@ -192,31 +192,6 @@ Add both to `homelab/paperless-ngx/kustomization.yaml`:
 
 ---
 
-### mealie
-
-> `mealie-oidc` client secret comes from Authentik after creating the OAuth2 provider for Mealie.
-
-```bash
-kubectl create secret generic mealie-db -n mealie \
-  --from-literal=password=<cnpg-app-password> \
-  --dry-run=client -o yaml | \
-  kubeseal --controller-namespace kube-system --controller-name sealed-secrets-controller --format yaml \
-  > homelab/mealie/mealie-db-sealed.yaml
-
-kubectl create secret generic mealie-oidc -n mealie \
-  --from-literal=client_secret=<authentik-client-secret> \
-  --dry-run=client -o yaml | \
-  kubeseal --controller-namespace kube-system --controller-name sealed-secrets-controller --format yaml \
-  > homelab/mealie/mealie-oidc-sealed.yaml
-```
-
-Add both to `homelab/mealie/kustomization.yaml`:
-```yaml
-  - mealie-db-sealed.yaml
-  - mealie-oidc-sealed.yaml
-```
-
----
 
 ### nextcloud
 

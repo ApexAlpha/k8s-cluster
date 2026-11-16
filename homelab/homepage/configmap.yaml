@@ -54,10 +54,6 @@ data:
             icon: nextcloud
             href: https://office.k8s.hu.ls
             description: NextCloud Office Hub
-        - Mealie:
-            icon: mealie
-            href: https://recipes.k8s.hu.ls
-            description: Recipes & Meal Planning
 
     - Tools:
         - BentoPDF:

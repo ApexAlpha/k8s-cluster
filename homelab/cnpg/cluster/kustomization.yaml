@@ -15,7 +15,6 @@ resources:
 - bazarr-user-password-sealed.yaml
 - immich-user-password-sealed.yaml
 - nextcloud-user-password-sealed.yaml
-- mealie-user-password-sealed.yaml
 - paperless-user-password-sealed.yaml
 - vaultwarden-user-password-sealed.yaml
 - authentik-user-password-sealed.yaml

@@ -147,7 +147,6 @@ Remove or relax `podAffinity` rules that pin to CNPG primary node across:
 - `homelab/audiobookshelf/deployment.yaml` (required → remove)
 - `homelab/mediastack/` (sonarr, sonarr-4k, radarr, radarr-4k, prowlarr, bazarr)
 - `homelab/paperless-ngx/deployment.yaml`
-- `homelab/mealie/deployment.yaml`
 - `homelab/immich/server.yaml`
 - `homelab/nextcloud/application.yaml`
 

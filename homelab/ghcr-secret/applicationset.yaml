@@ -18,7 +18,6 @@ spec:
           - namespace: homepage
           - namespace: immich
           - namespace: kube-system
-          - namespace: mealie
           - namespace: paperless
           - namespace: profilarr
           - namespace: authentik

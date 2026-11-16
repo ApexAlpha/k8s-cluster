@@ -34,7 +34,7 @@ GitOps-managed Kubernetes homelab cluster using ArgoCD.
 
 ## Key Applications
 
-- **Media:** Immich, Mediastack (Plex/Sonarr/Radarr/etc), Mealie
+- **Media:** Immich, Mediastack (Plex/Sonarr/Radarr/etc)
 - **Documents:** Paperless-NGX, Stirling-PDF
 - **Utilities:** Vaultwarden, Nextcloud, IT-Tools, CyberChef
 - **Infrastructure:** Traefik, CoreDNS, Blocky, Unifi, Kured
