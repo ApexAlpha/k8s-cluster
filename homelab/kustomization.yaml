@@ -86,6 +86,7 @@ resources:
   - openclaw/application.yaml
   - k8s-mcp-server/application.yaml
   - radar/application.yaml
+  - trawl/application.yaml
   # - apps/plex.yaml
   - bentopdf/namespace.yaml
   - bentopdf/application.yaml

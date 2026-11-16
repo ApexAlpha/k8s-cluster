@@ -56,17 +56,21 @@ spec:
         kubernetes.io/hostname: k3s-home
       imagePullSecrets:
         - name: ghcr-pull-secret
-      # Camoufox/Firefox needs to write runtime files across /opt/camoufox;
-      # running as non-root hangs browser launch (proven: worked as root on nuc).
+      # TRAWL supports a non-root runtime (UID/GID 1001). Keep the browser
+      # writable paths on /tmp and the mounted addon directory.
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: trawl
-          image: ghcr.io/germondai/trawl:latest@sha256:3eb1f6a432606e2cbb025d81d3a6b8225f2e64288f056948f8756d88f7f66276
+          image: ghcr.io/germondai/trawl:latest@sha256:e5af96e09d0ec24723472a7dc816deaa791ace672b5ac4d54c51a38362db7b85
           imagePullPolicy: IfNotPresent
-          # Camoufox/Firefox needs user namespaces for its sandbox; the default
-          # k3s seccomp profile blocks unshare -> browser launch times out.
+          # Camoufox/Firefox currently needs user namespaces; RuntimeDefault
+          # blocked unshare in prior testing, so retain this exception until it
+          # is separately re-tested with the non-root image.
           securityContext:
             seccompProfile:
               type: Unconfined
