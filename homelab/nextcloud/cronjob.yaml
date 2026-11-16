@@ -20,6 +20,8 @@ spec:
             app.kubernetes.io/name: nextcloud
             app.kubernetes.io/component: cron
         spec:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-home-2
           restartPolicy: OnFailure
           securityContext:
             runAsNonRoot: true
