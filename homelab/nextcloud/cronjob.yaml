@@ -31,7 +31,7 @@ spec:
               type: RuntimeDefault
           containers:
             - name: nextcloud-cron
-              image: docker.io/library/nextcloud:33.0.1-fpm
+              image: docker.io/library/nextcloud:33.0.1-fpm@sha256:dbb18d92bca7d6af2343c40aaffab42973401d906c5cb9f70e16dbf7c85a967c
               imagePullPolicy: IfNotPresent
               command: ["php", "-f", "/var/www/html/cron.php"]
               securityContext:
