@@ -34,7 +34,7 @@ spec:
           emptyDir:
             medium: Memory
       containers:
-        - name: sonarr-4k
+        - name: sonarr
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000

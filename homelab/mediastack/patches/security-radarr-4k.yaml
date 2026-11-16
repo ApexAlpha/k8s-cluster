@@ -34,7 +34,7 @@ spec:
           emptyDir:
             medium: Memory
       containers:
-        - name: radarr-4k
+        - name: radarr
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
