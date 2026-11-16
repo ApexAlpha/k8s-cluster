@@ -68,12 +68,11 @@ spec:
         - name: trawl
           image: ghcr.io/germondai/trawl:latest@sha256:e5af96e09d0ec24723472a7dc816deaa791ace672b5ac4d54c51a38362db7b85
           imagePullPolicy: IfNotPresent
-          # Camoufox/Firefox currently needs user namespaces; RuntimeDefault
-          # blocked unshare in prior testing, so retain this exception until it
-          # is separately re-tested with the non-root image.
+          # Re-test the browser sandbox under the Kubernetes default syscall
+          # filter now that the image runs as non-root.
           securityContext:
             seccompProfile:
-              type: Unconfined
+              type: RuntimeDefault
           ports:
             - name: http
               containerPort: 8191
