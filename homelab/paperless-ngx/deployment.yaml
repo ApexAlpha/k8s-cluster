@@ -173,6 +173,9 @@ spec:
             httpGet:
               path: /
               port: http
+              httpHeaders:
+                - name: Host
+                  value: docs.k8s.hu.ls
             failureThreshold: 60
             periodSeconds: 10
             timeoutSeconds: 5
@@ -180,6 +183,9 @@ spec:
             httpGet:
               path: /
               port: http
+              httpHeaders:
+                - name: Host
+                  value: docs.k8s.hu.ls
             periodSeconds: 30
             failureThreshold: 3
             timeoutSeconds: 10
@@ -187,6 +193,9 @@ spec:
             httpGet:
               path: /
               port: http
+              httpHeaders:
+                - name: Host
+                  value: docs.k8s.hu.ls
             periodSeconds: 10
             failureThreshold: 3
             timeoutSeconds: 5
