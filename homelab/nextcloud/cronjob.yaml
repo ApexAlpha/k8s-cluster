@@ -20,8 +20,14 @@ spec:
             app.kubernetes.io/name: nextcloud
             app.kubernetes.io/component: cron
         spec:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-home-2
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: nextcloud
+                      app.kubernetes.io/component: app
+                  topologyKey: kubernetes.io/hostname
           restartPolicy: OnFailure
           securityContext:
             runAsNonRoot: true
