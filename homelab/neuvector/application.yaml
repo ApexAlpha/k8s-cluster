@@ -48,7 +48,8 @@ spec:
         # chart default access mode is ReadWriteMany, which local-path cannot
         # serve, hence the explicit ReadWriteOnce.
         controller:
-          replicas: 1
+          # Keep the controller Deployment and PVC rendered for a reversible pause.
+          replicas: 0
           certificate:
             secret: neuvector-controller-secret
           nodeSelector:
@@ -69,6 +70,7 @@ spec:
 
         # DaemonSet across every node, including the control-plane taints.
         enforcer:
+          enabled: false
           resources:
             requests:
               cpu: 100m
@@ -78,6 +80,7 @@ spec:
               memory: 1Gi
 
         manager:
+          enabled: false
           certificate:
             secret: neuvector-manager-secret
           nodeSelector:
@@ -106,6 +109,7 @@ spec:
 
         cve:
           scanner:
+            enabled: false
             # Upstream defaults to 3; one is plenty for an eval.
             replicas: 1
             resources:
@@ -117,6 +121,7 @@ spec:
                 memory: 1Gi
 
         updater:
+          enabled: false
           resources:
             requests:
               cpu: 10m

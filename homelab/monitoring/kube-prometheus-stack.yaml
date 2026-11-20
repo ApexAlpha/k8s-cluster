@@ -80,6 +80,9 @@ spec:
 
         prometheus:
           prometheusSpec:
+            # Homelab monitoring: reduce scrape/evaluation wakeups.
+            scrapeInterval: 60s
+            evaluationInterval: 60s
             podMetadata:
               annotations:
                 backup.velero.io/backup-volumes-excludes: "prometheus-kube-prometheus-stack-prometheus-db"
@@ -158,6 +161,10 @@ spec:
                 webhook_configs:
                   - url: 'http://192.168.1.235:8644/webhooks/cluster-alerts'
                     send_resolved: true
+
+        kubelet:
+          serviceMonitor:
+            interval: 60s
 
         nodeExporter:
           enabled: true
