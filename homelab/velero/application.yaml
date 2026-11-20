@@ -78,9 +78,9 @@ spec:
 
         metrics:
           enabled: true
+          scrapeInterval: 60s
           serviceMonitor:
             enabled: true
-            interval: 60s
 
         schedules:
           daily:
