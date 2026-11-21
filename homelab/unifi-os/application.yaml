@@ -30,7 +30,7 @@ spec:
         persistence:
           data:
             enabled: true
-            size: 20Gi
+            size: 50Gi
           mongo:
             enabled: true
             size: 10Gi
