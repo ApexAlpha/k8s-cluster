@@ -31,11 +31,13 @@ spec:
           data:
             enabled: true
             size: 50Gi
+            existingClaim: unifi-os-data-recovered
             annotations:
               argocd.argoproj.io/sync-options: Prune=false
           mongo:
             enabled: true
             size: 10Gi
+            existingClaim: unifi-os-mongo-recovered
             annotations:
               argocd.argoproj.io/sync-options: Prune=false
         cgroupHostPath:
