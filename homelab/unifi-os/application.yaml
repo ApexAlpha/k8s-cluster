@@ -34,12 +34,14 @@ spec:
             existingClaim: unifi-os-data-recovered
             annotations:
               argocd.argoproj.io/sync-options: Prune=false
+              argocd.argoproj.io/compare-options: IgnoreExtraneous
           mongo:
             enabled: true
             size: 10Gi
             existingClaim: unifi-os-mongo-recovered
             annotations:
               argocd.argoproj.io/sync-options: Prune=false
+              argocd.argoproj.io/compare-options: IgnoreExtraneous
         cgroupHostPath:
           enabled: true
           path: /sys/fs/cgroup
