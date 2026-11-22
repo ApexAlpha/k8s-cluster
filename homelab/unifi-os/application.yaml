@@ -31,9 +31,13 @@ spec:
           data:
             enabled: true
             size: 50Gi
+            annotations:
+              argocd.argoproj.io/sync-options: Prune=false
           mongo:
             enabled: true
             size: 10Gi
+            annotations:
+              argocd.argoproj.io/sync-options: Prune=false
         cgroupHostPath:
           enabled: true
           path: /sys/fs/cgroup
