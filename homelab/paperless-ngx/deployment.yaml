@@ -212,7 +212,7 @@ spec:
               memory: 1Gi
 
         - name: gotenberg
-          image: docker.io/gotenberg/gotenberg:9.9@sha256:2f4945f698c3d02f691a27d56bb8e7ba4585e6ab50bd233329a36eb0423ae587
+          image: docker.io/gotenberg/gotenberg:9.9@sha256:f6b4b6f7c8ae0ca7805f9e105ef989bf13b02d548378fa784c3630a9c479c31b
           imagePullPolicy: IfNotPresent
           args:
             - "gotenberg"
