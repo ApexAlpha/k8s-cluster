@@ -83,7 +83,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: trawl
-          image: ghcr.io/germondai/trawl:latest@sha256:3eb1f6a432606e2cbb025d81d3a6b8225f2e64288f056948f8756d88f7f66276
+          image: ghcr.io/germondai/trawl:latest@sha256:0d999d9685f46cbb2483da43d8468e3395bc044b64552cf199bce4dd70dc42d0
           imagePullPolicy: IfNotPresent
           # Re-test the browser sandbox under the Kubernetes default syscall
           # filter now that the image runs as non-root.
