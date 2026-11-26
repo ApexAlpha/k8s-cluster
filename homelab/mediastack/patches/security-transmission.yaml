@@ -8,7 +8,7 @@ spec:
     spec:
       initContainers:
         - name: fix-run-permissions
-          image: lscr.io/linuxserver/transmission:latest@sha256:5baf08cd73a566699f35baad3c4a84ba7d7057220566c5fb29969bf2292dc2ff
+          image: lscr.io/linuxserver/transmission:latest@sha256:3a8ecd4ebbc9ec657ccddba674a067db20eb28a25d61146698580d724599c7cb
           command: ["/bin/sh", "-c", "chown 1000:1000 /run"]
           securityContext:
             runAsNonRoot: false
